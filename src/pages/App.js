@@ -1,17 +1,17 @@
 import React, {Component} from 'react';
 import classNames from 'classnames';
-import {AppTopbar} from './AppTopbar';
-import {AppFooter} from './AppFooter';
-import {AppMenu} from './AppMenu';
-import {AppProfile} from './AppProfile';
+import {AppTopbar} from '../AppTopbar';
+import {AppFooter} from '../AppFooter';
+import {AppMenu} from '../AppMenu';
+import {AppProfile} from '../AppProfile';
 import {Route} from 'react-router-dom';
-import {Dashboard} from './components/Dashboard';
+import {Dashboard} from './Dashboard';
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
-import './layout/layout.scss';
-import './App.scss';
+import '../layout/layout.scss';
+import '../App.scss';
 
 class App extends Component {
 

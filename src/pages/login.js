@@ -157,16 +157,16 @@ animation: AnimationName 38s ease infinite;
     return (
       <this.Wrapper>
         <this.Description>
-        <Carousel interval={3500} pauseOnHover={false} touch={true} indicators={false} wrap={true} animation={false} pauseOnVisibility={false}  prevIcon={<span aria-hidden="true" className="carousel-control-prev-icon" style={{marginTop: '250px !important'}}/>}>
-            <Carousel.Item>
-              <Carousel.Caption>
-              <p className="d-block w-100" style={{backgroundColor:"black"}}>mohamadasfasfasfasfasfasfasfasfasfasfasfasfasfasfasf</p>
+        <Carousel style={{marginTop: '280px'}} interval={5500} pauseOnHover={true} touch={true}  wrap={true} animation={false} pauseOnVisibility={false} nextIcon={false} prevIcon={false}>
+            <Carousel.Item  >
+              <Carousel.Caption style={{position: 'relative',left:'0',right:'0'}}>
+                <div>Ipocket</div>
               </Carousel.Caption>
                  
            </Carousel.Item>
            <Carousel.Item>
-           <Carousel.Caption>
-              <p className="d-block w-100">zeinabzeinabzeinabzeinabzeinabzeinabzeinabzeinabzeinabzeinabzeinabzeinabzeinabzeinabzeinabzeinabzeinabzeinab</p>
+           <Carousel.Caption style={{position: 'relative',left:'0',right:'0'}}>
+              <div>Hello World</div>
               </Carousel.Caption>
            </Carousel.Item>
         </Carousel>

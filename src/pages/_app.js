@@ -84,7 +84,6 @@ class App extends Component {
     createMenu() {
         this.menu = [
             {label: 'Dashboard', icon: 'pi pi-fw pi-home', command: () => {window.location = '#/'}},
-            {label: 'login', icon: 'pi pi-fw pi-home', command: () => {window.location = '#/login'}}
         ];
     }
 
@@ -142,12 +141,12 @@ class App extends Component {
                 </div>
 
                 <div className="layout-main">
-                    <Route path="/" exact component={Dashboard} />
+                    <Route path="/" exact component={Login} />
+                    <Route path="/dashboard" exact component={Dashboard} />
                     <Route path="/login" exact component={Login} />
                 </div>
 
                 <AppFooter />
-
                 <div className="layout-mask"></div>
             </div>
         );

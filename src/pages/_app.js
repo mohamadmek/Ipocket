@@ -5,7 +5,8 @@ import {AppFooter} from '../AppFooter';
 import {AppMenu} from '../AppMenu';
 import {AppProfile} from '../AppProfile';
 import {Route} from 'react-router-dom';
-import {Dashboard} from './Dashboard';
+import {Dashboard} from './dashboard';
+import Login from './login';
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
@@ -14,7 +15,6 @@ import '../layout/layout.scss';
 import '../App.scss';
 
 class App extends Component {
-
     constructor() {
         super();
         this.state = {
@@ -83,7 +83,8 @@ class App extends Component {
 
     createMenu() {
         this.menu = [
-            {label: 'Dashboard', icon: 'pi pi-fw pi-home', command: () => {window.location = '#/'}}
+            {label: 'Dashboard', icon: 'pi pi-fw pi-home', command: () => {window.location = '#/'}},
+            {label: 'login', icon: 'pi pi-fw pi-home', command: () => {window.location = '#/login'}}
         ];
     }
 
@@ -142,7 +143,7 @@ class App extends Component {
 
                 <div className="layout-main">
                     <Route path="/" exact component={Dashboard} />
-                   
+                    <Route path="/login" exact component={Login} />
                 </div>
 
                 <AppFooter />

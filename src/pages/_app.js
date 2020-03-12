@@ -6,15 +6,18 @@ import {AppProfile} from './AppProfile';
 import {Route} from 'react-router-dom';
 import {Dashboard} from './components/Dashboard';
 import Tranaction from './Transaction';
+import {AppFooter} from '../AppFooter';
+import {AppMenu} from '../AppMenu';
+import {AppProfile} from '../AppProfile';
+import Login from './login';
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
-import './layout/layout.scss';
-import './App.scss';
+import '../layout/layout.scss';
+import '../App.scss';
 
 class App extends Component {
-
     constructor() {
         super();
         this.state = {
@@ -83,7 +86,7 @@ class App extends Component {
 
     createMenu() {
         this.menu = [
-            {label: 'Dashboard', icon: 'pi pi-fw pi-home', command: () => {window.location = '#/'}}
+            {label: 'Dashboard', icon: 'pi pi-fw pi-home', command: () => {window.location = '#/'}},
         ];
     }
 
@@ -143,8 +146,11 @@ class App extends Component {
                 <div className="layout-main">
                     <Route path="/" exact component={Dashboard} />
                     <Route path="/transaction" component={Tranaction} />
-                   
+                    <Route path="/dashboard" exact component={Dashboard} />
+                    <Route path="/login" exact component={Login} />
                 </div>
+
+                <AppFooter />
                 <div className="layout-mask"></div>
             </div>
         );

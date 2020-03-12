@@ -1,0 +1,34 @@
+.transaction{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    background-color: rgb(35, 153, 94);
+    color: white;
+    margin-bottom: 0.2rem;
+    justify-content: space-between;
+    padding-left: 1rem;
+    padding-top: 0.6rem;
+}
+.transaction_div2{
+    margin-right: 2rem;
+}
+
+h2{
+    margin-left: 0.7rem;
+}
+.transaction_icon{
+    display: flex;
+    justify-content: space-around;
+}
+#c{
+    background-color: rgb(156, 35, 35);
+}
+p{
+    position: relative;
+    bottom:0.2rem;
+
+}
+.transaction_div1_p{
+    display: flex;
+    justify-content: space-between;
+}

@@ -1,0 +1,14 @@
+.Filter{
+    display: flex;
+	flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.Filter_div2{
+    display: flex;
+    flex-direction: row;
+    
+}
+
+
+

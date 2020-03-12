@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import classNames from 'classnames';
 import {AppTopbar} from './AppTopbar';
-import {AppFooter} from './AppFooter';
 import {AppMenu} from './AppMenu';
 import {AppProfile} from './AppProfile';
 import {Route} from 'react-router-dom';
 import {Dashboard} from './components/Dashboard';
+import Tranaction from './Transaction';
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
@@ -130,7 +130,7 @@ class App extends Component {
 
         return (
             <div className={wrapperClass} onClick={this.onWrapperClick}>
-                <AppTopbar onToggleMenu={this.onToggleMenu}/>
+                 <AppTopbar onToggleMenu={this.onToggleMenu}/>
 
                 <div ref={(el) => this.sidebar = el} className={sidebarClassName} onClick={this.onSidebarClick}>
                     <div className="layout-logo">
@@ -142,11 +142,9 @@ class App extends Component {
 
                 <div className="layout-main">
                     <Route path="/" exact component={Dashboard} />
+                    <Route path="/transaction" component={Tranaction} />
                    
                 </div>
-
-                <AppFooter />
-
                 <div className="layout-mask"></div>
             </div>
         );

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Filter from "./components/Filter";
-import Trans from "./components/TransComponent";
+import Filter from "../components/Filter";
+import Trans from "../components/TransComponent";
 
 class Transaction extends Component {
     constructor() {

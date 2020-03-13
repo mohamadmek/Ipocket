@@ -1,15 +1,15 @@
 import React, {Component} from 'react';
 import classNames from 'classnames';
-import {AppTopbar} from './AppTopbar';
-import {AppMenu} from './AppMenu';
-import {AppProfile} from './AppProfile';
-import {Route} from 'react-router-dom';
-import {Dashboard} from './components/Dashboard';
-import Tranaction from './Transaction';
-import {AppFooter} from '../AppFooter';
+import {AppTopbar} from '../AppTopbar';
 import {AppMenu} from '../AppMenu';
 import {AppProfile} from '../AppProfile';
+import {Route} from 'react-router-dom';
+import {Dashboard} from './dashboard';
+import Tranaction from './transaction';
+import Account from "./account";
 import Login from './login';
+import Save from "../components/Save";
+import Circle from "../components/CircleP";
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
@@ -148,9 +148,12 @@ class App extends Component {
                     <Route path="/transaction" component={Tranaction} />
                     <Route path="/dashboard" exact component={Dashboard} />
                     <Route path="/login" exact component={Login} />
+                    <Route path="/account" exact component={Account} />
+                    <Route path="/save" exact component={Save} />
+                    <Route path="/circle" exact component={Circle} />
                 </div>
 
-                <AppFooter />
+               
                 <div className="layout-mask"></div>
             </div>
         );

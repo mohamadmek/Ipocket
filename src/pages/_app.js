@@ -1,14 +1,17 @@
 import React, {Component} from 'react';
 import classNames from 'classnames';
 import {AppTopbar} from '../AppTopbar';
-import {AppFooter} from '../AppFooter';
 import {AppMenu} from '../AppMenu';
 import {AppProfile} from '../AppProfile';
 import {Route} from 'react-router-dom';
 import {Dashboard} from './dashboard';
+import Tranaction from './transaction';
+import Account from "./account";
 import Login from './login';
-// import 'primereact/resources/themes/nova-light/theme.css';
-// import 'primereact/resources/primereact.min.css';
+import Save from "../components/Save";
+import Circle from "../components/CircleP";
+import 'primereact/resources/themes/nova-light/theme.css';
+import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 // import 'primeflex/primeflex.css';
 import '../layout/layout.scss';
@@ -130,14 +133,27 @@ class App extends Component {
 
         return (
             <div className={wrapperClass} onClick={this.onWrapperClick}>
-                <AppTopbar onToggleMenu={this.onToggleMenu}/>
-                <div className="layout-main">
-                    {/* <Route path="/" exact component={Login} /> */}
-                    <Route path="/dashboard" exact component={Dashboard} />
-                    {/* <Route path="/login" exact component={Login} /> */}
+                 <AppTopbar onToggleMenu={this.onToggleMenu}/>
+
+                <div ref={(el) => this.sidebar = el} className={sidebarClassName} onClick={this.onSidebarClick}>
+                    <div className="layout-logo">
+                        <img alt="Logo" src={logo} />
+                    </div>
+                    <AppProfile />
+                    <AppMenu model={this.menu} onMenuItemClick={this.onMenuItemClick} />
                 </div>
 
-                <AppFooter />
+                <div className="layout-main">
+                    <Route path="/" exact component={Dashboard} />
+                    <Route path="/transaction" component={Tranaction} />
+                    <Route path="/dashboard" exact component={Dashboard} />
+                    <Route path="/login" exact component={Login} />
+                    <Route path="/account" exact component={Account} />
+                    <Route path="/save" exact component={Save} />
+                    <Route path="/circle" exact component={Circle} />
+                </div>
+
+               
                 <div className="layout-mask"></div>
             </div>
         );

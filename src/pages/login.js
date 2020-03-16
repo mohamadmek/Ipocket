@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Carousel from 'react-bootstrap/Carousel';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Form } from 'react-bootstrap';
 class Login extends Component {
   constructor(props){
     super(props);
@@ -17,6 +18,12 @@ class Login extends Component {
     right: 0;
     left: 0;
     bottom: 0;
+    flex-wrap: wrap;
+    @media all and (max-width: 588px){
+      .d_mn{
+        display: none;
+      }
+    }
   `;
 
    Description = styled.div`
@@ -26,12 +33,14 @@ class Login extends Component {
 
    Login = styled.div`
     width: 50%;
+    @media all and (max-width:588px){
+      width:100%;
+    }
     background: linear-gradient(270deg, rgb(52, 74, 94), rgb(52, 74, 94), rgb(52, 74, 94));
-background-size: 600% 600%;
-
--webkit-animation: AnimationName 38s ease infinite;
--moz-animation: AnimationName 38s ease infinite;
-animation: AnimationName 38s ease infinite;
+    background-size: 600% 600%;
+    -webkit-animation: AnimationName 38s ease infinite;
+    -moz-animation: AnimationName 38s ease infinite;
+    animation: AnimationName 38s ease infinite;
 
 @-webkit-keyframes AnimationName {
     0%{background-position:0% 50%}
@@ -74,9 +83,13 @@ animation: AnimationName 38s ease infinite;
 
     Header = styled.div`
     display: flex;
-    margin-top: 90px;
+    margin-top: 70px;
     margin-left: 80px;
     margin-bottom: 20px;
+    @media all and (max-width: 870px){
+      margin-left: 30px !important;
+      
+    }
     .btw{
       margin: 0 8px;
       padding-top: 5px;
@@ -110,6 +123,9 @@ animation: AnimationName 38s ease infinite;
       margin-top: 0px;
       padding-right: 50%;
       margin-bottom: 10px;
+      @media all and (max-width: 870px){
+        padding-right:20%;
+      }
     `;
 
     SignUpButton = styled.button`
@@ -122,6 +138,12 @@ animation: AnimationName 38s ease infinite;
       font-weight: bold;
       cursor: pointer;
     `;
+    Form = styled.form`
+      margin-left: 80px;
+      @media all and (max-width: 870px){
+        margin-left:30px;
+      }
+    `;
     handleClickLogin = () => {
       this.setState({
         signStatus: false,
@@ -132,7 +154,7 @@ animation: AnimationName 38s ease infinite;
         signStatus: true,
       })
     }
-    signUpForm = <form style={{marginLeft: "80px"}}>
+    signUpForm = <this.Form>
       <label for="username" style={{display:"block", color: "#fff"}}>USERNAME</label>
       <this.Input name="username" placeholder="Enter you Username" />
       <label for="email" style={{display:"block", color: "#fff"}}>EMAIL</label>
@@ -140,38 +162,47 @@ animation: AnimationName 38s ease infinite;
       <label for="password" style={{display:"block", color: "#fff"}}>PASSWORD</label>
       <this.Input type="password" name="password" placeholder="Enter you Password" style={{display:"block"}} />
       <div style={{color: '#ccc', fontWeight: 'bold', marginTop: "20px"}}><input type="checkbox" style={{cursor:"pointer"}}/> I agree all statements in <span style={{color:'#fff', borderBottom:'2px solid rgb(81, 197, 183)'}}>terms of service</span></div>
+      <select style={{display: 'block', marginTop: '5px'}}>
+        <option value="dollar">$</option>
+        <option value="euro">€</option>
+        <option value="lebanese">LBP</option>
+      </select>
       <this.SignUpButton>Sign Up</this.SignUpButton>
       <span style={{marginLeft: '10px', color: '#E1E1E1',borderBottom:'2px solid rgb(81, 197, 183)', cursor:"pointer"}} onClick={this.handleClickSignup}>I'm already a member</span>
-    </form>;
+    </this.Form>;
 
-    signInForm = <form style={{marginLeft: "80px"}}>
+    signInForm = <this.Form>
     <label for="username" style={{display:"block", color: "#fff"}}>USERNAME</label>
     <this.Input name="username" placeholder="Enter you Username" />
     <label for="password" style={{display:"block", color: "#fff"}}>PASSWORD</label>
     <this.Input type="password" name="password" placeholder="Enter you Password" style={{display:"block"}} />
     <this.SignUpButton>Sign In</this.SignUpButton>
     <span style={{marginLeft: '10px', color: '#E1E1E1',borderBottom:'2px solid rgb(81, 197, 183)', cursor:"pointer"}} onClick={this.handleClickLogin}>Sign Up</span>
-  </form>;
+  </this.Form>;
     
   render() {
     return (
       <this.Wrapper>
-        <this.Description>
-        <Carousel style={{marginTop: '280px'}} interval={5500} pauseOnHover={true} touch={true}  wrap={true} animation={false} pauseOnVisibility={false} nextIcon={false} prevIcon={false}>
-            <Carousel.Item  >
+        <this.Description className="d_mn">
+        <Carousel style={{marginTop: '220px'}} interval={5500} pauseOnHover={true} touch={true}  wrap={true} animation={false} pauseOnVisibility={false} nextIcon={false} prevIcon={false}>
+            <Carousel.Item  style={{marginBottom: '240px'}}>
               <Carousel.Caption style={{position: 'relative',left:'0',right:'0'}}>
-                <div>Ipocket</div>
+                <h1 style={{fontSize: '5rem'}}>Ipocket</h1>
               </Carousel.Caption>
                  
            </Carousel.Item>
-           <Carousel.Item>
-           <Carousel.Caption style={{position: 'relative',left:'0',right:'0'}}>
-              <div>Hello World</div>
+           <Carousel.Item style={{marginBottom: '100px'}}>
+           <Carousel.Caption style={{position: 'relative',left:'0',right:'0', padding: '20px'}}>
+           <h3 style={{fontSize: '1.7rem',}}>
+             <div>Ipocket</div>
+           It automatically tracks your spending, categorizes it, and alerts you when/if you approach your budget limit. You can even ask for custom savings tips within the app.
+           everything is shown in simple, intuitive graphs and charts, making it one of the most popular personal finance apps in the world.
+           </h3>
               </Carousel.Caption>
            </Carousel.Item>
         </Carousel>
         </this.Description>
-        <this.Login>
+        <this.Login class="m_w100">
           <div style={{textAlign: "right", margin: "20px 20px 0 0"}} >
           <this.Button2 onClick={this.handleClickSignup} signStatus={this.state.signStatus}>Sign In</this.Button2>
           <this.Button1 onClick={this.handleClickLogin} signStatus={this.state.signStatus}>Sign Up</this.Button1>

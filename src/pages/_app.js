@@ -7,12 +7,12 @@ import {AppProfile} from '../AppProfile';
 import {Route} from 'react-router-dom';
 import {Dashboard} from './dashboard';
 import Login from './login';
-import 'primereact/resources/themes/nova-light/theme.css';
-import 'primereact/resources/primereact.min.css';
+// import 'primereact/resources/themes/nova-light/theme.css';
+// import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
-import 'primeflex/primeflex.css';
+// import 'primeflex/primeflex.css';
 import '../layout/layout.scss';
-import '../App.scss';
+// import '../App.scss';
 
 class App extends Component {
     constructor() {
@@ -131,19 +131,10 @@ class App extends Component {
         return (
             <div className={wrapperClass} onClick={this.onWrapperClick}>
                 <AppTopbar onToggleMenu={this.onToggleMenu}/>
-
-                <div ref={(el) => this.sidebar = el} className={sidebarClassName} onClick={this.onSidebarClick}>
-                    <div className="layout-logo">
-                        <img alt="Logo" src={logo} />
-                    </div>
-                    <AppProfile />
-                    <AppMenu model={this.menu} onMenuItemClick={this.onMenuItemClick} />
-                </div>
-
                 <div className="layout-main">
-                    <Route path="/" exact component={Login} />
+                    {/* <Route path="/" exact component={Login} /> */}
                     <Route path="/dashboard" exact component={Dashboard} />
-                    <Route path="/login" exact component={Login} />
+                    {/* <Route path="/login" exact component={Login} /> */}
                 </div>
 
                 <AppFooter />

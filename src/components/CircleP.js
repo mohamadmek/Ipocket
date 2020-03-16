@@ -3,17 +3,19 @@
 import "react-circular-progressbar/dist/styles.css";
 
 
+
 class CircleP extends Component {
   constructor(){
       super();
       this.state = {}
     }
+  
+
 render(){const percentage = 100-32*100/166;
   return(
     <>
-  
-  <div>
-    <div style={{ width: "20rem",margin:"1rem 1rem 1rem 1rem" }}>
+
+    <div style={{ width: "20rem",margin:"1rem 1rem 1rem 1rem" }} id="zc">
     <CircularProgressbarWithChildren
   value={percentage}
  /*  text={`${percentage} LBP`} */
@@ -52,8 +54,6 @@ render(){const percentage = 100-32*100/166;
     </div>
   </CircularProgressbarWithChildren>
 </div>
-</div>
-
     </>
   )
 }};

@@ -7,7 +7,7 @@ import Category from "../components/category/category";
 
 
 
-class Income extends Component {
+class Expense extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -20,15 +20,15 @@ class Income extends Component {
         return (
             <>
             <this.Description>
-            <Weekly desc="income"/>
-            <Category desc="income"/>
+            <Weekly desc="expense"/>
+            <Category desc="expense"/>
             <br></br>
             <CategoryPop/>
-            <Balance desc="income"/>
+            <Balance desc="expense"/>
             </this.Description>
 
             </>
         );
     }
 }
-export default Income; 
+export default Expense; 

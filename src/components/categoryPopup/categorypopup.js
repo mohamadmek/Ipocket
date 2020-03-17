@@ -68,7 +68,8 @@ class categorypopup extends React.Component {
 			</div>
 		);
 		return (
-			<div>
+			<div className="category_popup_div1" >
+              <div>
 				<Dialog
 					header='Create New Category'
 					footer={footer}
@@ -76,7 +77,7 @@ class categorypopup extends React.Component {
                     style={{width:'25%'}}
 					modal={true}
 					onHide={e => this.setState({ visible: false })}>
-                <div className="category_popup_div">
+                <div className="category_popup_div2">
                     <div>
                     <input type="text" placeholder="Category Name" style={{width:'70%'}} ></input>
                     </div>
@@ -93,6 +94,10 @@ class categorypopup extends React.Component {
                 </div>
                 </Dialog>
                 <i class="fa fa-plus-circle" aria-hidden="true" style={{fontSize:'40px', color:'rgb(209,0,0)'}} onClick={e => this.setState({ visible: true })}></i>
+              </div>
+              <div>
+                  <p className="category_popup_p" onClick={e => this.setState({ visible: true })}>create category</p>
+              </div>
 			</div>
 		);
 	}

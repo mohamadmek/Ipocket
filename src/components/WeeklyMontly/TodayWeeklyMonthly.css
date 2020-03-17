@@ -1,0 +1,47 @@
+.TodayWeekly{
+    display:flex;
+    justify-content: space-between;
+    margin-left:1rem;
+    display:flex;
+}
+.TodayWeekly_div{
+    height:7rem;
+    width:27%;
+    border:7px solid rgb(95, 113, 132) 
+}
+.TodayWeekly_div_inner{
+    color:rgb(95, 113, 132);
+    display:flex;
+    justify-content:space-between;
+    margin:10px 10px 10px 10px;
+}
+.TodayWeekly_div_inner_p{
+    text-align: center;
+    margin-top: 10%;
+}
+.TodayWeekly_div_inner_div{
+    height:5rem;
+    width:55%;
+    color:white;
+    background-color:#16a085;
+    font-size:30px;
+}
+.TodayWeekly_div2{
+    height:7rem;
+    width:27%;
+    border: 7px solid rgb(95, 113, 132);
+}
+.Todayweekly_div_div{
+    font-size: 30px;
+}
+.TodayWeekly_div3{
+    height: 7rem;
+    width:27%;
+    border:7px solid rgb(95, 113, 132);
+}
+.TodayWeekly_div_inner_p_p{
+    font-size: 28px;
+}
+#TodayWeeklyExcept{
+    background-color:rgb(209,0,0)
+}

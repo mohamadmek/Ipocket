@@ -10,6 +10,7 @@ import Account from "./account";
 import Login from './login';
 import Save from "../components/Save";
 import Income from "../pages/income";
+import Expense from "../pages/expense";
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
@@ -151,6 +152,7 @@ class App extends Component {
                     <Route path="/account" exact component={Account} />
                     <Route path="/save" exact component={Save} />
                     <Route path="/income" exact component={Income} />
+                    <Route path="/expense" exact component={Expense} />
 
                 </div>
 

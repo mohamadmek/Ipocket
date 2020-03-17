@@ -1,0 +1,25 @@
+ .category_div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap:wrap-reverse;
+    margin-top: 6rem;
+}
+.category_div_inner{
+    display: flex;
+    flex-direction: column;
+}
+.category_div_p1{
+    color:rgb(95,113,132)
+}
+.category_div_inner1{
+    color: #16a085;
+    margin-bottom: 0px;
+    margin-top: 1.5rem;
+}
+.category_div_inner2{
+    color: #16a085;
+}
+#category_except{
+    color:rgb(209,0,0)
+}

@@ -1,0 +1,10 @@
+.category_popup_div{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+.category_pop_i{
+    color: red;
+    display: inline;
+    font-size: 24px;
+}

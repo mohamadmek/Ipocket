@@ -10,6 +10,7 @@ class categorypopup extends React.Component {
         this.state = {
             car: null,
             car2: null,
+            carLabel:null,
            
             cars: [
                 {label: 'fa fa-hospital', value: 'Hospital'},
@@ -27,13 +28,13 @@ class categorypopup extends React.Component {
                 {label:'fa fa-paw', value:"Animals"},
                 {label:'fa fa-plane', value:"Traveling"},
                 {label:'fa fa-asterisk', value:"Other"}
-            ]
+            ],
         };
         this.onCarChange2 = this.onCarChange2.bind(this);
     }
 
-     onCarChange2(e) {
-       this.setState({car2: e.value});
+     onCarChange2=(e)=> {
+       this.setState({car2:e.value});
     }
 
     carTemplate(option) {
@@ -43,19 +44,29 @@ class categorypopup extends React.Component {
         else {
             return (
                 <div className="p-clearfix">
-                    <i class={option.label} aria-hidden="true"  style={{display:'inline-block',fontSize:'24px'}}/>
+                    <i class={option.label} aria-hidden="true"  id="clearfix_i" />
                     <span style={{float:'right',margin:'.5em .25em 0 0'}}>{option.value}</span>
                 </div>
             );
         }
     }
+    handleform(e){
+        let c="";
+        this.state.cars.map((item,i)=>
+            item.value==this.state.car2?c=item.label:""
+                );
+        let newCategory=  {label:c, value:document.getElementById('category_popup_div2_input').value};
+        this.setState({ visible: false });
+         this.props.handle(newCategory)
+    }
+
 	render() {
 		const footer = (
 			<div>
 				<Button
 					label='Create'
 					icon='pi pi-check'
-                    onClick={e => this.setState({ visible: false })}
+                    onClick={e=>this.handleform(e)}
                     style={{backgroundColor:'#16a085',color:'white'}}
 				/>
 				<Button
@@ -79,25 +90,31 @@ class categorypopup extends React.Component {
 					onHide={e => this.setState({ visible: false })}>
                 <div className="category_popup_div2">
                     <div>
-                    <input type="text" placeholder="Category Name" style={{width:'70%'}} ></input>
+                       
+                    <input type="text" placeholder="Category Name" style={{width:'70%'}} id="category_popup_div2_input" ></input>
                     </div>
                     <div>
                     <Dropdown 
                         value={this.state.car2}
                         options={this.state.cars} 
-                        onChange={this.onCarChange2} 
+                        onChange={e => this.onCarChange2(e)} 
                         itemTemplate={this.carTemplate}  
                         style={{width: '70%',margin:'10px 0px 0px 0px'}}
                         placeholder="choose icon"
                         showClear={true}/>
-                       </div> 
+                       </div>
                 </div>
+              
                 </Dialog>
-                <i class="fa fa-plus-circle" aria-hidden="true" style={{fontSize:'40px', color:'rgb(209,0,0)'}} onClick={e => this.setState({ visible: true })}></i>
               </div>
               <div>
-                  <p className="category_popup_p" onClick={e => this.setState({ visible: true })}>create category</p>
-              </div>
+                <button className="category_popup_button">
+                  <i class="fa fa-plus-circle" aria-hidden="true" id="category_popup_i" onClick={e => this.setState({ visible: true })}></i>
+              </button>
+            </div>
+           <div>
+                <button className="category_popup_p" onClick={e => this.setState({ visible: true })}>create category</button>
+            </div> 
 			</div>
 		);
 	}

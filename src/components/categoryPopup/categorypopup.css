@@ -16,3 +16,22 @@
     position: relative;
     right:5%;
 }
+.category_popup_p:hover{
+    background-color:rgb(209,0,0);
+    color: white;
+}
+.category_popup_button{
+    border: none;
+    background: none;
+    background-color: transparent;
+}
+#category_popup_i{
+    font-size:40px;
+    color:rgb(209,0,0)
+}
+
+#clearfix_i{
+    display:inline-block;
+    font-size:24px
+}
+

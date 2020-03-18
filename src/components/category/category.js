@@ -7,33 +7,12 @@ import "./category.css";
 class category extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            car: null,
-            car2: null,
-           
-            cars: [
-                {label: 'fa fa-hospital', value: 'Hospital'},
-                {label: 'fa fa-user-graduate', value: 'School'},
-                {label: 'fa fa-running', value: 'Sports'},
-                {label: 'fa fa-car-side', value: 'Car'},
-                {label: 'fa fa-mobile-alt', value: 'Phone'},
-                {label: 'fa fa-home', value: 'Home'},
-                {label: 'fa fa-shopping-cart', value: 'Shopping'},
-                {label: 'fa fa-tree', value: 'Nature'},
-                {label: 'fa fa-utensils', value: 'Food'},
-                {label:'fa fa-donate', value:"Bank"},
-                {label:'fa fa-gifts', value:"Gift"},
-                {label:'fa fa-coffee', value:"Outside"},
-                {label:'fa fa-paw', value:"Animals"},
-                {label:'fa fa-plane', value:"Traveling"},
-                {label:'fa fa-asterisk', value:"Other"}
-            ]
+        this.state = {           
         };
+        this.showDialog = this.showDialog.bind(this);
         
     }
-
    
-
     carTemplate(option) {
         if(!option.value) {
             return option.label;
@@ -49,25 +28,53 @@ class category extends React.Component {
     }
 	render() {
 		return (
+        <>
         <div className="category_div">
-            {this.state.cars.map((item,i) =>
+            {this.props.chosen.map((item,i) =>
             <div className="category_div_inner">
                 <div>
                     <p className="category_div_p1">{item.value}</p>
                 </div>
                 <div>
-                    <i class={item.label} aria-hidden="true" style={{fontSize:'50px', color:'rgb(95, 113, 132)'}} onClick={e => this.setState({ visible: true })}></i>
+                    <button className="category_div_button">
+                        <i class={item.label} aria-hidden="true" id="category_div_i" onClick={e=> this.setState({ visible: true })}></i>
+                    </button>
                 </div>
-                <div>
-                    <p className="category_div_inner1" id={this.props.desc==="expense"?"category_except":""}>30 LBP</p>
-                </div>
-                <div className="category_div_inner2" id={this.props.desc==="expense"?"category_except":""}> 
-                    <p>10 EUR</p>
-                </div>
-                
+                {item.amount?item.amount.map((items)=>
+                  <div>
+                    <p className="category_div_inner1" id={this.props.desc==="expense"?"category_except":""}>{items.bal} {items.cur}</p>
+                </div> 
+                ):""}
             </div>
                 )}
+                 <Dialog
+        header='Create New Category'
+        /* footer={footer} */
+        visible={this.state.visible}
+        style={{width:'25%'}}
+        modal={true}
+        onHide={e => this.setState({ visible: false })}>
+    <div className="category_popup_div2">
+        <div>
+           
+        <input type="text" placeholder="Category Name" style={{width:'70%'}} id="category_popup_div2_input" ></input>
+        </div>
+        <div>
+        <Dropdown 
+            value={this.state.car2}
+            options={this.state.cars} 
+            onChange={e => this.onCarChange2(e)} 
+            itemTemplate={this.carTemplate}  
+            style={{width: '70%',margin:'10px 0px 0px 0px'}}
+            placeholder="choose icon"
+            showClear={true}/>
+           </div>
+    </div>
+  
+    </Dialog>
                 </div>
+               
+                </>
 		);
 	}
 }

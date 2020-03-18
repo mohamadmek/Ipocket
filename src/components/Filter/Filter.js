@@ -22,8 +22,8 @@ class Filter extends Component {
         return (
         <>
         <div className="Filter">
-            <div className="Filter_div1">
-                <h1>Transaction</h1>
+            <div>
+                <p className="Filter_div1">Transactions</p>
             </div>
             <div className="Filter_div2">
             <div>

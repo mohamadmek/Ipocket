@@ -11,22 +11,28 @@ class Expense extends Component {
     constructor(props){
         super(props);
         this.state = {
+            ExpenseChosen:[
+                {label: 'fa fa-mobile-alt', value: 'Phone',amount:[{cur:"LBP",bal:50},{cur:"EURO",bal:20}]},
+                {label:'fa fa-donate', value:"Bank",amount:[{cur:"LBP",bal:45},{cur:"EURO",bal:10}]},
+                {label:'fa fa-coffee', value:"Outside",amount:[{cur:"LBP",bal:150},{cur:"EURO",bal:50}]},,
+                {label:'fa fa-paw', value:"Animals",amount:[{cur:"LBP",bal:25},{cur:"EURO",bal:40}]},
+
+               
+            ],
         }
       }
-      Description = styled.div``;
-
+      addCategory=(e)=>{
+        this.state.ExpenseChosen.push(e);
+    }
  
     render() {
         return (
             <>
-            <this.Description>
             <Weekly desc="expense"/>
-            <Category desc="expense"/>
+            <Category desc="expense" chosen={this.state.ExpenseChosen}/>
             <br></br>
-            <CategoryPop/>
+            <CategoryPop handle={this.addCategory}/>
             <Balance desc="expense"/>
-            </this.Description>
-
             </>
         );
     }

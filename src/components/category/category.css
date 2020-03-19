@@ -1,0 +1,36 @@
+ .category_div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap:wrap-reverse;
+    margin-top: 3rem;
+    max-width: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+.category_div_inner{
+    display: flex;
+    flex-direction: column;
+}
+.category_div_p1{
+    color:rgb(95,113,132)
+}
+.category_div_inner1{
+    color: #16a085;
+    margin-bottom: -5px;
+}
+#category_except{
+    color:rgb(209,0,0)
+}
+#category_div_i{
+    margin-bottom: 10px;
+    font-size:50px;
+    color:rgb(95, 113, 132);
+    position: relative;
+    right: 20%;
+}
+.category_div_button{
+    border:none;
+    background-color: transparent;
+    
+}

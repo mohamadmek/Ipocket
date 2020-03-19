@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
 import Circle from "./CircleP.js";
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css'
 
 
 class Save extends Component {
@@ -46,6 +48,23 @@ class Save extends Component {
       e.preventDefault();
       this.setState({date:true});
     }
+    submit = (e) => {
+      e.preventDefault();
+      confirmAlert({
+        title: 'Confirm to Save',
+        message: 'Are you sure to save this amount.',
+        buttons: [
+          {
+            label: 'Yes',
+             /* onClick: () => alert('Click Yes') */
+          },
+          {
+            label: 'No',
+            /* onClick: () => alert('Click No') */
+          }
+        ]
+      })
+    };
 
 
 
@@ -84,7 +103,7 @@ class Save extends Component {
                       <label  style={{display:"block", color:'rgb(95, 113, 132)',fontWeight: 'bold', fontSize:'15px'}}>Weekly</label>
                     </div>
                   </div>
-                    <this.SignUpButton>Save</this.SignUpButton>
+                    <this.SignUpButton onClick={this.submit}>Save</this.SignUpButton>
                 </form>
               </div>
               </this.Description>

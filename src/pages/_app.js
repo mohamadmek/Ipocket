@@ -9,7 +9,8 @@ import Tranaction from './transaction';
 import Account from "./account";
 import Login from './login';
 import Save from "../components/Save";
-import Circle from "../components/CircleP";
+import Income from "../pages/income";
+import Expense from "../pages/expense";
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
@@ -144,13 +145,14 @@ class App extends Component {
                 </div>
 
                 <div className="layout-main">
-                    <Route path="/" exact component={Dashboard} />
+                    {/* <Route path="/" exact component={Dashboard} /> */}
                     <Route path="/transaction" component={Tranaction} />
-                    <Route path="/dashboard" exact component={Dashboard} />
+                    {/* <Route path="/dashboard" exact component={Dashboard} /> */}
                     <Route path="/login" exact component={Login} />
-                    <Route path="/account" exact component={Account} />
+                    <Route path="/" exact component={Account} />
                     <Route path="/save" exact component={Save} />
-                    <Route path="/circle" exact component={Circle} />
+                    <Route path="/income" exact component={Income} />
+                    <Route path="/expense" exact component={Expense} />
                 </div>
 
                

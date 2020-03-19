@@ -29,7 +29,7 @@ class Save extends Component {
       margin-top: 0px;
       padding-right: 50%;
       margin-bottom: 2rem;
-    }`;
+    `;
 
     SignUpButton = styled.button`
       padding: 10px 40px;
@@ -42,7 +42,8 @@ class Save extends Component {
       cursor: pointer;
     `;
 
-    handle=(e)=>{e.preventDefault();
+    handle=(e)=>{
+      e.preventDefault();
       this.setState({date:true});
     }
 

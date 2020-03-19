@@ -61,7 +61,7 @@ class Barchart extends Component {
       font-size: 14px;
       margin-top: 0px;
       margin-bottom: 2rem;
-    }`;
+    `;
     barchart = () => {
         this.setState({
           signStatus: true,
@@ -72,10 +72,12 @@ class Barchart extends Component {
           signStatus: false,
         })
       }
-      handlefrom=(e)=>{e.preventDefault();
+      handlefrom=(e)=>{
+        e.preventDefault();
         this.setState({datefrom:true});
       }
-      handleto=(e)=>{e.preventDefault();
+      handleto=(e)=>{
+        e.preventDefault();
         this.setState({dateto:true});
       }
 

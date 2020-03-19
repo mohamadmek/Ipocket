@@ -9,7 +9,6 @@ class category extends React.Component {
         super(props);
         this.state = {           
         };
-        this.showDialog = this.showDialog.bind(this);
         
     }
    
@@ -27,6 +26,23 @@ class category extends React.Component {
         }
     }
 	render() {
+        const footer = (
+			<div>
+				<Button
+					label='Create'
+					icon='pi pi-check'
+                    onClick={e=>this.handleform(e)}
+                    style={{backgroundColor:'#16a085',color:'white'}}
+				/>
+				<Button
+					label='cancel'
+					icon='fa fa-trash'
+					onClick={e => this.setState({ visible: false })}
+                    className='p-button-secondary'
+                    style={{color:'rgb(95,113,132)'}}
+				/>
+			</div>
+		);
 		return (
         <>
         <div className="category_div">
@@ -46,36 +62,33 @@ class category extends React.Component {
                 </div> 
                 ):""}
             </div>
-                )}
+                )}{console.log(this.props.chosen)}
                  <Dialog
-        header='Create New Category'
-        /* footer={footer} */
-        visible={this.state.visible}
-        style={{width:'25%'}}
-        modal={true}
-        onHide={e => this.setState({ visible: false })}>
-    <div className="category_popup_div2">
-        <div>
-           
-        <input type="text" placeholder="Category Name" style={{width:'70%'}} id="category_popup_div2_input" ></input>
-        </div>
-        <div>
-        <Dropdown 
-            value={this.state.car2}
-            options={this.state.cars} 
-            onChange={e => this.onCarChange2(e)} 
-            itemTemplate={this.carTemplate}  
-            style={{width: '70%',margin:'10px 0px 0px 0px'}}
-            placeholder="choose icon"
-            showClear={true}/>
-           </div>
-    </div>
-  
-    </Dialog>
+                     header='Create New Category'
+                    footer={footer} 
+                    visible={this.state.visible}
+                    style={{width:'25%'}}
+                    modal={true}
+                    onHide={e => this.setState({ visible: false })}>
+                <div className="category_popup_div2">
+                    <div>
+                        <input type="text" placeholder="Category Name" style={{width:'70%'}} id="category_popup_div2_input" ></input>
+                    </div>
+                    <div>
+                    <Dropdown 
+                        value={this.state.car2}
+                        options={this.state.cars} 
+                        onChange={e => this.onCarChange2(e)} 
+                        itemTemplate={this.carTemplate}  
+                        style={{width: '70%',margin:'10px 0px 0px 0px'}}
+                        placeholder="choose icon"
+                        showClear={true}/>
+                    </div>
                 </div>
-               
-                </>
-		);
-	}
+                </Dialog>
+            </div>
+        </>
+    	);
+    }
 }
 export default category;

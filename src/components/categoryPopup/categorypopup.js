@@ -55,9 +55,9 @@ class categorypopup extends React.Component {
         this.state.cars.map((item,i)=>
             item.value==this.state.car2?c=item.label:""
                 );
-        let newCategory=  {label:c, value:document.getElementById('category_popup_div2_input').value};
+        let newCategory=  {label:c, value:document.getElementById('category_popup_div2_inputs').value};
         this.setState({ visible: false });
-         this.props.handle(newCategory)
+         this.props.handle(newCategory);console.log("lklk",document.getElementById("category_popup_div2_inputs").value)
     }
 
 	render() {
@@ -91,7 +91,7 @@ class categorypopup extends React.Component {
                 <div className="category_popup_div2">
                     <div>
                        
-                    <input type="text" placeholder="Category Name" style={{width:'70%'}} id="category_popup_div2_input" ></input>
+                    <input type="text" placeholder="Category Name" style={{width:'70%'}} id="category_popup_div2_inputs"name="zz" ></input>
                     </div>
                     <div>
                     <Dropdown 

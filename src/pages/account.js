@@ -31,8 +31,8 @@ class Account extends Component {
             <p style={{color: 'rgb(95, 113, 132)', fontWeight: 'bold', fontSize:'45px'}}>{this.handle()}</p>
             </this.Description>
             <br></br>
-             <Balance/> 
-            <BarChart/>
+            <Balance/> 
+            <BarChart />
             <Save/>
 
             </>

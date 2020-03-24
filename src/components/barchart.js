@@ -23,7 +23,12 @@ class Barchart extends Component {
     };
     .xx{
       color:transparent;
-    }`;
+    }
+    
+    
+
+  
+    `;
 
     Button1 = styled.button`
     padding: 10px 15px;
@@ -62,64 +67,65 @@ class Barchart extends Component {
       margin-top: 0px;
       margin-bottom: 2rem;
     `;
-    barchart = () => {
+      barchart = (e) => {
+        e.preventDefault();
         this.setState({
           signStatus: true,
         })
       }
-      piechart = () => {
+      piechart = (e) => {
+        e.preventDefault();
         this.setState({
           signStatus: false,
         })
       }
       handlefrom=(e)=>{
-        e.preventDefault();
         this.setState({datefrom:true});
       }
       handleto=(e)=>{
-        e.preventDefault();
         this.setState({dateto:true});
       }
 
-    render() {
-        const data = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-            datasets: [
-                {
-                    label: 'Income',
-                    backgroundColor: ' #16a085',
-                    data: [65, 59, 80, 81, 56, 55, 40]
-                },
-                {
-                    label: 'Expense',
-                    backgroundColor: 'rgb(209,0,0)',
-                    data: [28, 48, 40, 19, 86, 27, 90]
-                }
-            ]
+       data = {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        datasets: [
+            {
+                label: 'Income',
+                backgroundColor: ' #16a085',
+                data: [65, 59, 80, 81, 56, 55, 40]
+            },
+            {
+                label: 'Expense',
+                backgroundColor: 'rgb(209,0,0)',
+                data: [28, 48, 40, 19, 86, 27, 90]
+            }
+        ]
+    };
+     datapie = {
+        labels: ['Income','Expense'],
+        datasets: [
+            {
+                data: [300, 50],
+                backgroundColor: [
+                    "#16a085",
+                    "rgb(209,0,0)"
+                ],
+                hoverBackgroundColor: [
+                    "#16a085",
+                    "#rgb(209,0,0)"
+                ]
+            }]
         };
-        const datapie = {
-            labels: ['Income','Expense'],
-            datasets: [
-                {
-                    data: [300, 50],
-                    backgroundColor: [
-                        "#16a085",
-                        "rgb(209,0,0)"
-                    ],
-                    hoverBackgroundColor: [
-                        "#16a085",
-                        "#rgb(209,0,0)"
-                    ]
-                }]
-            };
-            
+
+    render() {
+               
         return (
           
             <>
                 <this.Description>
                     {this.state.signStatus ?
-                        <Chart width="40rem" type="bar" data={data}/> :
-                        <Chart type="pie" data={datapie} width="47rem"/>}                 
+                        <Chart width="40rem" type="bar" data={this.data}/> :
+                        <Chart type="pie" data={this.datapie} width="47rem"/>}                 
                 <this.Button2 onClick={this.barchart} signStatus={this.state.signStatus}>Barchart</this.Button2>
                 <this.Button1 onClick={this.piechart} signStatus={this.state.signStatus} >PieChart</this.Button1>
                 <div className="bar_div">
@@ -145,10 +151,11 @@ class Barchart extends Component {
                     name="password"
                     style={{width:'97%'}} 
                     id='to' 
-                    className={this.state.dateto?
-                      document.getElementById('to').value===""?
-                      "xx":"":"xx"} 
-                      onSelect={this.handleto}
+                   
+                    // className={this.state.dateto?
+                    //   document.getElementById('to').value===""?
+                    //   "xx":"":"xx"} 
+                    //   onSelect={this.handleto}
                   />
                   <label for="password" style={{display:"block", color:'rgb(95, 113, 132)',fontWeight: 'bold', fontSize:'15px'}}>Date To</label>
                   </div>

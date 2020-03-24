@@ -9,10 +9,10 @@ class AccountBalance extends Component {
         }
       }
       Description = styled.div`
-      padding:0rem 5rem 5rem 2rem ;
-      max-height: 100%;
       overflow-y: hidden;
-      margin-left:15rem;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 4rem;
       #circle {
         border-radius: 50%;
         width:18rem;
@@ -22,8 +22,9 @@ class AccountBalance extends Component {
       .p_amount{
         font-size:2.7rem;
         position: relative;
-        top: 4.5rem;
-        left: 3rem;
+        display: flex;
+        justify-content: center;
+        top: 35%;
         color:rgb(95, 113, 132);
       }
        .income {
@@ -56,7 +57,7 @@ class AccountBalance extends Component {
        `;    
     render() {
         return (
-            <>
+          <>
               <this.Description>
               <div id="circle">
                 <p className="p_amount">600 LBP</p>

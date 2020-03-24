@@ -27,13 +27,13 @@ class Expense extends Component {
  
     render() {
         return (
-            <>
+            <div style={{overflowX:'hidden'}}>>
             <Weekly desc="expense"/>
             <Category desc="expense" chosen={this.state.ExpenseChosen}/>
             <br></br>
             <CategoryPop handle={this.addCategory}/>
             <Balance desc="expense"/>
-            </>
+            </div>
         );
     }
 }

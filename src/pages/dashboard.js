@@ -8,10 +8,6 @@ export class Dashboard extends Component {
         };
     }
 
-    componentDidMount() {
-       
-    }
-
     render() {        
         return (
             <div className="p-grid p-fluid dashboard">

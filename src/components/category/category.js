@@ -53,7 +53,7 @@ class category extends React.Component {
         this.props.chosen[this.state.index]=b;
         this.setState({ visible: false ,curTemp:"",index:-1});
     }
-    inputvalue(e){console.log("e",e)
+    inputvalue(e){
         this.setState({tempinput:e});
     }
     editCategories(e){
@@ -196,7 +196,7 @@ class category extends React.Component {
                     id="category_popup_div2_inputs" 
                     name="zz" 
                     value={this.state.tempinput} 
-                    onChange={e=>this.inputvalue(e)}></input>
+                    onChange={e=>this.inputvalue(e.target.value)}></input>
                     </div>
                     <div>
                     <Dropdown 

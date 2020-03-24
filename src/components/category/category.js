@@ -48,12 +48,12 @@ class category extends React.Component {
         this.setState({radio:e})
     }
     create(e){
-        let a={cur:this.state.curTemp,bal:document.getElementById('category_popup_div2_input').value}
-        let b= {label:this.props.chosen[this.state.index].label, value:this.props.chosen[this.state.index].value,cur:this.state.curTemp,bal:document.getElementById('category_popup_div2_input').value};
+        let a={cur:this.state.curTemp,bal:document.getElementById('category_popup_div2_inputs').value}
+        let b= {label:this.props.chosen[this.state.index].label, value:this.props.chosen[this.state.index].value,cur:this.state.curTemp,bal:document.getElementById('category_popup_div2_inputs').value};
         this.props.chosen[this.state.index]=b;
         this.setState({ visible: false ,curTemp:"",index:-1});
     }
-    inputvalue(e){
+    inputvalue(e){console.log("e",e)
         this.setState({tempinput:e});
     }
     editCategories(e){
@@ -196,7 +196,7 @@ class category extends React.Component {
                     id="category_popup_div2_inputs" 
                     name="zz" 
                     value={this.state.tempinput} 
-                    onChange={e=>this.inputvalue(e.target.value)}></input>
+                    onChange={e=>this.inputvalue(e)}></input>
                     </div>
                     <div>
                     <Dropdown 

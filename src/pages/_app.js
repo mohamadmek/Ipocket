@@ -6,7 +6,7 @@ import {AppProfile} from '../AppProfile';
 import {Route} from 'react-router-dom';
 import {Dashboard} from './dashboard';
 import Tranaction from './transaction';
-import Account from "./account";
+import Account from "./account/account";
 import Login from './login';
 import Save from "../components/Save";
 import Income from "../pages/income";

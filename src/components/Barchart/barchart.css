@@ -1,0 +1,59 @@
+.barchart_div{
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.bar_div{
+    position:relative;
+    left:42rem;
+    bottom:5rem;
+}
+.barchart_exception{
+    color:transparent;
+}
+.barchart_button1{
+    padding: 10px 15px;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    background-color: #16a085;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    width:5.5rem;
+    margin-top: 2rem;
+}
+.barchart_button2{
+    padding: 10px 15px;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+    background-color: #16a085;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    color:white;
+    width:5.5rem;
+    margin-top: 2rem;
+}
+#barchart_button1_1{
+    background-color:rgb(95, 113, 132);
+}
+#to #from{
+    background: none;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-color: rgb(95, 113, 132);
+    font-size: 14px;
+    margin-top: 0px;
+    margin-bottom: 2rem;
+}
+.barchart_div2 {
+    display:flex;
+}
+.barchart_div3{
+    display: flex;
+    position: relative;
+    right: 20rem;
+    margin-top: 2rem;
+}

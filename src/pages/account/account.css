@@ -1,0 +1,16 @@
+.account_div{
+    display:flex;
+    justify-content: space-between;
+    margin-left:1rem;
+}
+.account_div_p{
+    color:rgb(95, 113, 132);
+    font-weight:bold;
+    font-size:45px
+}
+.account_div2{
+    display: flex;
+    justify-content: space-evenly;
+    width:100%;
+    overflow-x: hidden;
+}

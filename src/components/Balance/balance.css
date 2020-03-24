@@ -3,11 +3,8 @@
     width:25rem;
     height:25rem; 
     border: 10px solid rgb(95, 113, 132);
-    color: #16a085;
-    position:relative;
-    left:30%;
-    bottom:3rem;
     margin-bottom: 3rem;
+    margin-left: 0rem !important;
 }
 
 .balance_inner{
@@ -33,6 +30,7 @@
     font-size:25px;
     display: flex;
     color:#16a085;
+    margin-right: 20px;
 }
 .p_balance_inner_inner{
     font-size: 40px;

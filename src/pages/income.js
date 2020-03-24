@@ -12,10 +12,10 @@ class Income extends Component {
         super(props);
         this.state = {////////having only one title
             Incomechosen: [
-                {label: 'fa fa-hospital', value: 'Hospital',amount:[{cur:"LBP",bal:50},{cur:"EURO",bal:20}]},
-                {label: 'fa fa-user-graduate', value: 'School',amount:[{cur:"LBP",bal:45},{cur:"EURO",bal:10}]},
-                {label: 'fa fa-car-side', value: 'Car',amount:[{cur:"LBP",bal:150},{cur:"EURO",bal:50}]},,
-                {label: 'fa fa-shopping-cart', value: 'Shopping',amount:[{cur:"LBP",bal:25},{cur:"EURO",bal:40}]},
+                {label: 'fa fa-hospital', value: 'Hospital',cur:"LBP",bal:50},
+                {label: 'fa fa-user-graduate', value: 'School',cur:"EURO",bal:10},
+                {label: 'fa fa-car-side', value: 'Car',cur:"EURO",bal:50},,
+                {label: 'fa fa-shopping-cart', value: 'Shopping',cur:"LBP",bal:25},
             ],
             
         }
@@ -29,11 +29,12 @@ class Income extends Component {
     render() {
         return (
             <div style={{overflowX:'hidden'}}>
-            <Weekly desc="income"/>
-            <Category desc="income" chosen={this.state.Incomechosen}/>
-            <br></br>
-            <CategoryPop handle={this.addCategory}/>
-            <Balance desc="income"/>
+               {/* <p style={{color: 'rgb(95, 113, 132)', fontWeight: 'bold', fontSize:'45px'}}>Balance : 600 LBP</p> */}
+                <Weekly desc="income"/>
+                <Category desc="income" chosen={this.state.Incomechosen}/>
+                <br></br>
+                <CategoryPop handle={this.addCategory}/>
+                <Balance desc="income"/>
             </div>
         );
     }

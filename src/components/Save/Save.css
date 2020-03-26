@@ -1,0 +1,79 @@
+.save-wrapper {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.save_div{
+  padding:0rem 2rem 5rem 2rem ;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+.save_div_input{
+  background: none;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-color: #16a085;
+  font-size: 14px;
+  margin-top: 0px;
+  padding-right: 50%;
+  margin-bottom: 2rem;
+  font-size: 18px;
+  color:rgb(62, 64, 66);
+}
+#save_exception{
+  color:transparent;
+}
+.save_div_button{
+  padding: 10px 40px;
+  border-radius: 50px;
+  background-color: #16a085;
+  border: none;
+  margin-top: 20px;
+  color:white;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 24px;
+}
+.save_div{
+  color: rgb(95, 113, 132);
+  font-weight:bold;
+  font-size:45px;
+
+}
+.save_div_form{
+  width: 50%;
+  margin-top:2rem
+}
+.save_div_label{
+  display:block;
+  color:rgb(95, 113, 132);
+  font-weight:bold;
+  font-size:20px
+}
+.save_div2{
+  color: #ccc;
+  font-weight:bold;
+  display:flex;
+  justify-content:space-between;
+  width:30%
+}
+.save_div2_label{
+  display:block;
+  color:rgb(95, 113, 132);
+  font-weight: bold;
+  font-size:15px
+}
+/*  input[type=number] {
+  -moz-appearance: textfield;
+} */
+
+@media all and (max-width: 852px) {
+  .save-wrapper {
+    justify-content: center;
+  }
+  .form-save {
+    width: 100% !important;
+  }
+}
+

@@ -29,7 +29,6 @@ class Income extends Component {
     render() {
         return (
             <div style={{overflowX:'hidden'}}>
-               {/* <p style={{color: 'rgb(95, 113, 132)', fontWeight: 'bold', fontSize:'45px'}}>Balance : 600 LBP</p> */}
                 <Weekly desc="income"/>
                 <Category desc="income" chosen={this.state.Incomechosen}/>
                 <br></br>

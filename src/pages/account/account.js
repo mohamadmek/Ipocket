@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import BarChart from "../../components/Barchart/barchart";
-import Save from "../../components/Save";
+import Save from "../../components/Save/Save";
 import Balance from "../../components/AccountBalance/AccountBalance";
 import "./account.css"
 

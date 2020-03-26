@@ -3,6 +3,9 @@
   justify-content: space-between;
   flex-wrap: wrap;
 }
+/*  input[type=number] {
+  -moz-appearance: textfield;
+} */
 
 @media all and (max-width: 852px) {
   .save-wrapper {

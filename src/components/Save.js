@@ -10,7 +10,8 @@ class Save extends Component {
         super();
         this.state = {
           signStatus : true,
-          date:false
+          date:false,
+          value:[]
         }
       }
       Description = styled.div`
@@ -44,6 +45,8 @@ class Save extends Component {
       cursor: pointer;
     `;
 
+ 
+
     handle=(e)=>{
       e.preventDefault();
       this.setState({date:true});
@@ -66,6 +69,18 @@ class Save extends Component {
       })
     };
 
+    regex=(e)=>{
+      const re = /^[0-9]+$/;
+
+      // if value is not blank, then test the regex
+  
+      if (e.target.value === '' || re.test(e.target.value)) {
+         this.setState({value: e.target.value});
+         console.log("ddd",this.state.value)
+      }
+    }
+
+
 
 
     render() {
@@ -81,6 +96,11 @@ class Save extends Component {
                   <this.Input 
                     name="username"
                     onSelect={(e)=>{e.preventDefault()}}
+                    type="numeric"
+                    min="1"
+                    value={this.state.value}
+                    onChange={this.regex}
+                    required pattern="[0-9]+"
                     style={{width:'100%'}} 
                   />
                   <label for="password" style={{display:"block", color:'rgb(95, 113, 132)',fontWeight: 'bold', fontSize:'20px'}}>Date</label>

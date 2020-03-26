@@ -3,8 +3,7 @@
     width:25rem;
     height:25rem; 
     border: 10px solid rgb(95, 113, 132);
-    margin-bottom: 3rem;
-    margin-left: 0rem !important;
+    margin: 0 auto;
 }
 
 .balance_inner{
@@ -40,6 +39,12 @@
     display: flex;
     flex-direction: column;
     line-height: 1.5rem;
+}
+
+
+#balance_div{
+    display: flex;
+    flex-wrap: wrap;
 }
 #balance_except{
     color:rgb(209,0,0)

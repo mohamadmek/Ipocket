@@ -10,39 +10,41 @@
     margin-top: 2.2rem;
     border: 10px solid rgb(95, 113, 132);
 }
+
+
 .accountBalance_p_amount{
     font-size:2.7rem;
     position: relative;
     top: 4.5rem;
-    left: 3rem;
+    left: 4.5rem;
     color:rgb(95, 113, 132);
 }
 .accountBalance_income{
     transform: rotate(80deg);
     position: relative;
-    top:9rem;
-    right:5.8rem;
+    top:12rem;
+    right:6.4rem;
 }
 .accountBalance_p_income{
     font-size:1.4rem;
     color:#16a085;
     transform:rotate(65deg);
     position:relative;
-    top: 8.4rem;
+    top: 12rem;
     right: 3.3rem;
 }
 .accountBalance_expense{
     transform: rotate(95deg);
     position: relative;
-    left: 6.5rem;
-    top: 3.5rem;
+    left: 6.9rem;
+    top: 6rem;
 }
 .accountBalance_p_expense{
     font-size:1.4rem;
     transform:rotate(300deg);
     position:relative;
-    left: 8.5rem;
-    bottom: 7.5rem;
+    left: 9.3rem;
+    bottom: 7rem;
     color:rgb(209,0,0)
 }
 #accountBalance_income_i{
@@ -52,4 +54,51 @@
 #accountBalance_expense_i{
     font-size:3rem;
     color:rgb(209,0,0)
+}
+@media all and (max-width: 420px) {
+    #accuntBalance_circle{
+        border-radius: 50%;
+        width:16rem;
+        height:16rem;
+        margin-top: 2.2rem;
+        border: 10px solid rgb(95, 113, 132);
+    }
+
+    .accountBalance_p_amount{
+        font-size:1.9rem;
+        position: relative;
+        top: 4.5rem;
+        left: 4.5rem;
+        color:rgb(95, 113, 132);
+    }
+
+    .accountBalance_p_income{
+        font-size:1.1rem;
+        color:#16a085;
+        transform:rotate(65deg);
+        position:relative;
+        top: 8.1rem;
+        right: 2rem;
+    }
+    .accountBalance_income{
+        transform: rotate(80deg);
+        position: relative;
+        top:8rem;
+        right:4.5rem;
+    }
+
+    .accountBalance_expense{
+        transform: rotate(95deg);
+        position: relative;
+        left: 5.4rem;
+        top: 2.4rem;
+    }
+    .accountBalance_p_expense{
+        font-size: 1.1rem;
+        transform:rotate(300deg);
+        position:relative;
+        left: 7rem;
+        bottom: 7.1rem;
+        color:rgb(209,0,0)
+    }
 }

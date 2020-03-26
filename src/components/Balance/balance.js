@@ -11,7 +11,7 @@ class balance extends Component {
      
     render() {
         return (
-              <div id="balance_div">
+                <div id="balance_div">
                   <div className="balance_inner" id={this.props.desc!=="income"?"balance_except":""}>
                       <p>{this.props.desc==="income"?"Income":"Expence"} : </p>
                       <div className="p_balance_inner">
@@ -22,8 +22,8 @@ class balance extends Component {
                   <div className="balance_inner_inner" id={this.props.desc==="income"?"balance_except":""}>
                   <p>{this.props.desc!=="income"?"Income":"Expence"} : </p>
                       <div className="p_balance_inner_inner">
-                      <p >50 LBP</p>
-                         <p>10 EURO</p>
+                        <p >50 LBP</p>
+                        <p>10 EURO</p>
                       </div>
                   </div>
                 </div>

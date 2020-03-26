@@ -29,7 +29,7 @@ class Account extends Component {
             </div>
             <br></br>
             <div className="account_div2">
-               <Balance/>
+              <Balance/>
               <BarChart/>
             </div>
             

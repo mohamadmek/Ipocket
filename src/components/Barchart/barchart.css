@@ -2,11 +2,22 @@
     max-width: 100%;
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
 }
-.bar_div{
-    position:relative;
-    left:42rem;
-    bottom:5rem;
+@media all and (max-width: 676px) {
+    .main-chart {
+        width: 30rem;
+    }
+}
+@media all and (max-width: 508px) {
+    .main-chart {
+        width: 25rem;
+    }
+}
+@media all and (max-width: 418px) {
+    .main-chart {
+        width: 21rem;
+    }
 }
 .barchart_exception{
     color:transparent;
@@ -22,6 +33,7 @@
     color: white;
     width:5.5rem;
     margin-top: 2rem;
+    height: 40px;
 }
 .barchart_button2{
     padding: 10px 15px;
@@ -34,6 +46,7 @@
     color:white;
     width:5.5rem;
     margin-top: 2rem;
+    height: 40px;
 }
 #barchart_button1_1{
     background-color:rgb(95, 113, 132);
@@ -50,10 +63,28 @@
 }
 .barchart_div2 {
     display:flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 .barchart_div3{
-    display: flex;
-    position: relative;
-    right: 20rem;
-    margin-top: 2rem;
+  margin-left: 50px;
+  margin-top: 33px;
+  
+}
+
+@media all and (max-width: 490px) {
+    .barchart_div3 {
+        margin: 0 auto;
+        margin-top: 20px;
+
+    }
+}
+
+@media all and (max-width: 437px) {
+    .barchart_div3 {
+       text-align: center;
+    }
+    .chart-calendar-to {
+        margin-top: 5px;
+    }
 }

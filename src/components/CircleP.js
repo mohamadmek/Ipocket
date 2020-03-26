@@ -1,7 +1,7 @@
- import React, {Component} from 'react';
- import {CircularProgressbarWithChildren,} from "react-circular-progressbar";
+import React, {Component} from 'react';
+import {CircularProgressbarWithChildren,} from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-
+import "./CircleP.css";
 
 
 class CircleP extends Component {
@@ -15,7 +15,7 @@ render(){const percentage = 100-32*100/166;
   return(
     <>
 
-    <div style={{ width: "20rem",margin:"1rem 1rem 1rem 1rem" }} id="zc">
+    <div className="circle-save" style={{ width: "20rem",margin:"1rem 1rem 1rem 1rem" }} id="zc">
     <CircularProgressbarWithChildren
   value={percentage}
  /*  text={`${percentage} LBP`} */
@@ -44,11 +44,11 @@ render(){const percentage = 100-32*100/166;
       fill: '#3e98c7',
     },
   }}>
-    <div style={{display:'flex',color:'rgb(95, 113, 132)'}}>
+    <div style={{display:'flex',color:'rgb(95, 113, 132)', marginTop: '30px'}}>
        <p style={{fontSize:30,marginRight:'0.7rem'}}>166</p>
        <p style={{fontSize:27}}> saving</p>
     </div>
-    <div style={{display:'flex',justifyContent:'space-between',color:'rgb(81, 197, 183)'}}>
+    <div style={{display:'flex',color:'rgb(81, 197, 183)'}}>
       <p style={{fontSize:30,marginRight:'0.7rem'}}>32</p>
       <p style={{fontSize:27}}> left</p>
     </div>

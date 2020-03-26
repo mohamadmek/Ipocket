@@ -35,7 +35,7 @@ class Filter extends Component {
                     viewDate={this.state.viewDate} 
 			    />
             </div>
-            <div >
+            <div style={{marginLeft: "2rem"}}>
                 <Calendar 
                     placeholder="Calendar To"
                     viewDate={this.state.viewDate} 

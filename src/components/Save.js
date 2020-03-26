@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Circle from "./CircleP.js";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'
-
+import "./Save.css";
 
 class Save extends Component {
     constructor(){
@@ -14,7 +14,7 @@ class Save extends Component {
         }
       }
       Description = styled.div`
-      padding:0rem 5rem 5rem 2rem ;
+      padding:0rem 2rem 5rem 2rem ;
       max-width: 100%;
       overflow-x: hidden;
       .xx{
@@ -74,19 +74,20 @@ class Save extends Component {
               <this.Description>
               <br></br>
               <p style={{color: 'rgb(95, 113, 132)', fontWeight: 'bold', fontSize:'45px'}}>Save</p>
-              <div style={{display:'flex',justifyContent:'space-between'}}>
+              <div className="save-wrapper">
                 <Circle/>
-                <form style={{width: "50%", marginTop:'2rem'}}>
+                <form className="form-save" style={{width: "50%", marginTop:'2rem'}}>
                   <label for="username" style={{display:"block", color:'rgb(95, 113, 132)',fontWeight: 'bold', fontSize:'20px'}}>Saving Amount</label> 
                   <this.Input 
                     name="username"
                     onSelect={(e)=>{e.preventDefault()}}
+                    style={{width:'100%'}} 
                   />
                   <label for="password" style={{display:"block", color:'rgb(95, 113, 132)',fontWeight: 'bold', fontSize:'20px'}}>Date</label>
                   <this.Input 
                     type="date" 
                     name="password"
-                    style={{width:'28rem'}} 
+                    style={{width:'100%'}} 
                     id='zs' 
                     className={this.state.date?
                       document.getElementById('zs').value===""?
@@ -99,7 +100,7 @@ class Save extends Component {
                       <label style={{display:"block", color:'rgb(95, 113, 132)',fontWeight: 'bold', fontSize:'15px'}}>Montly</label>
                     </div>
                     <div style={{display:'flex'}}>
-                      <input type="radio" name="radio_name" style={{cursor:"pointer"}}/>
+                      <input type="radio" name="radio_name" style={{cursor:"pointer",  marginLeft: '9px'}}/>
                       <label  style={{display:"block", color:'rgb(95, 113, 132)',fontWeight: 'bold', fontSize:'15px'}}>Weekly</label>
                     </div>
                   </div>

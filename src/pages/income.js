@@ -19,20 +19,25 @@ class Income extends Component {
             ],
             
         }
-      }
+    }
 
     addCategory=(e)=>{
         this.state.Incomechosen.push(e);
     }
 
- 
+
     render() {
         return (
+<<<<<<< HEAD
             <div style={{overflowX:'hidden'}}>
+=======
+            <div style={{overflowX:'hidden', overflowY:'hidden'}}>
+>>>>>>> e76444bfc3dce357f080d21f4280c4f84ef5d902
                 <Weekly desc="income"/>
-                <Category desc="income" chosen={this.state.Incomechosen}/>
-                <br></br>
-                <CategoryPop handle={this.addCategory}/>
+                <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
+                    <Category desc="income" chosen={this.state.Incomechosen} />
+                    <CategoryPop handle={this.addCategory} />
+                </div>
                 <Balance desc="income"/>
             </div>
         );

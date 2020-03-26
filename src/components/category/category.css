@@ -39,12 +39,19 @@
     display:flex;
     justify-content:space-between;
     width:50%;
-    margin-left: 15%;
-    margin-top: 2%;
+    margin: 0 auto !important;
+    margin-top: 10px !important;
+    
 }
 .category_popup_div2-1{
     display: flex;
+    
 }
+
+#category_popup_div2_input{
+    margin-top: 9px;
+}
+
 #category_popup_div2-1_input{
     cursor:pointer;
     margin-top: 0.7rem;
@@ -71,4 +78,9 @@
     background: none;
     background-color: transparent;
     color: rgb(95, 113, 132);
+}
+
+#disable-opacity {
+    opacity: 1 !important;
+    border: 1px solid #a6a6a6 !important;
 }

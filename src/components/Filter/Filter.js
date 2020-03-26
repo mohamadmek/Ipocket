@@ -20,34 +20,36 @@ class Filter extends Component {
    
     render() {        
         return (
-        <>
+       
         <div className="Filter">
             <div>
                 <p className="Filter_div1">Transactions</p>
             </div>
             <div className="Filter_div2">
-            <div>
-                <Calendar
-                    value={this.state.date}
-				    onChange={e => this.setState({ datefrom: e.value })}
-				    dateFormat='dd/mm/yy'
-                    placeholder="Calendar From"
-                    viewDate={this.state.viewDate} 
-			    />
-            </div>
-            <div style={{marginLeft: "2rem"}}>
-                <Calendar 
-                    placeholder="Calendar To"
-                    viewDate={this.state.viewDate} 
-                    value={this.state.dateto}
-                    onChange={(e) => this.setState({dateto: e.value})}
-                />
-               
-               
-            </div>
+                <div>
+                    <Calendar
+                        value={this.state.date}
+                        onChange={e => this.setState({ datefrom: e.value })}
+                        dateFormat='dd/mm/yy'
+                        placeholder="Calendar From"
+                        viewDate={this.state.viewDate}
+                        className="transaction-calendar"
+                    />
+                </div>
+                <div style={{marginLeft: "1rem"}} >
+                    <Calendar 
+                        placeholder="Calendar To"
+                        viewDate={this.state.viewDate} 
+                        value={this.state.dateto}
+                        onChange={(e) => this.setState({dateto: e.value})}
+                        className="transaction-calendar"
+                    />
+                
+                
+                </div>
             </div>
         </div>
-         </>
+      
                 
         );
     }

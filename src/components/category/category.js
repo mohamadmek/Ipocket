@@ -65,7 +65,7 @@ class category extends React.Component {
         this.props.chosen[this.state.index].label=this.state.newlabel;
         this.setState({tempinput:"",editing: false ,index:-1,newlabel:""})
     }
- 
+
     deleteCat(i){
         this.props.chosen.splice(i,1);
     }
@@ -118,7 +118,6 @@ class category extends React.Component {
 			</div>
 		);
 		return (
-        <>
         <div className="category_div">
             {this.props.chosen.map((item,i) =>
             <div className="category_div_inner">
@@ -134,19 +133,18 @@ class category extends React.Component {
                     <div className="category_div_inner2_22">
                     <div><button className="category_div_inner2_button" onClick={e=>this.setState({editing:true,index:i,temp:item,tempinput:item.value})}><i className="fas fa-edit"></i></button></div>
                     <div><button className="category_div_inner2_button" onClick={e=>this.deleteCat(i)}><i className="fas fa-trash"></i></button></div>
-                   </div>
-                    
-                   
+                    </div>
                 </div>
+
                 {item.cur?
-                  <div>
+                <div>
                     <p className="category_div_inner1" id={this.props.desc==="expense"?"category_except":""}>{item.bal} {item.cur}</p>
                 </div> 
                 :""}
             </div>
                 )}
-                 <Dialog
-                     header={this.state.temp.value+" "+ this.props.desc}
+                <Dialog
+                    header={this.state.temp.value+" "+ this.props.desc}
                     footer={footer} 
                     visible={this.state.visible}
                     style={{width:'25%'}}
@@ -186,7 +184,7 @@ class category extends React.Component {
         </div>
         </Dialog>
                  <Dialog
-                     header={this.state.temp.value+" "+ this.props.desc}
+                    header={this.state.temp.value+" "+ this.props.desc}
                     footer={footer2} 
                     visible={this.state.editing}
                     style={{width:'25%'}}
@@ -212,13 +210,11 @@ class category extends React.Component {
                         style={{width: '70%',margin:'10px 0px 0px 0px'}}
                         placeholder="choose icon"
                         showClear={true}/>
-                       </div>
+                    </div>
                 </div>
-              
                 </Dialog>
                 
         </div>
-    </>
     	);
     }
 }

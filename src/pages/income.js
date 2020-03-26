@@ -19,21 +19,21 @@ class Income extends Component {
             ],
             
         }
-      }
+    }
 
     addCategory=(e)=>{
         this.state.Incomechosen.push(e);
     }
 
- 
+
     render() {
         return (
-            <div style={{overflowX:'hidden'}}>
-               {/* <p style={{color: 'rgb(95, 113, 132)', fontWeight: 'bold', fontSize:'45px'}}>Balance : 600 LBP</p> */}
+            <div style={{overflowX:'hidden', overflowY:'hidden'}}>
                 <Weekly desc="income"/>
-                <Category desc="income" chosen={this.state.Incomechosen}/>
-                <br></br>
-                <CategoryPop handle={this.addCategory}/>
+                <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
+                    <Category desc="income" chosen={this.state.Incomechosen} />
+                    <CategoryPop handle={this.addCategory} />
+                </div>
                 <Balance desc="income"/>
             </div>
         );

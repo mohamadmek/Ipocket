@@ -1,47 +1,56 @@
 .TodayWeekly{
     display:flex;
     justify-content: space-between;
-    margin-left:1rem;
-    display:flex;
+    flex-wrap: wrap;
 }
-.TodayWeekly_div{
-    height:7rem;
-    width:27%;
-    border:7px solid rgb(95, 113, 132) 
-}
+
 .TodayWeekly_div_inner{
+    border:7px solid rgb(95, 113, 132);
     color:rgb(95, 113, 132);
     display:flex;
-    justify-content:space-between;
-    margin:10px 10px 10px 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 28%;
 }
 .TodayWeekly_div_inner_p{
+    margin: 0 auto;
     text-align: center;
-    margin-top: 10%;
 }
 .TodayWeekly_div_inner_div{
-    height:5rem;
-    width:55%;
     color:white;
     background-color:#16a085;
     font-size:30px;
+    height: 98px;
+    width: 50%;
+    display: flex;
+    align-items: center;
 }
-.TodayWeekly_div2{
-    height:7rem;
-    width:27%;
-    border: 7px solid rgb(95, 113, 132);
+
+.title-m {
+    margin: 0 auto;
+    width: 50%;
+    font-size: 25px;
 }
+
+
 .Todayweekly_div_div{
     font-size: 30px;
 }
-.TodayWeekly_div3{
-    height: 7rem;
-    width:27%;
-    border:7px solid rgb(95, 113, 132);
-}
+
 .TodayWeekly_div_inner_p_p{
     font-size: 28px;
 }
 #TodayWeeklyExcept{
     background-color:rgb(209,0,0)
+}
+
+@media all and (max-width: 679px) {
+    .TodayWeekly {
+        flex-direction: column;
+        width: 360% !important;
+    }
+
+    .TodayWeekly_div_inner {
+        margin-bottom: 5px;
+    }
 }

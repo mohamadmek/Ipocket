@@ -102,20 +102,20 @@ class categorypopup extends React.Component {
                         style={{width: '70%',margin:'10px 0px 0px 0px'}}
                         placeholder="choose icon"
                         showClear={true}/>
-                       </div>
+                    </div>
                 </div>
-              
                 </Dialog>
-              </div>
-              <div>
+            </div>
+
+            <div>
                 <button className="category_popup_button">
-                  <i class="fa fa-plus-circle" aria-hidden="true" id="category_popup_i" onClick={e => this.setState({ visible: true })}></i>
-              </button>
+                <i class="fa fa-plus-circle" aria-hidden="true" id="category_popup_i" onClick={e => this.setState({ visible: true })}></i>
+                </button>
             </div>
            <div>
-                <button className="category_popup_p" onClick={e => this.setState({ visible: true })}>create category</button>
+                <div className="category_popup_p" onClick={e => this.setState({ visible: true })}>create category</div>
             </div> 
-			</div>
+		</div>
 		);
 	}
 }

@@ -10,9 +10,7 @@ class TransComponent extends Component {
         };
     }
 
-    componentDidMount() {
-       
-    }
+    
 
     render() {        
         return (

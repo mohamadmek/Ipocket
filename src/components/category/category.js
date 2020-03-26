@@ -4,7 +4,11 @@ import { Button } from 'primereact/button';
 import {Dropdown} from 'primereact/dropdown';
 import {Calendar} from 'primereact/calendar';
 import "./category.css";
+import { NavDropdown } from 'react-bootstrap';
 
+const currentdate = new Date();
+const currentYear = currentdate.getFullYear();
+const maxdate = new Date(currentdate.setYear(currentdate.getFullYear() + 1));
 class category extends React.Component {
     constructor(props) {
         super(props);
@@ -48,7 +52,7 @@ class category extends React.Component {
         this.setState({radio:e})
     }
     create(e){
-        let a={cur:this.state.curTemp,bal:document.getElementById('category_popup_div2_inputs').value}
+        let a={cur:this.state.curTemp,bal:document.getElementById('category_popup_div2_inputs').value};
         let b= {label:this.props.chosen[this.state.index].label, value:this.props.chosen[this.state.index].value,cur:this.state.curTemp,bal:document.getElementById('category_popup_div2_inputs').value};
         this.props.chosen[this.state.index]=b;
         this.setState({ visible: false ,curTemp:"",index:-1});
@@ -56,7 +60,7 @@ class category extends React.Component {
     inputvalue(e){
         this.setState({tempinput:e});
     }
-    editCategories(e){
+    editCategories(e){console.log("tr",this.props.chosen[this.state.index])
         this.props.chosen[this.state.index].value=this.state.tempinput;
         this.props.chosen[this.state.index].label=this.state.newlabel;
         this.setState({tempinput:"",editing: false ,index:-1,newlabel:""})
@@ -158,7 +162,7 @@ class category extends React.Component {
                         style={{width: '70%',margin:'10px 0px 0px 0px'}}
                         placeholder="currency"
                         showClear={true}/>
-                    <input type="number" placeholder="Amount" id="category_popup_div2_input"></input>
+                    <input type="number" placeholder="Amount" id="category_popup_div2_inputs" min="1"></input>
                     <div className="category_popup_div2_drop" >
                         <div className="category_popup_div2-1">
                             <input className="category_popup_div2-1_input" type="radio" name="radio_name" value="fixed" onChange={e=>this.onRadio(e.target.value)}/>
@@ -174,6 +178,7 @@ class category extends React.Component {
                         value={this.state.date} 
                         onChange={(e) => this.setState({date: e.value})} 
                         placeholder="enter date if fixed"
+                        maxDate={maxdate}
                         style={{width:'14rem'}}/>
                     </div>
                 <div>
@@ -211,6 +216,7 @@ class category extends React.Component {
                 </div>
               
                 </Dialog>
+                
         </div>
     </>
     	);

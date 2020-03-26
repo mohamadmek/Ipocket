@@ -26,7 +26,7 @@
     padding: 10px 15px;
     border-top-left-radius: 50px;
     border-bottom-left-radius: 50px;
-    background-color: #16a085;
+    background-color:rgb(95, 113, 132);
     border: none;
     cursor: pointer;
     font-weight: bold;
@@ -39,7 +39,7 @@
     padding: 10px 15px;
     border-top-right-radius: 50px;
     border-bottom-right-radius: 50px;
-    background-color: #16a085;
+    background-color: rgb(95, 113, 132);
     border: none;
     cursor: pointer;
     font-weight: bold;
@@ -49,14 +49,14 @@
     height: 40px;
 }
 #barchart_button1_1{
-    background-color:rgb(95, 113, 132);
+    background-color:#16a085;
 }
 #to #from{
     background: none;
     border-top: none;
     border-right: none;
     border-left: none;
-    border-color: rgb(95, 113, 132);
+    border-color: #16a085;
     font-size: 14px;
     margin-top: 0px;
     margin-bottom: 2rem;
@@ -71,6 +71,9 @@
   margin-top: 33px;
   
 }
+
+
+
 
 @media all and (max-width: 490px) {
     .barchart_div3 {

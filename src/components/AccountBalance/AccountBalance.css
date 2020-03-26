@@ -11,7 +11,10 @@
     border: 10px solid rgb(95, 113, 132);
 }
 
-
+.accountBalance_button{
+    border: none;
+    background-color: transparent;
+}
 .accountBalance_p_amount{
     font-size:2.7rem;
     position: relative;
@@ -22,29 +25,35 @@
 .accountBalance_income{
     transform: rotate(80deg);
     position: relative;
-    top:12rem;
-    right:6.4rem;
+    top:13rem;
+    right:6.7rem;
 }
 .accountBalance_p_income{
-    font-size:1.4rem;
-    color:#16a085;
     transform:rotate(65deg);
     position:relative;
     top: 12rem;
-    right: 3.3rem;
+    right: 4.5rem;
+}
+.accountBalance_p_income_p{
+    font-size:1.4rem;
+    color:#16a085;
+
 }
 .accountBalance_expense{
     transform: rotate(95deg);
     position: relative;
-    left: 6.9rem;
-    top: 6rem;
+    left: 7.6rem;
+    top: 7.5rem;
 }
 .accountBalance_p_expense{
     font-size:1.4rem;
     transform:rotate(300deg);
     position:relative;
-    left: 9.3rem;
-    bottom: 7rem;
+    left: 10.8rem;
+    bottom: 5.9rem;
+   
+}
+.accountBalance_p_expense_p{
     color:rgb(209,0,0)
 }
 #accountBalance_income_i{

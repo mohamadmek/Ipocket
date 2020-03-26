@@ -63,18 +63,19 @@ class Barchart extends Component {
           <div className="barchart_div">
             {this.state.signStatus ?
               <Chart className="main-chart" type="bar" data={data} style={{marginTop:'2rem'}}/> :
-              <Chart className="main-chart" type="pie" data={datapie} />}
+              <Chart className="main-chart" type="pie" data={datapie} style={{width:'45rem'}} />}
               <div className="barchart_div2">               
                 <div className="barchart_button1" id={this.state.signStatus?"barchart_button1_1":""} onClick={this.barchart} signStatus={this.state.signStatus}>Barchart</div>
                 <div className="barchart_button2" id={this.state.signStatus?"":"barchart_button1_1"} onClick={this.piechart} signStatus={this.state.signStatus} >PieChart</div>
 
                 <div className="barchart_div3">
-                 <Calendar value={this.state.date}
+                  <Calendar value={this.state.date}
 				              onChange={e => this.setState({ datefrom: e.value })}
 				              dateFormat='dd/mm/yy'
                       placeholder="Calendar From"
-                      viewDate={this.state.datefrom} 
-			              />
+                      viewDate={this.state.datefrom}
+                      style={{marginRight:'5px'}}
+			              /> 
                    <Calendar value={this.state.date}
 				              onChange={e => this.setState({ dateto: e.value })}
 				              dateFormat='dd/mm/yy'

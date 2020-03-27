@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import classNames from 'classnames';
 import {AppTopbar} from '../AppTopbar';
 import {AppMenu} from '../AppMenu';
@@ -18,6 +18,7 @@ import '../layout/layout.scss';
 // import '../App.scss';
 
 class App extends Component {
+    
     constructor() {
         super();
         this.state = {
@@ -25,8 +26,16 @@ class App extends Component {
             layoutColorMode: 'dark',
             staticMenuInactive: false,
             overlayMenuActive: false,
-            mobileMenuActive: false
+            mobileMenuActive: false,
+            ExpenseChosen:[
+                {id: 1,label: 'fa fa-mobile-alt', value: 'Phone',amount:[{cur:"LBP",bal:50},{cur:"EURO",bal:20}]},
+                {id: 2,label:'fa fa-donate', value:"Bank",amount:[{cur:"LBP",bal:45},{cur:"EURO",bal:10}]},
+                {id: 3,label:'fa fa-coffee', value:"Outside",amount:[{cur:"LBP",bal:150},{cur:"EURO",bal:50}]},,
+                {id: 4,label:'fa fa-paw', value:"Animals",amount:[{cur:"LBP",bal:25},{cur:"EURO",bal:40}]},
+            ],
         };
+
+        
 
         this.onWrapperClick = this.onWrapperClick.bind(this);
         this.onToggleMenu = this.onToggleMenu.bind(this);
@@ -45,7 +54,7 @@ class App extends Component {
 
         this.menuClick = false;
     }
-
+    
     onToggleMenu(event) {
         this.menuClick = true;
 
@@ -67,7 +76,7 @@ class App extends Component {
                 mobileMenuActive: !mobileMenuActive
             });
         }
-       
+
         event.preventDefault();
     }
 
@@ -86,10 +95,10 @@ class App extends Component {
 
     createMenu() {
         this.menu = [
-            {label: 'Dashboard', icon: 'pi pi-fw pi-home', command: () => {window.location = '#/'}},
-            {label: 'Income', icon: 'pi pi-fw pi-home', command: () => {window.location = '#/income'}},
-            {label: 'Expenses', icon: 'pi pi-fw pi-home', command: () => {window.location = '#/expense'}},
-            {label: 'Transactions', icon: 'pi pi-fw pi-home', command: () => {window.location = '#/transaction'}},
+            {label: 'Account', icon: 'pi pi-fw pi-home', command: () => {window.location = '#/'}},
+            {label: 'Income', icon: 'fas fa-download', command: () => {window.location = '#/income'}},
+            {label: 'Expenses', icon: 'fas fa-upload', command: () => {window.location = '#/expense'}},
+            {label: 'Transactions', icon: 'fas fa-exchange-alt', command: () => {window.location = '#/transaction'}},
         ];
     }
 
@@ -134,7 +143,10 @@ class App extends Component {
             'layout-sidebar-light': this.state.layoutColorMode === 'light'
         });
 
+        
+
         return (
+            
             <div className={wrapperClass} onClick={this.onWrapperClick}>
                  <AppTopbar onToggleMenu={this.onToggleMenu}/>
 
@@ -147,9 +159,8 @@ class App extends Component {
                 </div>
 
                 <div className="layout-main">
-                    {/* <Route path="/" exact component={Dashboard} /> */}
-                    <Route path="/transaction" component={Tranaction} />
-                    {/* <Route path="/dashboard" exact component={Dashboard} /> */}
+                <Route path="/transaction" component={() => ( <Tranaction chosen={this.state.ExpenseChosen} /> )} />
+                    {/* <Route path="/transaction" chosen={this.state.ExpenseChosen} component={Tranaction} /> */}
                     <Route path="/login" exact component={Login} />
                     <Route path="/" exact component={Account} />
                     <Route path="/save" exact component={Save} />
@@ -157,7 +168,6 @@ class App extends Component {
                     <Route path="/expense" exact component={Expense} />
                 </div>
 
-               
                 <div className="layout-mask"></div>
             </div>
         );

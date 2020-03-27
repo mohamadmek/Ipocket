@@ -75,6 +75,7 @@ class Barchart extends Component {
                       placeholder="Calendar From"
                       viewDate={this.state.datefrom}
                       style={{marginRight:'5px'}}
+                      value={this.state.datefrom}
 			              /> 
                    <Calendar value={this.state.date}
 				              onChange={e => this.setState({ dateto: e.value })}
@@ -82,6 +83,7 @@ class Barchart extends Component {
                       placeholder="Calendar To"
                       viewDate={this.state.dateto}
                       className="chart-calendar-to"
+                      value={this.state.dateto}
                     />
                 </div>
               </div>

@@ -11,10 +11,10 @@ class Expense extends Component {
         super(props);
         this.state = {
             ExpenseChosen:[
-                {label: 'fa fa-mobile-alt', value: 'Phone',amount:[{cur:"LBP",bal:50},{cur:"EURO",bal:20}]},
-                {label:'fa fa-donate', value:"Bank",amount:[{cur:"LBP",bal:45},{cur:"EURO",bal:10}]},
-                {label:'fa fa-coffee', value:"Outside",amount:[{cur:"LBP",bal:150},{cur:"EURO",bal:50}]},,
-                {label:'fa fa-paw', value:"Animals",amount:[{cur:"LBP",bal:25},{cur:"EURO",bal:40}]},
+                {label: 'fa fa-mobile-alt', value: 'Phone',cur:"LBP",bal:20},
+                {label:'fa fa-donate', value:"Bank",cur:"LBP",bal:10},
+                {label:'fa fa-coffee', value:"Outside",cur:"LBP",bal:50},
+                {label:'fa fa-paw', value:"Animals",cur:"LBP",bal:40},
             ],
         }
 }

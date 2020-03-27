@@ -15,22 +15,21 @@ class Expense extends Component {
                 {label:'fa fa-donate', value:"Bank",amount:[{cur:"LBP",bal:45},{cur:"EURO",bal:10}]},
                 {label:'fa fa-coffee', value:"Outside",amount:[{cur:"LBP",bal:150},{cur:"EURO",bal:50}]},,
                 {label:'fa fa-paw', value:"Animals",amount:[{cur:"LBP",bal:25},{cur:"EURO",bal:40}]},
-
-               
             ],
         }
-      }
-      addCategory=(e)=>{
+}
+    addCategory=(e)=>{
         this.state.ExpenseChosen.push(e);
     }
  
     render() {
         return (
-            <div style={{overflowX:'hidden'}}>>
+            <div style={{overflowX:'hidden'}}>
             <Weekly desc="expense"/>
+            <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
             <Category desc="expense" chosen={this.state.ExpenseChosen}/>
-            <br></br>
             <CategoryPop handle={this.addCategory}/>
+            </div>
             <Balance desc="expense"/>
             </div>
         );

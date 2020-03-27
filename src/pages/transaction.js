@@ -10,9 +10,6 @@ class Transaction extends Component {
         };
     }
 
-    componentDidMount() {
-       
-    }
 
     render() {        
         return (

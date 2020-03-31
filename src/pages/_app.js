@@ -119,6 +119,21 @@ class App extends Component {
     isDesktop() {
         return window.innerWidth > 1024;
     }
+    getCurrency=async()=>{
+    try {console.log("hey")
+        const response = await fetch('http://localhost:8000/transaction');
+        const result = await response.json();console.log("res",result)
+        
+        //  this.setState({ currency: result.result, error: "" });
+       
+      } catch (err) {
+        
+      }
+    };
+
+     componentDidMount(){
+         this.getCurrency();
+    }
 
     componentDidUpdate() {
         if (this.state.mobileMenuActive)

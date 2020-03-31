@@ -12,8 +12,7 @@ class TransComponent extends Component {
 
     
 
-    render() {     
-        console.log("choco", this.props)   
+    render() {  
         return (
             <>
             <div className="transaction" id="c">

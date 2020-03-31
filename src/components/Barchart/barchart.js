@@ -70,21 +70,21 @@ class Barchart extends Component {
 
                 <div className="barchart_div3">
                   <Calendar value={this.state.date}
-				              onChange={e => this.setState({ datefrom: e.value })}
-				              dateFormat='dd/mm/yy'
-                      placeholder="Calendar From"
-                      viewDate={this.state.datefrom}
-                      style={{marginRight:'5px'}}
-                      value={this.state.datefrom}
-			              /> 
-                   <Calendar value={this.state.date}
-				              onChange={e => this.setState({ dateto: e.value })}
-				              dateFormat='dd/mm/yy'
-                      placeholder="Calendar To"
-                      viewDate={this.state.dateto}
-                      className="chart-calendar-to"
-                      value={this.state.dateto}
-                    />
+                    onChange={e => this.setState({ datefrom: e.value })}
+                    dateFormat='dd/mm/yy'
+                    placeholder="Calendar From"
+                    viewDate={this.state.datefrom}
+                    style={{marginRight:'5px'}}
+                    value={this.state.datefrom}
+			            /> 
+                  <Calendar value={this.state.date}
+                    onChange={e => this.setState({ dateto: e.value })}
+                    dateFormat='dd/mm/yy'
+                    placeholder="Calendar To"
+                    viewDate={this.state.dateto}
+                    className="chart-calendar-to"
+                    value={this.state.dateto}
+                  />
                 </div>
               </div>
                 

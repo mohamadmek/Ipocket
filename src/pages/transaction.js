@@ -7,12 +7,8 @@ import {useTransition, animated} from 'react-spring';
 const Transaction = (props) => {
 
     // render() {      
-        const transition = useTransition(props.chosen, props.chosen.id, {
+        const transition = useTransition(props.transactions, props.transactions.id, {
             from: {opacity:0, marginTop: -100, marginBottom: 100},
-            // enter: item => async (next, cancel) => {
-            //     await new Promise(resolve => setTimeout(resolve, 300));
-            //     await next({ opacity: 1, marginTop: 0, marginBottom: 0 })
-            //   },
             enter: {opacity:1, marginTop: 0, marginBottom: 0}
         });
         return (
@@ -21,7 +17,7 @@ const Transaction = (props) => {
                 <br></br>
                 {transition.map(({item, key, props}) => (
                     <animated.div key={key} style={props} >
-                        <Trans tran={item} />
+                        <Trans transaction={item} />
                     </animated.div>
                 ))}
                 

@@ -17,9 +17,17 @@ class Expense extends Component {
                 {label:'fa fa-paw', value:"Animals",cur:"LBP",bal:40},
             ],
         }
-}
+}   
+    expenseAmount = () => {
+        console.log(this.props.transactions)
+    }
+
     addCategory=(e)=>{
         this.state.ExpenseChosen.push(e);
+    }
+
+    componentDidMount = () => {
+        this.expenseAmount();
     }
  
     render() {
@@ -27,10 +35,10 @@ class Expense extends Component {
             <div style={{overflowX:'hidden'}}>
             <Weekly desc="expense"/>
             <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
-            <Category desc="expense" chosen={this.state.ExpenseChosen}/>
-            <CategoryPop handle={this.addCategory}/>
+            <Category desc="expense" chosen={this.state.ExpenseChosen} transactions={this.props.transactions} />
+            <CategoryPop handle={this.addCategory} />
             </div>
-            <Balance desc="expense"/>
+            <Balance desc="expense" transactions={this.props.transactions} />
             </div>
         );
     }

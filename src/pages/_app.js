@@ -13,9 +13,7 @@ import Expense from "../pages/expense";
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
-// import 'primeflex/primeflex.css';
 import '../layout/layout.scss';
-// import '../App.scss';
 
 class App extends Component {
     
@@ -27,22 +25,37 @@ class App extends Component {
             staticMenuInactive: false,
             overlayMenuActive: false,
             mobileMenuActive: false,
-            ExpenseChosen:[
-                {id: 1,label: 'fa fa-mobile-alt', value: 'Phone',amount:[{cur:"LBP",bal:50},{cur:"EURO",bal:20}]},
-                {id: 2,label:'fa fa-donate', value:"Bank",amount:[{cur:"LBP",bal:45},{cur:"EURO",bal:10}]},
-                {id: 3,label:'fa fa-coffee', value:"Outside",amount:[{cur:"LBP",bal:150},{cur:"EURO",bal:50}]},,
-                {id: 4,label:'fa fa-paw', value:"Animals",amount:[{cur:"LBP",bal:25},{cur:"EURO",bal:40}]},
-            ],
+            transactions: [],
         };
-
-        
-
         this.onWrapperClick = this.onWrapperClick.bind(this);
         this.onToggleMenu = this.onToggleMenu.bind(this);
         this.onSidebarClick = this.onSidebarClick.bind(this);
         this.onMenuItemClick = this.onMenuItemClick.bind(this);
         this.createMenu();
     }
+
+    getTransactions = async () => {
+        try {
+            const response = await fetch('http://localhost:8000/transaction');
+            const result = await response.json();
+            console.log("res",result.transaction);
+            
+            if(result.status){
+                this.setState({
+                    transactions: result.transaction
+                })
+            }
+        } catch (err) {
+            console.log(err);
+        }
+        };
+    
+        componentDidMount(){
+            this.getTransactions();
+        }
+
+
+
 
     onWrapperClick(event) {
         if (!this.menuClick) {
@@ -148,8 +161,7 @@ class App extends Component {
         return (
             
             <div className={wrapperClass} onClick={this.onWrapperClick}>
-                 <AppTopbar onToggleMenu={this.onToggleMenu}/>
-
+                <AppTopbar onToggleMenu={this.onToggleMenu}/>
                 <div ref={(el) => this.sidebar = el} className={sidebarClassName} onClick={this.onSidebarClick}>
                     <div className="layout-logo">
                         <img alt="Logo" src={logo} />
@@ -158,15 +170,14 @@ class App extends Component {
                     <AppMenu model={this.menu} onMenuItemClick={this.onMenuItemClick} />
                 </div>
 
-                <div className="layout-main">
-                <Route path="/transaction" component={() => ( <Tranaction chosen={this.state.ExpenseChosen} /> )} />
-                    {/* <Route path="/transaction" chosen={this.state.ExpenseChosen} component={Tranaction} /> */}
-                    <Route path="/login" exact component={Login} />
-                    <Route path="/" exact component={Account} />
-                    <Route path="/save" exact component={Save} />
-                    <Route path="/income" exact component={Income} />
-                    <Route path="/expense" exact component={Expense} />
-                </div>
+            <div className="layout-main">
+                <Route path="/transaction" component={() => ( <Tranaction transactions={this.state.transactions} /> )} />
+                <Route path="/login" exact component={Login} />
+                <Route path="/" exact component={Account} />
+                <Route path="/save" exact  component={Save} />
+                <Route path="/income" exact component={() => ( <Income transactions={this.state.transactions} /> )} />
+                <Route path="/expense" exact component={() => ( <Expense transactions={this.state.transactions} /> )} />
+            </div>
 
                 <div className="layout-mask"></div>
             </div>

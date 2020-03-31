@@ -31,7 +31,13 @@ class Income extends Component {
             <div style={{overflowX:'hidden', overflowY:'hidden'}}>
                 <Weekly desc="income"/>
                 <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
-                    <Category desc="income" chosen={this.state.Incomechosen} transactions={this.props.transactions} />
+                    <Category
+                        desc="income"
+                        transactions={this.props.transactions}
+                        categories={this.props.categories}
+                        currencies={this.props.currencies}
+                        deleteCategory={this.props.deleteCategory}
+                        />
                     <CategoryPop handle={this.addCategory} />
                 </div>
                 <Balance desc="income" transactions={this.props.transactions} />

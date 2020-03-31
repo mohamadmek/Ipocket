@@ -36,6 +36,8 @@ class category extends React.Component {
                 {label:'fa fa-plane', value:"Traveling"},
                 {label:'fa fa-asterisk', value:"Other"}
             ],
+            categories:[],
+            editing:false,
         };
         
     }
@@ -60,15 +62,12 @@ class category extends React.Component {
     inputvalue(e){
         this.setState({tempinput:e});
     }
-    editCategories(e){console.log("tr",this.props.chosen[this.state.index])
+    editCategories(e){
         this.props.chosen[this.state.index].value=this.state.tempinput;
         this.props.chosen[this.state.index].label=this.state.newlabel;
         this.setState({tempinput:"",editing: false ,index:-1,newlabel:""})
     }
 
-    deleteCat(i){
-        this.props.chosen.splice(i,1);
-    }
     carTemplate(option) {
         if(!option.value) {
             return option.label;
@@ -82,6 +81,31 @@ class category extends React.Component {
             );
         }
     }
+
+    componentDidMount=()=>{
+        if(this.props.categories!=0 && this.props.transactions.length!=0)
+        this.categories();
+    }
+
+    categories=()=>{
+        let i=[];
+        this.props.transactions.map((item)=>{
+            this.props.desc=="income"?
+                i.push(this.props.categories.filter(id=>id.id==item.categories_id && item.type=="income")):
+                i.push(this.props.categories.filter(id=>id.id==item.categories_id && item.type=="expense")) 
+            });
+            this.setState({categories:i})
+         }
+    
+    currencyTransacion=(currency)=>{
+        let s=this.props.currencies.filter(id => id.id==currency)[0].symbol;
+        return s;
+    }
+
+    editCategory=(id)=>{
+        console.log("id",id)
+    }
+
 	render() {
         const footer = (
 			<div>
@@ -119,28 +143,35 @@ class category extends React.Component {
 		);
 		return (
         <div className="category_div">
-            {this.props.chosen.map((item,i) =>
-            <div className="category_div_inner">
-                <div>
-                    <p className="category_div_p1">{item.value}</p>
+            {this.state.categories.map((item,index) =>item.length==0?"":
+                <div className="category_div_inner">
+                 <div>
+                    <p className="category_div_p1">
+                        {this.props.transactions.filter(id =>id.categories_id==item[0].id)[0].title}
+                    </p>
                 </div>
                 <div className="category_div_inner1">
                     <div>
                     <button className="category_div_button">
-                        <i class={item.label} aria-hidden="true" id="category_div_i" onClick={e=>this.setState({visible:true,index:i,temp:item}) }></i>
+                        <i class={item[0].name} aria-hidden="true" id="category_div_i" /* onClick={e=>this.setState({visible:true,index:i,temp:item}) } */></i>
                     </button>
                     </div>
                     <div className="category_div_inner2_22">
-                    <div><button className="category_div_inner2_button" onClick={e=>this.setState({editing:true,index:i,temp:item,tempinput:item.value})}><i className="fas fa-edit"></i></button></div>
-                    <div><button className="category_div_inner2_button" onClick={e=>this.deleteCat(i)}><i className="fas fa-trash"></i></button></div>
+                    <div><button className="category_div_inner2_button" onClick={e=>this.setState({editing:true})}><i className="fas fa-edit"></i></button></div>
+                    <div><button className="category_div_inner2_button" onClick={e=>this.props.deleteCategory(item[0].id)}><i className="fas fa-trash"></i></button></div>
                     </div>
                 </div>
-
-                {item.cur?
                 <div>
-                    <p className="category_div_inner1" id={this.props.desc==="expense"?"category_except":""}>{item.bal} {item.cur}</p>
+                    <p className="category_div_inner1" id={this.props.desc==="expense"?"category_except":""}>
+                        <div style={{marginRight:'7px'}}>
+                            {this.props.currencies.length!=0?this.currencyTransacion(this.props.transactions.filter(id => id.categories_id == item[0].id)[0].currencies_id):""}
+                        </div>
+                        <div>
+                            {this.props.transactions.filter(id => id.categories_id == item[0].id)[0].amount}
+                        </div>
+
+                    </p>
                 </div> 
-                :""}
             </div>
                 )}
                 <Dialog

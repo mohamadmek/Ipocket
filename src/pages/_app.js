@@ -26,6 +26,10 @@ class App extends Component {
             overlayMenuActive: false,
             mobileMenuActive: false,
             transactions: [],
+            categories:[],
+            currencies:[],
+            flagCategory:false,
+            
         };
         this.onWrapperClick = this.onWrapperClick.bind(this);
         this.onToggleMenu = this.onToggleMenu.bind(this);
@@ -33,12 +37,12 @@ class App extends Component {
         this.onMenuItemClick = this.onMenuItemClick.bind(this);
         this.createMenu();
     }
+    
 
     getTransactions = async () => {
         try {
             const response = await fetch('http://localhost:8000/transaction');
             const result = await response.json();
-            console.log("res",result.transaction);
             
             if(result.status){
                 this.setState({
@@ -49,13 +53,50 @@ class App extends Component {
             console.log(err);
         }
         };
-    
-        componentDidMount(){
-            this.getTransactions();
+
+    getCategories = async () => {
+        if(!this.state.flagCategory){
+            try {
+                const response = await fetch('http://localhost:8000/categories');
+                const result = await response.json();  
+                if(result.status){
+                    this.setState({
+                        categories: result.category,
+                        flagCategory:true
+                    });
+                    console.log("l",this.state.categories)
+                } 
+            }catch (err) {
+                console.log(err);
+            }
         }
+    };
 
+    getCurrencies = async () => {
+            try {
+                const response = await fetch('http://localhost:8000/currencies');
+                const result = await response.json();  
+                if(result.status){
+                    this.setState({
+                    currencies: result.currencies
+                    })
+                } 
+            } catch (err) {
+                console.log(err);
+            }
+        };
+    
+    componentDidMount(){
+        this.getTransactions();
+        this.getCategories();
+        this.getCurrencies();
+        console.log("didmount")
+    }
 
-
+    deleteCategory=(id)=>{
+        const items = this.state.categories.filter(item => item.id !== id);
+        this.setState({ categories: items });
+    }
 
     onWrapperClick(event) {
         if (!this.menuClick) {
@@ -132,22 +173,7 @@ class App extends Component {
     isDesktop() {
         return window.innerWidth > 1024;
     }
-    getCurrency=async()=>{
-    try {console.log("hey")
-        const response = await fetch('http://localhost:8000/transaction');
-        const result = await response.json();console.log("res",result)
-        
-        //  this.setState({ currency: result.result, error: "" });
        
-      } catch (err) {
-        
-      }
-    };
-
-     componentDidMount(){
-         this.getCurrency();
-    }
-
     componentDidUpdate() {
         if (this.state.mobileMenuActive)
             this.addClass(document.body, 'body-overflow-hidden');
@@ -184,14 +210,23 @@ class App extends Component {
                     <AppProfile />
                     <AppMenu model={this.menu} onMenuItemClick={this.onMenuItemClick} />
                 </div>
-
             <div className="layout-main">
                 <Route path="/transaction" component={() => ( <Tranaction transactions={this.state.transactions} /> )} />
                 <Route path="/login" exact component={Login} />
                 <Route path="/" exact component={Account} />
                 <Route path="/save" exact  component={Save} />
-                <Route path="/income" exact component={() => ( <Income transactions={this.state.transactions} /> )} />
-                <Route path="/expense" exact component={() => ( <Expense transactions={this.state.transactions} /> )} />
+                <Route path="/income" exact component={() => ( <Income
+                                                                    transactions={this.state.transactions} 
+                                                                    categories={this.state.categories}
+                                                                    currencies={this.state.currencies}
+                                                                    deleteCategory={this.deleteCategory}
+                                                                    /> )} />
+                <Route path="/expense" exact component={() => ( <Expense 
+                                                                    transactions={this.state.transactions}
+                                                                    categories={this.state.categories}
+                                                                    currencies={this.state.currencies}
+                                                                    deleteCategory={this.deleteCategory}
+                                                                    /> )} />
             </div>
 
                 <div className="layout-mask"></div>

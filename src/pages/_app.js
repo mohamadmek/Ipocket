@@ -90,7 +90,6 @@ class App extends Component {
         this.getTransactions();
         this.getCategories();
         this.getCurrencies();
-        console.log("didmount")
     }
 
     deleteCategory=(id)=>{

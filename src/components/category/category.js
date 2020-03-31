@@ -62,10 +62,8 @@ class category extends React.Component {
     inputvalue(e){
         this.setState({tempinput:e});
     }
-    editCategories(e){
-        this.props.chosen[this.state.index].value=this.state.tempinput;
-        this.props.chosen[this.state.index].label=this.state.newlabel;
-        this.setState({tempinput:"",editing: false ,index:-1,newlabel:""})
+     editCategories(e,id){
+     this.setState({ editing: true });
     }
 
     carTemplate(option) {
@@ -100,10 +98,6 @@ class category extends React.Component {
     currencyTransacion=(currency)=>{
         let s=this.props.currencies.filter(id => id.id==currency)[0].symbol;
         return s;
-    }
-
-    editCategory=(id)=>{
-        console.log("id",id)
     }
 
 	render() {
@@ -157,7 +151,7 @@ class category extends React.Component {
                     </button>
                     </div>
                     <div className="category_div_inner2_22">
-                    <div><button className="category_div_inner2_button" onClick={e=>this.setState({editing:true})}><i className="fas fa-edit"></i></button></div>
+                    <div><button className="category_div_inner2_button" onClick={e=>this.editCategories(e,item[0].id)}><i className="fas fa-edit"></i></button></div>
                     <div><button className="category_div_inner2_button" onClick={e=>this.props.deleteCategory(item[0].id)}><i className="fas fa-trash"></i></button></div>
                     </div>
                 </div>

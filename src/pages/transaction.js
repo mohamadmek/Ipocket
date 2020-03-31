@@ -6,19 +6,14 @@ import {useTransition, animated} from 'react-spring';
 // class Transaction extends Component {
 const Transaction = (props) => {
 
-    // render() {      
-        const transition = useTransition(props.transactions, props.transactions.id, {
-            from: {opacity:0, marginTop: -100, marginBottom: 100},
-            enter: {opacity:1, marginTop: 0, marginBottom: 0}
-        });
+    // render() {
+        
         return (
             <>
                 <Filter/>
                 <br></br>
-                {transition.map(({item, key, props}) => (
-                    <animated.div key={key} style={props} >
+                {props.transactions.map(item => (  
                         <Trans transaction={item} />
-                    </animated.div>
                 ))}
                 
             </>

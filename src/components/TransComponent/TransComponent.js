@@ -3,6 +3,7 @@ import './TransComponent.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 class TransComponent extends Component {
+
     constructor() {
         super();
         this.state = {

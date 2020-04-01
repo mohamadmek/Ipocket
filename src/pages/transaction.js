@@ -3,6 +3,7 @@ import Filter from "../components/Filter/Filter";
 import Trans from "../components/TransComponent/TransComponent";
 
 class Transaction extends Component {
+    _isMounted = false;
     constructor(props) {
         super(props);
         this.state = {
@@ -15,11 +16,10 @@ class Transaction extends Component {
             const response = await fetch(`http://localhost:8000/transaction/${id}`,
             {method: "DELETE"});
             const result = await response.json();
-            if(result.status) {
+            if(result.status && this._isMounted) {
                 const transactions = this.state.transactions.filter(
                     transaction => transaction.id != id
                 );
-                console.log("minux",transactions)
                 this.setState({
                     transactions
                 })
@@ -33,7 +33,7 @@ class Transaction extends Component {
         try {
             const response = await fetch('http://localhost:8000/transaction');
             const result = await response.json();
-            if(result.status){
+            if(result.status && this._isMounted){
                 this.setState({
                     transactions: result.transaction
                 })
@@ -44,9 +44,12 @@ class Transaction extends Component {
     };
 
     componentDidMount () {
+        this._isMounted = true;
         this.getTransactions();
     }
-
+    componentWillUnmount() {
+        this._isMounted=false;
+      }
     render() {
         return (
             <>

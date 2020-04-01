@@ -24,7 +24,7 @@ class balance extends Component {
 
     sumIncome = () => {
       let sumIncome = 0;
-      const expenseArr = this.props.transactions.filter(type => type.type == 'mo' );
+      const expenseArr = this.props.transactions.filter(type => type.type == 'income' );
       expenseArr.map(amount => (
 
         sumIncome += parseFloat(amount.amount)

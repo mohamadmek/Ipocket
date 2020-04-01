@@ -17,6 +17,7 @@
 .category_div_inner1{
     color: #16a085;
     margin-bottom: -5px;
+    display: flex;
 }
 #category_except{
     color:rgb(209,0,0)

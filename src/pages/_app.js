@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component} from 'react';
 import classNames from 'classnames';
 import {AppTopbar} from '../AppTopbar';
 import {AppMenu} from '../AppMenu';
@@ -34,25 +34,21 @@ class App extends Component {
         this.createMenu();
     }
 
-    getTransactions = async () => {
-        try {
-            const response = await fetch('http://localhost:8000/transaction');
-            const result = await response.json();
-            console.log("res",result.transaction);
-            
-            if(result.status){
-                this.setState({
-                    transactions: result.transaction
-                })
+        getTransactions = async () => {
+            try {
+                const response = await fetch('http://localhost:8000/transaction');
+                const result = await response.json();
+                if(result.status){
+                    this.setState({
+                        transactions: result.transaction
+                    })
+                }
+            } catch (err) {
+                console.log(err);
             }
-        } catch (err) {
-            console.log(err);
-        }
-        };
+            };
     
-        componentDidMount(){
-            this.getTransactions();
-        }
+        
 
 
 
@@ -171,7 +167,7 @@ class App extends Component {
                 </div>
 
             <div className="layout-main">
-                <Route path="/transaction" component={() => ( <Tranaction transactions={this.state.transactions} /> )} />
+                <Route path="/transaction" component={() => ( <Tranaction /> )} />
                 <Route path="/login" exact component={Login} />
                 <Route path="/" exact component={Account} />
                 <Route path="/save" exact  component={Save} />

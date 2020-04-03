@@ -49,7 +49,7 @@ class Transaction extends Component {
     }
     componentWillUnmount() {
         this._isMounted=false;
-      }
+    }
     render() {
         return (
             <>

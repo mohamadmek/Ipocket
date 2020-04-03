@@ -13,11 +13,10 @@ import Expense from "../pages/expense";
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
-// import 'primeflex/primeflex.css';
 import '../layout/layout.scss';
-// import '../App.scss';
 
 class App extends Component {
+    
     constructor() {
         super();
         this.state = {
@@ -25,14 +24,77 @@ class App extends Component {
             layoutColorMode: 'dark',
             staticMenuInactive: false,
             overlayMenuActive: false,
-            mobileMenuActive: false
+            mobileMenuActive: false,
+            transactions: [],
+            categories:[],
+            currencies:[],
+            flagCategory:false,
+            
         };
-
         this.onWrapperClick = this.onWrapperClick.bind(this);
         this.onToggleMenu = this.onToggleMenu.bind(this);
         this.onSidebarClick = this.onSidebarClick.bind(this);
         this.onMenuItemClick = this.onMenuItemClick.bind(this);
         this.createMenu();
+    }
+    
+
+    getTransactions = async () => {
+        try {
+            const response = await fetch('http://localhost:8000/transaction');
+            const result = await response.json();
+            
+            if(result.status){
+                this.setState({
+                    transactions: result.transaction
+                })
+            }
+        } catch (err) {
+            console.log(err);
+        }
+        };
+
+    getCategories = async () => {
+        if(!this.state.flagCategory){
+            try {
+                const response = await fetch('http://localhost:8000/categories');
+                const result = await response.json();  
+                if(result.status){
+                    this.setState({
+                        categories: result.category,
+                        flagCategory:true
+                    });
+                    console.log("l",this.state.categories)
+                } 
+            }catch (err) {
+                console.log(err);
+            }
+        }
+    };
+
+    getCurrencies = async () => {
+            try {
+                const response = await fetch('http://localhost:8000/currencies');
+                const result = await response.json();  
+                if(result.status){
+                    this.setState({
+                    currencies: result.currencies
+                    })
+                } 
+            } catch (err) {
+                console.log(err);
+            }
+        };
+    
+    componentDidMount(){
+        this.getTransactions();
+        this.getCategories();
+        this.getCurrencies();
+    }
+
+    deleteCategory=(id)=>{
+        const items = this.state.categories.filter(item => item.id !== id);
+        this.setState({ categories: items });
     }
 
     onWrapperClick(event) {
@@ -45,7 +107,7 @@ class App extends Component {
 
         this.menuClick = false;
     }
-
+    
     onToggleMenu(event) {
         this.menuClick = true;
 
@@ -67,7 +129,7 @@ class App extends Component {
                 mobileMenuActive: !mobileMenuActive
             });
         }
-       
+
         event.preventDefault();
     }
 
@@ -110,7 +172,7 @@ class App extends Component {
     isDesktop() {
         return window.innerWidth > 1024;
     }
-
+       
     componentDidUpdate() {
         if (this.state.mobileMenuActive)
             this.addClass(document.body, 'body-overflow-hidden');
@@ -134,10 +196,12 @@ class App extends Component {
             'layout-sidebar-light': this.state.layoutColorMode === 'light'
         });
 
-        return (
-            <div className={wrapperClass} onClick={this.onWrapperClick}>
-                 <AppTopbar onToggleMenu={this.onToggleMenu}/>
+        
 
+        return (
+            
+            <div className={wrapperClass} onClick={this.onWrapperClick}>
+                <AppTopbar onToggleMenu={this.onToggleMenu}/>
                 <div ref={(el) => this.sidebar = el} className={sidebarClassName} onClick={this.onSidebarClick}>
                     <div className="layout-logo">
                         <img alt="Logo" src={logo} />
@@ -145,19 +209,25 @@ class App extends Component {
                     <AppProfile />
                     <AppMenu model={this.menu} onMenuItemClick={this.onMenuItemClick} />
                 </div>
+            <div className="layout-main">
+                <Route path="/transaction" component={() => ( <Tranaction /> )} />
+                <Route path="/login" exact component={Login} />
+                <Route path="/" exact component={Account} />
+                <Route path="/save" exact  component={Save} />
+                <Route path="/income" exact component={() => ( <Income
+                                                                    transactions={this.state.transactions} 
+                                                                    categories={this.state.categories}
+                                                                    currencies={this.state.currencies}
+                                                                    deleteCategory={this.deleteCategory}
+                                                                    /> )} />
+                <Route path="/expense" exact component={() => ( <Expense 
+                                                                    transactions={this.state.transactions}
+                                                                    categories={this.state.categories}
+                                                                    currencies={this.state.currencies}
+                                                                    deleteCategory={this.deleteCategory}
+                                                                    /> )} />
+            </div>
 
-                <div className="layout-main">
-                    {/* <Route path="/" exact component={Dashboard} /> */}
-                    <Route path="/transaction" component={Tranaction} />
-                    {/* <Route path="/dashboard" exact component={Dashboard} /> */}
-                    <Route path="/login" exact component={Login} />
-                    <Route path="/" exact component={Account} />
-                    <Route path="/save" exact component={Save} />
-                    <Route path="/income" exact component={Income} />
-                    <Route path="/expense" exact component={Expense} />
-                </div>
-
-               
                 <div className="layout-mask"></div>
             </div>
         );

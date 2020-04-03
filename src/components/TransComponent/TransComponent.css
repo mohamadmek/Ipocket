@@ -20,8 +20,11 @@ h2{
     display: flex;
     justify-content: space-around;
 }
-#c{
+#s1{
     background-color: rgb(209,0,0);
+}
+#s2{
+    background-color: #16a085;
 }
 p{
     position: relative;

@@ -53,6 +53,20 @@ class App extends Component {
             console.log(err);
         }
         };
+    
+    deleteTransaction = async (id) => {
+        try{
+            const response = await fetch(`http://localhost:8000/transaction/${id}`,
+            {method: "DELETE"});
+            const result = await response.json();
+            if(result.status) {
+                const transactions = this.state.transactions.filter(transaction => transaction.id != id)
+                this.setState({transactions})
+            }
+        } catch(err) {
+            console.log(err);
+        }
+    }
 
     getCategories = async () => {
         if(!this.state.flagCategory){
@@ -172,7 +186,7 @@ class App extends Component {
     isDesktop() {
         return window.innerWidth > 1024;
     }
-       
+
     componentDidUpdate() {
         if (this.state.mobileMenuActive)
             this.addClass(document.body, 'body-overflow-hidden');
@@ -210,7 +224,10 @@ class App extends Component {
                     <AppMenu model={this.menu} onMenuItemClick={this.onMenuItemClick} />
                 </div>
             <div className="layout-main">
-                <Route path="/transaction" component={() => ( <Tranaction /> )} />
+                <Route path="/transaction" 
+                component={() => ( <Tranaction 
+                                transactions={this.state.transactions}
+                                deleteTransaction={this.deleteTransaction} /> )} />
                 <Route path="/login" exact component={Login} />
                 <Route path="/" exact component={Account} />
                 <Route path="/save" exact  component={Save} />

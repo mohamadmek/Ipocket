@@ -10,41 +10,26 @@ class TransComponent extends Component {
         };
     }
 
-    
 
     render() {        
         return (
             <>
-            <div className="transaction" id="c">
+            <div className="transaction" id={this.props.transaction.type == 'expense' ? 's1' : 's2'}>
                 <div className="tranaction_div1">
-                    <h2>Category Title</h2>
+                    <h2>{this.props.transaction.title}</h2>
                     <div className="transaction_div1_p">
-                        <div><p>7/3/2020</p></div>
+                        <div><p>{this.props.transaction.created_at}</p></div>
                         <div><p>01:15pm</p></div>
                     </div>
                 </div>
                 <div className="transaction_div2" >
-                    <h2>- LBP 10000</h2>
-                
+                    <h2 style={{marginBottom: '10px'}}>{this.props.transaction.amount}</h2>
                     <div className="transaction_icon">
-                        <i className="fas fa-trash"></i>
-                        <i className="fas fa-edit"></i>
-                    </div>
-                </div>
-            </div>
-            <div className="transaction">
-                <div className="tranaction_div1">
-                    <h2>Category Title</h2>
-                    <div className="transaction_div1_p">
-                        <div><p>7/3/2020</p></div>
-                        <div><p>12:37pm</p></div>
-                    </div>
-                </div>
-                <div className="transaction_div2" >
-                    <h2>- LBP 10000</h2>
-                
-                    <div className="transaction_icon">
-                        <i className="fas fa-trash"></i>
+                        <i 
+                        className="fas fa-trash" 
+                        onClick={() => this.props.deleteTransaction(this.props.transaction.id)} 
+                        style={{marginRight: '12px'}}
+                        ></i>
                         <i className="fas fa-edit"></i>
                     </div>
                 </div>

@@ -10,8 +10,9 @@ class Transaction extends Component {
         };
     }
 
+
     componentDidMount() {
-       
+        
     }
 
     render() {        
@@ -19,7 +20,11 @@ class Transaction extends Component {
             <div>
                 <Filter/>
                 <br></br>
-                <Trans/>
+                {this.props.transactions.map((transaction, index) => (
+                    <Trans 
+                    transaction={transaction} 
+                    deleteTransaction={this.props.deleteTransaction} />
+                ))}
             </div>
         );
     }

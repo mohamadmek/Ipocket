@@ -9,13 +9,12 @@
     justify-content: end;
     flex-direction: column;
     text-align: center;
-    margin-top: 44px;
+    margin-top: 35px;
 }
 .category_popup_p{
     text-align: center;
     font-size: 15px;
     background: none;
-    font-weight: bold;
 }
 .category_popup_p:hover{
    cursor: pointer;

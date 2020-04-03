@@ -3,63 +3,24 @@ import Filter from "../components/Filter/Filter";
 import Trans from "../components/TransComponent/TransComponent";
 
 class Transaction extends Component {
-    _isMounted = false;
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
-            transactions: [],
+            
         };
     }
-    
-    deleteTransaction = async (id) => {
-        try{
-            const response = await fetch(`http://localhost:8000/transaction/${id}`,
-            {method: "DELETE"});
-            const result = await response.json();
-            if(result.status && this._isMounted) {
-                const transactions = this.state.transactions.filter(
-                    transaction => transaction.id != id
-                );
-                this.setState({
-                    transactions
-                })
-            }
-        } catch(err) {
-            console.log(err)
-        }
+
+    componentDidMount() {
+       
     }
 
-    getTransactions = async () => {
-        try {
-            const response = await fetch('http://localhost:8000/transaction');
-            const result = await response.json();
-            if(result.status && this._isMounted){
-                this.setState({
-                    transactions: result.transaction
-                })
-            }
-        } catch (err) {
-            console.log(err);
-        }
-    };
-
-    componentDidMount () {
-        this._isMounted = true;
-        this.getTransactions();
-    }
-    componentWillUnmount() {
-        this._isMounted=false;
-    }
-    render() {
+    render() {        
         return (
-            <>
+            <div>
                 <Filter/>
                 <br></br>
-                {this.state.transactions.map((item, key) => (  
-                    <Trans key={key} transaction={item} deleteTransaction={this.deleteTransaction} />
-                ))}
-                
-            </>
+                <Trans/>
+            </div>
         );
     }
 }

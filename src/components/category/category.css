@@ -3,7 +3,7 @@
     justify-content: space-evenly;
     flex-wrap:wrap;
     margin-top: 3rem;
-    width: 85%;
+    width: 90%;
     overflow-x: hidden;
     overflow-y: hidden;
 }
@@ -17,7 +17,6 @@
 .category_div_inner1{
     color: #16a085;
     margin-bottom: -5px;
-    display: flex;
 }
 #category_except{
     color:rgb(209,0,0)

@@ -29,7 +29,7 @@ class Filter extends Component {
                 <div>
                     <Calendar
                         value={this.state.date}
-                        onChange={e => (e.preventDefault(), this.setState({ datefrom: e.value }))}
+                        onChange={e => this.setState({ datefrom: e.value })}
                         dateFormat='dd/mm/yy'
                         placeholder="Calendar From"
                         viewDate={this.state.viewDate}
@@ -41,7 +41,7 @@ class Filter extends Component {
                         placeholder="Calendar To"
                         viewDate={this.state.viewDate} 
                         value={this.state.dateto}
-                        onChange={e => (e.preventDefault(), this.setState({ dateto: e.value }))}
+                        onChange={(e) => this.setState({dateto: e.value})}
                         className="transaction-calendar"
                     />
                 

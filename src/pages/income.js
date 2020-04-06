@@ -38,6 +38,14 @@ class Income extends Component {
                         currencies={this.props.currencies}
                         deleteCategories={this.props.deleteCategories}
                         editCategoryInput={this.props.editCategoryInput}
+                        flagEdit={this.props.flagEdit}
+                        switch={this.props.switch}
+                        titleCategory={this.props.titleCategory}
+                        editCategory={this.props.editCategory}
+                        categoryInput={this.props.categoryInput}
+                        cancel={this.props.cancel}
+                        editSelectCat={this.props.editSelectCat}
+                        selectCategory={this.props.selectCategory}
                         />
                     <CategoryPop handle={this.addCategory} />
                 </div>

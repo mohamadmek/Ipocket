@@ -28,10 +28,14 @@ class App extends Component {
             transactions: [],
             categories: [],
             currencies: [],
-            flagCategory: false,
             isEdit: false,
             transId: null,
             title: "",
+            flagEdit:false,
+            titleCategory:[],
+            categoryInput:[],
+            selectCategory:"",
+            tempId:-1
         };
         this.onWrapperClick = this.onWrapperClick.bind(this);
         this.onToggleMenu = this.onToggleMenu.bind(this);
@@ -41,65 +45,11 @@ class App extends Component {
     }
 
     
-    
-
-
-    editCategoryInput=async(transactionId,title,selectIcon,categoryId)=>{
-        try{
-            const response = await fetch(`http://localhost:8000/categories/${categoryId}`,
-            {method:
-                'PUT',
-            body:
-                JSON.stringify({name:selectIcon}),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            }
-            });
-            const result = await response.json();
-            if(result.status) {
-                try{
-                    const responseTrans = await fetch(`http://localhost:8000/transaction/${transactionId}`,
-                    {method:
-                        'PUT',
-                    body:
-                        JSON.stringify({title:title}),
-                    headers: {
-                        "Content-type": "application/json; charset=UTF-8"
-                    }
-                    });
-                    const resultTrans = await responseTrans.json();
-                    if(resultTrans.status) {
-                        let catIndex=-1,tranIndex=-1;
-                        this.state.categories.map((id,index)=>id.id==categoryId?catIndex=index:"");
-                        let newState = Object.assign({}, this.state);
-                        newState.categories[catIndex].name =selectIcon;
-
-                        this.state.transactions.map((id,index)=>id.id==transactionId?tranIndex=index:"");
-                        newState.transactions[tranIndex].title=title
-                        
-                        this.setState(newState);
-                        
-                        this.getCategories();
-                        this.getTransactions();
-                    }
-
-        }catch(err){
-            console.log(err)
-        }
-    }}catch(err) {
-        console.log(err);
+    switch=(item)=>{
+        this.setState({flagEdit:!this.state.flagEdit , titleCategory:item.title ,categoryInput:item.title, tempId:item.id})
     }
-   
-
-    }
-
-    shouldComponentUpdate(nextProps, nextState){
-        if(this.state.transactions !== nextState.transactions || this.state.categories !== nextState.categories){
-            return true;
-        }
-        else{
-            return false;
-        }
+    cancel=()=>{
+        this.setState({flagEdit:false})
     }
 
     getTransactions = async () => {
@@ -135,6 +85,13 @@ class App extends Component {
         
         console.log("hel")
         
+    }
+
+    editCategory=(item)=>{
+        this.setState({categoryInput:item})
+    }
+    editSelectCat=(item)=>{
+        this.setState({selectCategory:item})
     }
 
     editHandler = (id, e) => {
@@ -251,6 +208,15 @@ class App extends Component {
         ];
     }
 
+   /*  shouldComponentUpdate(nextProps, nextState){
+        if(this.state.transactions === nextState.transactions && this.state.categories === nextState.categories){
+            return false;
+        }
+        else{
+            return true;
+        }
+    } */
+
     addClass(element, className) {
         if (element.classList)
             element.classList.add(className);
@@ -274,6 +240,58 @@ class App extends Component {
             this.addClass(document.body, 'body-overflow-hidden');
         else
             this.removeClass(document.body, 'body-overflow-hidden');
+    }
+
+    editCategoryInput=async()=>{
+        let tran=this.state.transactions.filter(id => id.id ==this.state.tempId);
+        let cat=this.state.categories.filter(id => id.id == tran[0].categories_id)
+
+        try{
+            const responseTrans = await fetch(`http://localhost:8000/transaction/${this.state.tempId}`,
+            {method:
+                'PUT',
+            body:
+                JSON.stringify({title:this.state.categoryInput}),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+            });
+            const result = await responseTrans.json();
+            if(result.status) {
+                try{
+                    const response = await fetch(`http://localhost:8000/categories/${cat[0].id}`,
+                    {method:
+                        'PUT',
+                    body:
+                        JSON.stringify({name:this.state.selectCategory}),
+                    headers: {
+                        "Content-type": "application/json; charset=UTF-8"
+                    }
+                    });
+                    const resultTrans = await response.json();
+                    if(resultTrans.status) {
+
+                        let catIndex=-1,tranIndex=-1;
+                        this.state.categories.map((id,index)=>id.id==cat[0].id?catIndex=index:"");
+                        let newState = Object.assign({}, this.state);
+                        this.state.transactions.map((id,index)=>id.id==this.state.tempId?tranIndex=index:"");
+                        
+                        newState.transactions[tranIndex].title=this.state.categoryInput;
+                        newState.categories[catIndex].name=this.state.selectCategory;
+                        newState.flagEdit=false;
+
+                        this.setState(newState); 
+
+                    }
+
+        }catch(err){
+            console.log(err)
+        }
+    }}catch(err) {
+        console.log(err);
+    }  
+
+
     }
 
     render() {
@@ -325,6 +343,14 @@ class App extends Component {
                                                                     currencies={this.state.currencies}
                                                                     deleteCategories={this.deleteCategories}
                                                                     editCategoryInput={this.editCategoryInput}
+                                                                    flagEdit={this.state.flagEdit}
+                                                                    switch={this.switch}
+                                                                    titleCategory={this.state.titleCategory}
+                                                                    editCategory={this.editCategory}
+                                                                    categoryInput={this.state.categoryInput}
+                                                                    cancel={this.cancel}
+                                                                    editSelectCat={this.editSelectCat}
+                                                                    selectCategory={this.state.selectCategory}
                                                                     /> )} />
                 <Route path="/expense" exact component={() => ( <Expense 
                                                                     transactions={this.state.transactions}
@@ -332,6 +358,15 @@ class App extends Component {
                                                                     currencies={this.state.currencies}
                                                                     deleteCategories={this.deleteCategories}
                                                                     editCategoryInput={this.editCategoryInput}
+                                                                    flagEdit={this.state.flagEdit}
+                                                                    switch={this.switch}
+                                                                    titleCategory={this.state.titleCategory}
+                                                                    editCategory={this.editCategory}
+                                                                    categoryInput={this.state.categoryInput}
+                                                                    cancel={this.cancel}
+                                                                    editSelectCat={this.editSelectCat}
+                                                                    selectCategory={this.state.selectCategory}
+
                                                                     /> )} />
             </div>
 

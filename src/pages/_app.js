@@ -31,6 +31,7 @@ class App extends Component {
             flagCategory: false,
             isEdit: false,
             transId: null,
+            title: "",
         };
         this.onWrapperClick = this.onWrapperClick.bind(this);
         this.onToggleMenu = this.onToggleMenu.bind(this);
@@ -38,6 +39,8 @@ class App extends Component {
         this.onMenuItemClick = this.onMenuItemClick.bind(this);
         this.createMenu();
     }
+
+    
     
 
     getTransactions = async () => {
@@ -242,7 +245,9 @@ class App extends Component {
                                 editHandler={this.editHandler}
                                 isEdit={this.state.isEdit}
                                 transId={this.state.transId}
-                                updateTransaction={this.updateTransaction} /> )} />
+                                updateTransaction={this.updateTransaction}
+                                title={this.state.title}
+                                /> )} />
                 <Route path="/login" exact component={Login} />
                 <Route path="/" exact component={Account} />
                 <Route path="/save" exact  component={Save} />

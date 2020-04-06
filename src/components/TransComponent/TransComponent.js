@@ -6,13 +6,22 @@ class TransComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            edit: false,
+                title: '',
+                createdAt: '',
+                amount: null,
         };
     }
 
-    updateTransaction = () => {
+    handleChange = (e) => {
+        let inputName = e.target.name
+        // let newState = Object.assign({}, this.state);
+        // console.log(newState)
+        this.setState({ inputName : e.target.value })
+    }
+
+    updateTransaction = (e) => {
         const id = this.props.transaction.id;
-        console.log("asd")
+        console.log("soko")
     }
 
     viewForm = () => {
@@ -42,10 +51,17 @@ class TransComponent extends Component {
 
     editForm = () => {
     return(  
-        <form onSubmit={() => this.updateTransaction()}>
+        <form>
             <div className="transaction" id={this.props.transaction.type == 'expense' ? 's1' : 's2'}>
             <div className="tranaction_div1">
-                <h2><input type="text" className="transaction-input" defaultValue={this.props.transaction.title} name="title" /></h2>
+                <h2>
+                    <input type="text" 
+                    className="transaction-input" 
+                    value={this.state.title} 
+                    name="title" 
+                    onChange={(e) => this.setState({title: e.target.value})}
+                    />
+                </h2>
                 <div className="transaction_div1_p">
                     <div><p><input type="date" className="transaction-input" name="created_at" defaultValue={this.props.transaction.created_at} /></p></div>
                     <div><p>01:15pm</p></div>
@@ -60,7 +76,7 @@ class TransComponent extends Component {
                     name="amount" />
                 </h2>
                 <div className="transaction_icon">
-                    <button type="submit" style={{borderRadius: "5px", }}>Save</button>
+                    <button onClick={(e) => this.updateTransaction(e)} type="submit" style={{borderRadius: "5px", }}>Save</button>
                 </div>
             </div>
         </div>

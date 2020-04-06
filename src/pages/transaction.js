@@ -28,7 +28,8 @@ class Transaction extends Component {
                     editHandler={this.props.editHandler}
                     isEdit={this.props.isEdit}
                     transId={this.props.transId}
-                    updateTransaction={this.props.updateTransaction} />
+                    updateTransaction={this.props.updateTransaction}
+                    title={this.props.title} />
                 ))}
             </div>
         );

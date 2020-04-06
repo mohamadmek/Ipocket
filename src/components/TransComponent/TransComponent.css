@@ -13,13 +13,15 @@
     margin-right: 2rem;
 }
 
+.transaction_div2_edit{
+    text-align: right;
+    margin-right: 1rem;
+}
+
 h2{
     margin-left: 0.7rem;
 }
-.transaction_icon{
-    display: flex;
-    justify-content: space-around;
-}
+
 #s1{
     background-color: rgb(209,0,0);
 }
@@ -35,4 +37,10 @@ p{
     display: flex;
     justify-content: space-between; 
     margin-top:5px;
+}
+
+.transaction-input {
+    background: #ccc;
+    width: 50%;
+    border-radius: 5px;
 }

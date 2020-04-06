@@ -26,9 +26,11 @@ class App extends Component {
             overlayMenuActive: false,
             mobileMenuActive: false,
             transactions: [],
-            categories:[],
-            currencies:[],            
-            
+            categories: [],
+            currencies: [],
+            flagCategory: false,
+            isEdit: false,
+            transId: null,
         };
         this.onWrapperClick = this.onWrapperClick.bind(this);
         this.onToggleMenu = this.onToggleMenu.bind(this);
@@ -124,6 +126,16 @@ class App extends Component {
         } catch(err) {
             console.log(err);
         }
+    }
+
+    updateTransaction = () => {
+        
+        console.log("hel")
+        
+    }
+
+    editHandler = (id, e) => {
+        this.setState({ isEdit: !this.state.isEdit, transId: id})
     }
 
     getCategories = async () => {
@@ -294,7 +306,11 @@ class App extends Component {
                 <Route path="/transaction" 
                 component={() => ( <Tranaction 
                                 transactions={this.state.transactions}
-                                deleteTransaction={this.deleteTransaction} /> )} />
+                                deleteTransaction={this.deleteTransaction}
+                                editHandler={this.editHandler}
+                                isEdit={this.state.isEdit}
+                                transId={this.state.transId}
+                                updateTransaction={this.updateTransaction} /> )} />
                 <Route path="/login" exact component={Login} />
                 <Route path="/" exact component={Account} />
                 <Route path="/save" exact  component={Save} />

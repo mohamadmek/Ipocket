@@ -20,10 +20,15 @@ class Transaction extends Component {
             <div>
                 <Filter/>
                 <br></br>
-                {this.props.transactions.map((transaction, index) => (
+                {this.props.transactions.map((transaction) => (
                     <Trans 
+                    key={transaction.id}
                     transaction={transaction} 
-                    deleteTransaction={this.props.deleteTransaction} />
+                    deleteTransaction={this.props.deleteTransaction}
+                    editHandler={this.props.editHandler}
+                    isEdit={this.props.isEdit}
+                    transId={this.props.transId}
+                    updateTransaction={this.props.updateTransaction} />
                 ))}
             </div>
         );

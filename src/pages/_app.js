@@ -40,10 +40,8 @@ class App extends Component {
         this.createMenu();
     }
 
-<<<<<<< HEAD
     
     
-=======
 
 
     editCategoryInput=async(transactionId,title,selectIcon,categoryId)=>{
@@ -103,7 +101,6 @@ class App extends Component {
             return false;
         }
     }
->>>>>>> af08c4f633db70381cc2fea2f9334ecd01dcd0ce
 
     getTransactions = async () => {
         try {

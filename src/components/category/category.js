@@ -1,26 +1,25 @@
 
-import React from 'react';
+import React, { Component, PureComponent } from 'react';
 import {Dialog} from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import {Dropdown} from 'primereact/dropdown';
 import {Calendar} from 'primereact/calendar';
 import "./category.css";
-import { NavDropdown } from 'react-bootstrap';
 
 const currentdate = new Date();
 const currentYear = currentdate.getFullYear();
 const maxdate = new Date(currentdate.setYear(currentdate.getFullYear() + 1));
+
 class category extends React.Component {
     constructor(props) {
         super(props);
         this.state = {   
             temp:[],
-            index:-1,
             currency: [
                 {label:"EURO",value: 'EURO'},
                 { label:"LBP",value: 'LBP'} 
             ],
-            cars: [
+            icon: [
                 {label: 'fa fa-hospital', value: 'Hospital'},
                 {label: 'fa fa-user-graduate', value: 'School'},
                 {label: 'fa fa-running', value: 'Sports'},
@@ -38,15 +37,15 @@ class category extends React.Component {
                 {label:'fa fa-asterisk', value:"Other"}
             ],
             categories:[],
-            editing:false,
+            visibleEdit:false,
+            tempinput:"",
+            title:"",
+            SelectCategory:"",
+            transactionId:-1,
+            categoryId:-1,
         };
         
     }
-    onCarChange2=(e)=> {
-        let a;
-        this.state.cars.map((item)=>item.value==e.value?a=item:"");
-        this.setState({car2:e.value,newlabel:a.label});
-     }
 
     onChange(e){
         this.setState({curTemp:e.value})
@@ -60,11 +59,9 @@ class category extends React.Component {
         this.props.chosen[this.state.index]=b;
         this.setState({ visible: false ,curTemp:"",index:-1});
     }
-    inputvalue(e){
-        this.setState({tempinput:e});
-    }
+
      editCategories(e,id){
-     this.setState({ editing: true });
+      
     }
 
     carTemplate(option) {
@@ -82,10 +79,11 @@ class category extends React.Component {
     }
 
     componentDidMount=()=>{
+        this.categoryInput.focus();
+      // document.getElementsByClassName("zeinab").focus();
         if(this.props.categories!=0 && this.props.transactions.length!=0)
-        this.categories();
+            this.categories();
     }
-
     categories=()=>{
         let i=[];
         this.props.transactions.map((item)=>{
@@ -101,13 +99,33 @@ class category extends React.Component {
         return s;
     }
 
+    headername=(item)=>{
+       // this.setState({visibleEdit:true});
+       // this.props.transactions.filter(id => id.categories_id == item)
+/*         if(this.props.FlagCategory[0]){
+          let a=  this.props.transactions.filter(item =>item.categories_id == this.props.FlagCategory[1][0].id,this.props.transactions)
+          let b= a[0].title;
+          return b 
+        }
+        return " "; */
+        if(item!=undefined){
+            let b=this.props.transactions.filter(id => id.categories_id == item[0].id);
+            this.setState({title:b[0].title, temp:b[0].title ,transactionId:b[0].id,categoryId:item[0].id})
+        }
+
+    }
+    handleChange=(e)=>{
+       // document.getElementById("zeinab").focus();
+
+    }
+
 	render() {
         const footer = (
 			<div>
 				<Button
 					label='Create'
 					icon='pi pi-check'
-                    onClick={e=>this.create(e)}
+                    /* onClick={e=>this.create(e)} */
                     style={{backgroundColor:'#16a085',color:'white'}}
 				/>
 				<Button
@@ -124,13 +142,14 @@ class category extends React.Component {
 				<Button
 					label='Edit'
 					icon='pi pi-check'
-                    onClick={e=>this.editCategories()}
+                    onClick={e=>{this.setState({visibleEdit:false});this.props.editCategoryInput(this.state.transactionId,this.state.temp,this.state.SelectCategory,this.state.categoryId)}}
                     style={{backgroundColor:'#16a085',color:'white'}}
 				/>
 				<Button
 					label='cancel'
 					icon='fa fa-trash'
-					onClick={e => this.setState({ visible: false })}
+                    /* onClick={e =>this.props.switchCategoryFlag("")} */
+                    onClick={(e)=>this.setState({visibleEdit:false})}
                     className='p-button-secondary'
                     style={{color:'rgb(95,113,132)'}}
 				/>
@@ -152,8 +171,8 @@ class category extends React.Component {
                     </button>
                     </div>
                     <div className="category_div_inner2_22">
-                    <div><button className="category_div_inner2_button" onClick={e=>this.editCategories(e,item[0].id)}><i className="fas fa-edit"></i></button></div>
-                    <div><button className="category_div_inner2_button" /* onClick={e=>this.props.deleteCategory(item[0].id)} */><i className="fas fa-trash"></i></button></div>
+                    <div><button className="category_div_inner2_button" onClick={()=> {this.setState({visibleEdit:true});this.headername(item)}} /* onClick={e=> this.props.switchCategoryFlag(item) this.editCategories(e,item[0].id)} */><i className="fas fa-edit"></i></button></div>
+                    <div><button className="category_div_inner2_button"  onClick={e=>this.props.deleteCategories(item[0].id)}><i className="fas fa-trash"></i></button></div>
                     </div>
                 </div>
                 <div>
@@ -169,10 +188,10 @@ class category extends React.Component {
                 </div> 
             </div>
                 )}
-                <Dialog
+                {/* <Dialog
                     header={this.state.temp.value+" "+ this.props.desc}
                     footer={footer} 
-                    visible={this.state.visible}
+                    visible={this.props.flagCategory}
                     style={{width:'25%'}}
                     modal={true}
                     onHide={e => this.setState({ visible: false })}>
@@ -207,35 +226,54 @@ class category extends React.Component {
                     </div>
                 <div>
             </div>
-        </div>
-        </Dialog>
+        </div> 
+        </Dialog>*/}
                  <Dialog
-                    header={this.state.temp.value+" "+ this.props.desc}
+                   header={/* this.headername()+" " + */this.state.title + " " + this.props.desc}
                     footer={footer2} 
-                    visible={this.state.editing}
+                    /* visible={this.props.FlagCategory[0]} */
+                    visible={this.state.visibleEdit}
                     style={{width:'25%'}}
                     modal={true}
-                    onHide={e => this.setState({ editing: false })}>
+                    dismissableMask={false}
+                    closable={false}
+                    /* onHide={e =>this.props.switchCategoryFlag()}> */
+                    onHide={e=>this.setState({visibleEdit:false})}>
                 <div className="category_popup_div2">
-                    <div>        
+                  <div>    
                     <input 
-                    type="text" 
-                    placeholder="Category Name" 
-                    style={{width:'70%'}} 
-                    id="category_popup_div2_inputs" 
-                    name="zz" 
-                    value={this.state.tempinput} 
-                    onChange={e=>this.inputvalue(e.target.value)}></input>
+                        type="text" 
+                        placeholder="Category Name" 
+                        style={{width:'70%'}} 
+                        id="category_popup_div2_inputs" 
+                        name="categoryInput" 
+                        value={this.state.temp}
+                        onChange={e=>this.setState({temp:e.target.value})}
+                        ref={(input) => { this.categoryInput = input }}>
+                    </input>
                     </div>
                     <div>
-                    <Dropdown 
-                        value={this.state.car2}
+                    {/*    <Dropdown 
+                      className="zeinab"
+                        value={this.state.cars}
                         options={this.state.cars} 
-                        onChange={e => this.onCarChange2(e)} 
-                        itemTemplate={this.carTemplate}  
+                        //onChange={e =>this.onCarChange2(e) }
                         style={{width: '70%',margin:'10px 0px 0px 0px'}}
                         placeholder="choose icon"
-                        showClear={true}/>
+                        showClear={true}
+                        
+                        //onMouseDown={e=>this.onCarChange2(e)}
+                        //onFocus={e=>this.onCarChange2(e)}
+                        placeholder="ZEINAB"
+                        />  */}
+                       <select  onChange={(e)=>this.setState({SelectCategory:e.target.value})} className="category_select">
+                             {this.state.icon.map((item)=>
+                              <option value={item.label}>
+                            {/*  <i className={item.label}></i> */}
+                                 {item.value} Icon</option> 
+                             )}
+                        </select>
+
                     </div>
                 </div>
                 </Dialog>

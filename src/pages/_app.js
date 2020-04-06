@@ -45,12 +45,16 @@ class App extends Component {
     }
 
     
+<<<<<<< HEAD
     switch=(item)=>{
         this.setState({flagEdit:!this.state.flagEdit , titleCategory:item.title ,categoryInput:item.title, tempId:item.id})
     }
     cancel=()=>{
         this.setState({flagEdit:false})
     }
+=======
+    
+>>>>>>> 6b154bedd2a34fa77e47400f5f7114bd97415017
 
     getTransactions = async () => {
         try {

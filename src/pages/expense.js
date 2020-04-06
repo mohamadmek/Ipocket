@@ -39,7 +39,9 @@ class Expense extends Component {
                  transactions={this.props.transactions}
                  categories={this.props.categories}
                  currencies={this.props.currencies}
-                 deleteCategory={this.props.deleteCategory}/>
+                 deleteCategories={this.props.deleteCategories}
+                 editCategoryInput={this.props.editCategoryInput}
+                 />
             <CategoryPop handle={this.addCategory}/>
             </div>
             <Balance desc="expense"/>

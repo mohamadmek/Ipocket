@@ -191,7 +191,7 @@ class category extends React.Component {
                     </div>
                     <div className="category_div_inner2_22">
                     <div><button className="category_div_inner2_button" onClick={()=>this.props.switch(item) }><i className="fas fa-edit"></i></button></div>
-                    <div><button className="category_div_inner2_button"  onClick={e=>this.props.deleteCategories(item.id)}><i className="fas fa-trash"></i></button></div>
+                    <div><button className="category_div_inner2_button"  onClick={e=>this.props.deleteCategories(item)}><i className="fas fa-trash"></i></button></div>
                     </div>
                 </div>
                 <div>

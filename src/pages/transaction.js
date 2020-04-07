@@ -31,6 +31,7 @@ class Transaction extends Component {
                     deleteCategories={this.props.deleteCategories}
                     transTemp={this.props.transTemp}
                     editTransInput={this.props.editTransInput}
+                    editTransDB={this.props.editTransDB}
                      />
                 ))}
             </div>

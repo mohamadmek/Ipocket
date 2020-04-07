@@ -120,17 +120,59 @@ class App extends Component {
 
     editTransInput=(value,index)=>{
         let newState = Object.assign({}, this.state);
-        let key=newState.transTemp[index];
-        if(index == 2){
-            key.title=value
+        let key=newState.transTemp;
+        const re = /^[0-9]+$/;
+
+        if(index ==4){
+            if(value == "title")
+                key[4].focus=1
+            else if(value == "date")
+                key[4].focus=2;
+            else if (value == "amount")
+                key[4].focus=3 
         }
-        else if(index ==3){
-            key.date=value
+        else{
+            if(index == 2)
+                key[index].title=value
+            else if(index ==3)
+                key[index].date=value
+            else if(index==1)
+                    key[index].amount=value;
         }
-        else if(index==1){
-            key.amount=value
-        }
-        this.setState(newState);        
+        this.setState(newState);   
+    }
+
+     editTransDB = async ()=>{
+        console.log(this.state.transTemp[0].id,this.state.transactions)
+         try{
+            const responseTrans = await fetch(`http://localhost:8000/transaction/${this.state.transTemp[0].id}`,
+            {method:
+                'PUT',
+            body:
+                JSON.stringify({
+                    title:this.state.transTemp[2].title,
+                    amount:this.state.transTemp[1].amount,
+                    start_date:this.state.transTemp[3].date
+                }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+            });
+            const result = await responseTrans.json();
+            if(result.status) {
+
+                let tranIndex=-1;
+                let newState = Object.assign({}, this.state);
+                this.state.transactions.map((id,index)=>id.id==this.state.transTemp[0].id ? tranIndex=index:"");
+                newState.transactions[tranIndex].title=this.state.transTemp[2].title;
+                newState.transactions[tranIndex].amount=this.state.transTemp[1].amount;
+                newState.transactions[tranIndex].start_date=this.state.transTemp[3].date;
+                newState.isEdit = false;
+                this.setState(newState);
+            }
+          }catch(err) {
+        console.log(err);
+          }
     }
 
     getCategories = async () => {
@@ -359,17 +401,17 @@ class App extends Component {
                     <AppMenu model={this.menu} onMenuItemClick={this.onMenuItemClick} />
                 </div>
             <div className="layout-main">
-                <Route path="/transaction" 
-                component={() => ( <Tranaction 
-                                transactions={this.state.transactions}
-                                editHandler={this.editHandler}
-                                isEdit={this.state.isEdit}
-                                updateTransaction={this.updateTransaction}
-                                title={this.state.title}
-                                deleteCategories={this.deleteCategories}
-                                transTemp={this.state.transTemp}
-                                editTransInput={this.editTransInput}
-                                /> )} />
+                <Route path="/transaction" component={() => ( <Tranaction 
+                                                                    transactions={this.state.transactions}
+                                                                    editHandler={this.editHandler}
+                                                                    isEdit={this.state.isEdit}
+                                                                    updateTransaction={this.updateTransaction}
+                                                                    title={this.state.title}
+                                                                    deleteCategories={this.deleteCategories}
+                                                                    transTemp={this.state.transTemp}
+                                                                    editTransInput={this.editTransInput}
+                                                                    editTransDB={this.editTransDB}
+                                                                    /> )} />
                 <Route path="/login" exact component={Login} />
                 <Route path="/" exact component={Account} />
                 <Route path="/save" exact  component={Save} />

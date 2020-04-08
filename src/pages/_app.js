@@ -37,7 +37,10 @@ class App extends Component {
             titleCategory:[],
             categoryInput:[],
             selectCategory:"",
-            tempId:-1
+            tempId:-1,
+
+            visibleCategoryPop:false,
+            InputPop:[]
         };
         this.onWrapperClick = this.onWrapperClick.bind(this);
         this.onToggleMenu = this.onToggleMenu.bind(this);
@@ -59,6 +62,90 @@ class App extends Component {
     }
     cancel=()=>{
         this.setState({flagEdit:false})
+    }
+    
+    switchPop=()=>{
+        this.setState({
+            visibleCategoryPop : ! this.state.visibleCategoryPop,
+            selectCategory : ""
+        })
+    }
+
+    setInputPop=(e)=>{
+        this.setState({InputPop: e})
+    }
+
+    createCategory= async (e)=>{///////////////must udate the users_id
+        console.log("create",this.state.InputPop,this.state.selectCategory,e)
+        try{
+            const responseTrans = await fetch(`http://localhost:8000/categories`,
+            {method:
+                'POST',
+            body:
+                JSON.stringify({
+                    name:this.state.selectCategory,
+                    users_id:1
+                }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+            });
+            const result = await responseTrans.json();
+            if(result.status) {
+                 try{
+                    const responseTrans = await fetch(`http://localhost:8000/transaction/`,
+                    {method:
+                        'POST',
+                    body:
+                        JSON.stringify({
+                            title:this.state.InputPop,
+                            flag:2,
+                            amount:0,
+                            start_date:1/1/20,
+                            interval:2,
+                            type:e,
+                            categories_id:result.category.id,
+                            users_id:1,
+                            currencies_id:1
+                        }),
+                    headers: {
+                        "Content-type": "application/json; charset=UTF-8"
+                    }
+                    });
+                    const resultT = await responseTrans.json();
+                    if(resultT.status) {
+                        let newCat={
+                            id:result.category.id,
+                            name:this.state.selectCategory,
+                            users_id:1
+                        };
+                        
+                            let newTran={
+                                id:resultT.transaction.id,
+                                title:this.state.InputPop,
+                                flag:2,
+                                amount:0,
+                                start_date:1/1/20,
+                                interval:2,
+                                type:e,
+                                categories_id:result.category.id,
+                                users_id:1,
+                                currencies_id:1
+                        }
+                        
+                        this.state.categories.push(newCat);
+                        this.state.transactions.push(newTran);
+                        this.switchPop();
+                    }
+                  }catch(err) {
+                console.log(err);
+                  }
+            }
+          }catch(err) {
+        console.log(err);
+          }
+
+
     }
     
 
@@ -143,7 +230,6 @@ class App extends Component {
     }
 
      editTransDB = async ()=>{
-        console.log(this.state.transTemp[0].id,this.state.transactions)
          try{
             const responseTrans = await fetch(`http://localhost:8000/transaction/${this.state.transTemp[0].id}`,
             {method:
@@ -419,6 +505,7 @@ class App extends Component {
                                                                     transactions={this.state.transactions} 
                                                                     categories={this.state.categories}
                                                                     currencies={this.state.currencies}
+                                                                    
                                                                     deleteCategories={this.deleteCategories}
                                                                     editCategoryInput={this.editCategoryInput}
                                                                     flagEdit={this.state.flagEdit}
@@ -429,11 +516,19 @@ class App extends Component {
                                                                     cancel={this.cancel}
                                                                     editSelectCat={this.editSelectCat}
                                                                     selectCategory={this.state.selectCategory}
+                                                                    
+                                                                    visibleCategoryPop={this.state.visibleCategoryPop}
+                                                                    switchPop={this.switchPop}
+                                                                    InputPop={this.state.InputPop}
+                                                                    setInputPop={this.setInputPop}
+                                                                    createCategory={this.createCategory}
+
                                                                     /> )} />
                 <Route path="/expense" exact component={() => ( <Expense 
                                                                     transactions={this.state.transactions}
                                                                     categories={this.state.categories}
                                                                     currencies={this.state.currencies}
+                                                                    
                                                                     deleteCategories={this.deleteCategories}
                                                                     editCategoryInput={this.editCategoryInput}
                                                                     flagEdit={this.state.flagEdit}
@@ -445,6 +540,11 @@ class App extends Component {
                                                                     editSelectCat={this.editSelectCat}
                                                                     selectCategory={this.state.selectCategory}
 
+                                                                    visibleCategoryPop={this.state.visibleCategoryPop}
+                                                                    switchPop={this.switchPop}
+                                                                    InputPop={this.state.InputPop}
+                                                                    setInputPop={this.setInputPop}
+                                                                    createCategory={this.createCategory}
                                                                     /> )} />
             </div>
 

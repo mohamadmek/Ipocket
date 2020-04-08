@@ -39,6 +39,7 @@ class Expense extends Component {
                  transactions={this.props.transactions}
                  categories={this.props.categories}
                  currencies={this.props.currencies}
+                 
                  deleteCategories={this.props.deleteCategories}
                  editCategoryInput={this.props.editCategoryInput}
                  flagEdit={this.props.flagEdit}
@@ -50,7 +51,17 @@ class Expense extends Component {
                  editSelectCat={this.props.editSelectCat}
                  selectCategory={this.props.selectCategory}
                  />
-            <CategoryPop handle={this.addCategory}/>
+            <CategoryPop 
+                desc="expense"
+                handle={this.addCategory}
+                visibleCategoryPop={this.props.visibleCategoryPop}
+                switchPop={this.props.switchPop}
+                InputPop={this.props.InputPop}
+                setInputPop={this.props.setInputPop}
+                editSelectCat={this.props.editSelectCat}
+                selectCategory={this.props.selectCategory}
+                createCategory={this.props.createCategory}
+                />
             </div>
             <Balance desc="expense"/>
             </div>

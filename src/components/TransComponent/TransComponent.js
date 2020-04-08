@@ -32,7 +32,7 @@ class TransComponent extends Component {
                 <div className="tranaction_div1">
                     <h2>{this.props.transaction.title}</h2>
                     <div className="transaction_div1_p">
-                        <div><p>{this.props.transaction.created_at}</p></div>
+                        <div><p>{this.props.transaction.start_date}</p></div>
                     </div>
                 </div>
                 <div className="transaction_div2" >
@@ -80,7 +80,7 @@ class TransComponent extends Component {
                         onChange={(e)=>this.props.editTransInput(e.target.value,3)}
                         onClick={(e)=>this.props.editTransInput("date",4)}
                         /></p></div>
-                    <div><p>01:15pm</p></div>
+                    {/* <div><p>01:15pm</p></div> */}
                 </div>
             </div>
             <div className="transaction_div2_edit" >
@@ -98,7 +98,8 @@ class TransComponent extends Component {
                     />
                 </h2>
                 <div className="transaction_icon">
-                    <button onClick={(e) => this.props.editTransDB()} type="submit" style={{borderRadius: "5px"}}>Save</button>
+                    <button onClick={(e) => this.props.editTransDB()} type="submit" style={{borderRadius: "5px",marginRight:'5px'}}>Save</button>
+                    <button onClick={(e) => this.props.editHandler("cancel")} style={{borderRadius: "5px"}}>Cancel</button>
                 </div>
             </div>
         </div>

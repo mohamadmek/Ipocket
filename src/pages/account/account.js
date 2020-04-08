@@ -12,24 +12,20 @@ class Account extends Component {
         this.state = {
         }
       }
-      
-  
-      handle=()=>{
-        let a=new Date().getMonth()+1;
-        let b=new Date().getDate()+"/"+a+"/"+new Date().getFullYear();
-        return b;
-      }
  
     render() {
         return (
             <>
             <div className="account_div">
             <p className="account_div_p">Account</p>
-            <p className="account_div_p">{this.handle()}</p>
+            <p className="account_div_p">{this.props.date}</p>
             </div>
             <br></br>
             <div className="account_div2">
-              <Balance/>
+              <Balance 
+                totalExpense={this.props.totalExpense}
+                totalIncome={this.props.totalIncome}
+                />
               <BarChart/>
             </div>
             

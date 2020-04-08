@@ -25,9 +25,14 @@ class App extends Component {
             staticMenuInactive: false,
             overlayMenuActive: false,
             mobileMenuActive: false,
+
             transactions: [],
             categories: [],
             currencies: [],
+            date:"",
+
+            totalIncome:0,
+            totalExpense:0,
             
             isEdit: false,
             transTemp:[],
@@ -40,7 +45,11 @@ class App extends Component {
             tempId:-1,
 
             visibleCategoryPop:false,
-            InputPop:[]
+            InputPop:[],
+
+            EditCatVisible:false,
+            EditCatModel:[],
+
         };
         this.onWrapperClick = this.onWrapperClick.bind(this);
         this.onToggleMenu = this.onToggleMenu.bind(this);
@@ -75,6 +84,76 @@ class App extends Component {
         this.setState({InputPop: e})
     }
 
+    switchEditCatVisible=(e)=>{
+        if(e!=1){console.log(e)
+            this.setState({
+                EditCatVisible: ! this.state.EditCatVisible,
+                EditCatModel:e
+            })
+        }
+        else
+        this.setState({EditCatVisible: ! this.state.EditCatVisible})
+
+    }
+
+    ChangeEditCatModel=(value,index)=>{
+        let newState = Object.assign({}, this.state);
+        if(index == "amount"){
+            newState.EditCatModel.amount=value;
+        }
+        else if(index == "flag"){
+            if(value==1){
+                newState.EditCatModel.end_date=""
+            }
+            newState.EditCatModel.flag=value;
+        }
+        else if(index == "date"){
+            newState.EditCatModel.end_date=value;
+        }
+        else if(index == "currencies"){
+            newState.EditCatModel.currencies_id=value;
+        }
+
+        this.setState(newState);
+    }
+
+    ChangeEditCatModelDB=async () =>{
+        try{
+            const responseTrans = await fetch(`http://localhost:8000/transaction/${this.state.EditCatModel.id}`,
+            {method:
+                'PUT',
+            body:
+                JSON.stringify({
+                    amount:this.state.EditCatModel.amount,
+                    end_date:this.state.EditCatModel.end_date,
+                    flag:this.state.EditCatModel.flag,
+                    currencies_id:this.state.EditCatModel.currencies_id,
+                    start_date:this.state.date,
+
+                }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+            });
+            const result = await responseTrans.json();
+            if(result.status) {
+
+                let tranIndex=-1;
+                let newState = Object.assign({}, this.state);
+                this.state.transactions.map((id,index)=>id.id==this.state.EditCatModel.id ? tranIndex=index:"");
+                newState.transactions[tranIndex].amount=this.state.EditCatModel.amount;
+                newState.transactions[tranIndex].end_date=this.state.EditCatModel.end_date;
+                newState.transactions[tranIndex].flag=this.state.EditCatModel.flag;
+                newState.transactions[tranIndex].currencies_id=this.state.EditCatModel.currencies_id
+                newState.EditCatVisible = false;
+                this.setState(newState);
+            }
+          }catch(err) {
+        console.log(err);
+          }
+    }
+
+
     createCategory= async (e)=>{///////////////must udate the users_id
         console.log("create",this.state.InputPop,this.state.selectCategory,e)
         try{
@@ -101,7 +180,7 @@ class App extends Component {
                             title:this.state.InputPop,
                             flag:2,
                             amount:0,
-                            start_date:1/1/20,
+                            start_date:this.state.date,
                             interval:2,
                             type:e,
                             categories_id:result.category.id,
@@ -158,6 +237,7 @@ class App extends Component {
                 this.setState({
                     transactions: result.transaction
                 })
+                this.TotalExpenseIncome();
             }
         } catch (err) {
             console.log(err);
@@ -178,12 +258,6 @@ class App extends Component {
         }
     }
 
-    updateTransaction = () => {
-        
-        console.log("hel")
-        
-    }
-
     editCategory=(item)=>{
         this.setState({categoryInput:item})
     }
@@ -192,17 +266,22 @@ class App extends Component {
     }
 
     editHandler = (item ) => {
-        let a=[
-            {id:item.id},
-            {amount:item.amount},
-            {title:item.title},
-            {date:item.start_date},
-            {focus:1}
-        ]
-        this.setState({
-            isEdit: !this.state.isEdit,
-            transTemp:a
-        })
+        if(item == "cancel"){
+            this.setState({isEdit : ! this.state.isEdit})
+        }
+        else{
+            let a=[
+                {id:item.id},
+                {amount:item.amount},
+                {title:item.title},
+                {date:item.start_date},
+                {focus:1}
+            ]
+            this.setState({
+                isEdit: !this.state.isEdit,
+                transTemp:a
+            })
+        }
     }
 
     editTransInput=(value,index)=>{
@@ -296,6 +375,15 @@ class App extends Component {
         this.getTransactions();
         this.getCategories();
         this.getCurrencies();
+    }
+
+    TotalExpenseIncome=()=>{
+        let income=0 ,expense=0;
+        let a=new Date().getMonth()+1;
+        let b= new Date().getDate() + "/" + a + "/" + new Date().getFullYear();
+        this.state.transactions.map((id)=>{
+              id.type == "income"? income += parseFloat(id.amount) : expense += parseFloat(id.amount) })
+            this.setState({ date:b , totalExpense :expense ,totalIncome: income})
     }
 
     deleteCategories = async (id) => {
@@ -457,6 +545,8 @@ class App extends Component {
 
     }
 
+
+
     render() {
         const logo = this.state.layoutColorMode === 'dark' ? 'assets/layout/images/logo-white.svg': 'assets/layout/images/logo.svg';
 
@@ -499,7 +589,11 @@ class App extends Component {
                                                                     editTransDB={this.editTransDB}
                                                                     /> )} />
                 <Route path="/login" exact component={Login} />
-                <Route path="/" exact component={Account} />
+                <Route path="/" exact component={() => ( < Account 
+                                                                    totalExpense={this.state.totalExpense}
+                                                                    totalIncome={this.state.totalIncome}
+                                                                    date={this.state.date}
+                                                                    />)} />
                 <Route path="/save" exact  component={Save} />
                 <Route path="/income" exact component={() => ( <Income
                                                                     transactions={this.state.transactions} 
@@ -523,6 +617,14 @@ class App extends Component {
                                                                     setInputPop={this.setInputPop}
                                                                     createCategory={this.createCategory}
 
+                                                                    EditCatVisible={this.state.EditCatVisible}
+                                                                    switchEditCatVisible={this.switchEditCatVisible}
+                                                                    EditCatModel={this.state.EditCatModel}
+                                                                    ChangeEditCatModel={this.ChangeEditCatModel}
+                                                                    ChangeEditCatModelDB={this.ChangeEditCatModelDB}
+
+                                                                    totalExpense={this.state.totalExpense}
+                                                                    totalIncome={this.state.totalIncome}
                                                                     /> )} />
                 <Route path="/expense" exact component={() => ( <Expense 
                                                                     transactions={this.state.transactions}
@@ -545,6 +647,15 @@ class App extends Component {
                                                                     InputPop={this.state.InputPop}
                                                                     setInputPop={this.setInputPop}
                                                                     createCategory={this.createCategory}
+
+                                                                    EditCatVisible={this.state.EditCatVisible}
+                                                                    switchEditCatVisible={this.switchEditCatVisible}
+                                                                    EditCatModel={this.state.EditCatModel}
+                                                                    ChangeEditCatModel={this.ChangeEditCatModel}
+                                                                    ChangeEditCatModelDB={this.ChangeEditCatModelDB}
+
+                                                                    totalExpense={this.state.totalExpense}
+                                                                    totalIncome={this.state.totalIncome}
                                                                     /> )} />
             </div>
 

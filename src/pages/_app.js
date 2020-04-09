@@ -49,7 +49,6 @@ class App extends Component {
 
             EditCatVisible:false,
             EditCatModel:[],
-
         };
         this.onWrapperClick = this.onWrapperClick.bind(this);
         this.onToggleMenu = this.onToggleMenu.bind(this);

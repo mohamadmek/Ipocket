@@ -24,12 +24,14 @@ class Transaction extends Component {
                     <Trans 
                     key={transaction.id}
                     transaction={transaction} 
-                    deleteTransaction={this.props.deleteTransaction}
                     editHandler={this.props.editHandler}
                     isEdit={this.props.isEdit}
-                    transId={this.props.transId}
                     updateTransaction={this.props.updateTransaction}
-                    title={this.props.title} />
+                    title={this.props.title}
+                    deleteCategories={this.props.deleteCategories}
+                    transTemp={this.props.transTemp}
+                    editTransInput={this.props.editTransInput}
+                     />
                 ))}
             </div>
         );

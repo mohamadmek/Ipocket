@@ -28,8 +28,10 @@ class App extends Component {
             transactions: [],
             categories: [],
             currencies: [],
+            
             isEdit: false,
-            transId: null,
+            transTemp:[],
+            
             title: "",
             flagEdit:false,
             titleCategory:[],
@@ -45,6 +47,19 @@ class App extends Component {
     }
 
     
+    switch=(item)=>{
+        let a=this.state.categories.filter(id => id.id == item.categories_id);
+        this.setState({
+            flagEdit:!this.state.flagEdit ,
+            titleCategory:item.title,
+            categoryInput:item.title,
+            tempId:item.id,
+            selectCategory:a[0].name
+        })
+    }
+    cancel=()=>{
+        this.setState({flagEdit:false})
+    }
     
 
     getTransactions = async () => {
@@ -89,8 +104,33 @@ class App extends Component {
         this.setState({selectCategory:item})
     }
 
-    editHandler = (id, e) => {
-        this.setState({ isEdit: !this.state.isEdit, transId: id})
+    editHandler = (item ) => {
+        let a=[
+            {id:item.id},
+            {amount:item.amount},
+            {title:item.title},
+            {date:item.start_date},
+            {focus:1}
+        ]
+        this.setState({
+            isEdit: !this.state.isEdit,
+            transTemp:a
+        })
+    }
+
+    editTransInput=(value,index)=>{
+        let newState = Object.assign({}, this.state);
+        let key=newState.transTemp[index];
+        if(index == 2){
+            key.title=value
+        }
+        else if(index ==3){
+            key.date=value
+        }
+        else if(index==1){
+            key.amount=value
+        }
+        this.setState(newState);        
     }
 
     getCategories = async () => {
@@ -131,19 +171,19 @@ class App extends Component {
     }
 
     deleteCategories = async (id) => {
-        let b=this.state.transactions.filter(trans_id => trans_id.categories_id == id);
-        this.deleteTransaction(b[0].id)
+        let cat=this.state.categories.filter(cat_id => cat_id.id == id.categories_id);
+        this.deleteTransaction(id.id);
         try{
-            const response = await fetch(`http://localhost:8000/categories/${id}`,
+            const response = await fetch(`http://localhost:8000/categories/${cat[0].id}`,
             {method: "DELETE"});
             const result = await response.json();
             if(result.status) {
-                const categories = this.state.categories.filter(category => category.id != id)
+                const categories = this.state.categories.filter(category => category.id != cat[0].id)
                 this.setState({categories})
             }
         } catch(err) {
             console.log(err);
-        }
+        } 
     }
     onWrapperClick(event) {
         if (!this.menuClick) {
@@ -322,12 +362,13 @@ class App extends Component {
                 <Route path="/transaction" 
                 component={() => ( <Tranaction 
                                 transactions={this.state.transactions}
-                                deleteTransaction={this.deleteTransaction}
                                 editHandler={this.editHandler}
                                 isEdit={this.state.isEdit}
-                                transId={this.state.transId}
                                 updateTransaction={this.updateTransaction}
                                 title={this.state.title}
+                                deleteCategories={this.deleteCategories}
+                                transTemp={this.state.transTemp}
+                                editTransInput={this.editTransInput}
                                 /> )} />
                 <Route path="/login" exact component={Login} />
                 <Route path="/" exact component={Account} />

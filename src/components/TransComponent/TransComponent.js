@@ -24,6 +24,8 @@ class TransComponent extends Component {
         console.log("soko")
     }
 
+    
+
     viewForm = () => {
         return (
             <div className="transaction" id={this.props.transaction.type == 'expense' ? 's1' : 's2'}>
@@ -38,32 +40,44 @@ class TransComponent extends Component {
                     <div className="transaction_icon">
                         <i 
                         className="fas fa-trash" 
-                        onClick={() => this.props.deleteTransaction(this.props.transaction.id)} 
+                        onClick={()=>this.props.deleteCategories(this.props.transaction)}
                         style={{marginRight: '12px', cursor: 'pointer'}}
                         ></i>
-                        <i onClick={(e) => this.props.editHandler(this.props.transaction.id, e)} className="fas fa-edit" style={{cursor: 'pointer'}}></i>
+                        <i onClick={(e) => this.props.editHandler(this.props.transaction)} className="fas fa-edit" style={{cursor: 'pointer'}}></i>
                     </div>
                 </div>
             </div>
         )
     }
 
+ 
+
 
     editForm = () => {
     return(  
-        <form>
-            <div className="transaction" id={this.props.transaction.type == 'expense' ? 's1' : 's2'}>
+        <>
+           <div className="transaction" id={this.props.transaction.type == 'expense' ? 's1' : 's2'}>
             <div className="tranaction_div1">
                 <h2>
                     <input type="text" 
                     className="transaction-input" 
-                    value={this.state.title} 
-                    name="title" 
-                    onChange={(e) => this.setState({title: e.target.value})}
+                    value={this.props.transTemp[2].title} 
+                    name="title"
+                    autoFocus={this.props.transTemp[4].focus==1 ? true : false}
+                    onChange={(e)=>this.props.editTransInput(e.target.value,2)}
                     />
                 </h2>
                 <div className="transaction_div1_p">
-                    <div><p><input type="date" className="transaction-input" name="created_at" defaultValue={this.props.transaction.created_at} /></p></div>
+                    <div><p>
+                        <input 
+                        type="date" 
+                        className="transaction-input" 
+                        name="created_at"
+                        value={this.props.transTemp[3].date}
+                       
+                        onChange={(e)=>console.log("e",e.target.name)} /* this.props.editTransInput(e.target.value,3)} */
+
+                        /></p></div>
                     <div><p>01:15pm</p></div>
                 </div>
             </div>
@@ -71,16 +85,18 @@ class TransComponent extends Component {
                 <h2 style={{marginBottom: '10px'}}>
                     <input 
                     type="number"
+                    min="0"
                     className="transaction-input" 
-                    defaultValue={this.props.transaction.amount} 
-                    name="amount" />
+                    value={this.props.transTemp[1].amount} 
+                    name="amount"
+                    />
                 </h2>
                 <div className="transaction_icon">
                     <button onClick={(e) => this.updateTransaction(e)} type="submit" style={{borderRadius: "5px", }}>Save</button>
                 </div>
             </div>
         </div>
-        </form>
+        </>
     
     )
     }
@@ -88,7 +104,8 @@ class TransComponent extends Component {
     render() {        
         return (
         <>  
-            {(this.props.isEdit && this.props.transId == this.props.transaction.id) ? this.editForm() : this.viewForm()}
+          {this.props.isEdit && this.props.transaction.id == this.props.transTemp[0].id ? this.editForm() : this.viewForm()}
+          
         </>
         );
     }

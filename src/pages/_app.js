@@ -41,7 +41,7 @@ class App extends Component {
             flagEdit:false,
             titleCategory:[],
             categoryInput:[],
-            selectCategory:"",
+            selectCategory:[],
             tempId:-1,
 
             visibleCategoryPop:false,
@@ -75,7 +75,8 @@ class App extends Component {
     switchPop=()=>{
         this.setState({
             visibleCategoryPop : ! this.state.visibleCategoryPop,
-            selectCategory : ""
+            selectCategory : " ",
+            InputPop: " "
         })
     }
 
@@ -154,7 +155,6 @@ class App extends Component {
 
 
     createCategory= async (e)=>{///////////////must udate the users_id
-        console.log("create",this.state.InputPop,this.state.selectCategory,e)
         try{
             const responseTrans = await fetch(`http://localhost:8000/categories`,
             {method:

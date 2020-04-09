@@ -224,15 +224,41 @@ class App extends Component {
         console.log(err);
           }
 
+    }
 
+    getToken = async () => {
+        try {
+            const response = await fetch(`http://localhost:8000/login`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    email: 'zeinab@gmail.com',
+                    password: 'zeinab'
+                }),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            })
+            const result = await response.json();
+            localStorage.setItem('token', result.access_token)
+        } catch(err) {
+            console.log(err)
+        }
     }
     
 
     getTransactions = async () => {
         try {
-            const response = await fetch('http://localhost:8000/transaction');
+            const token = localStorage.getItem('token');
+            const response = await fetch('http://localhost:8000/transaction', {
+                method: 'GET',
+                header: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            });
             const result = await response.json();
-            
+            console.log("oka", result)
             if(result.status){
                 this.setState({
                     transactions: result.transaction
@@ -308,8 +334,8 @@ class App extends Component {
         this.setState(newState);   
     }
 
-     editTransDB = async ()=>{
-         try{
+    editTransDB = async ()=>{
+        try{
             const responseTrans = await fetch(`http://localhost:8000/transaction/${this.state.transTemp[0].id}`,
             {method:
                 'PUT',
@@ -372,9 +398,10 @@ class App extends Component {
         };
     
     componentDidMount(){
+        this.getToken();
         this.getTransactions();
-        this.getCategories();
-        this.getCurrencies();
+        // this.getCategories();
+        // this.getCurrencies();
     }
 
     TotalExpenseIncome=()=>{

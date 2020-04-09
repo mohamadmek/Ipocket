@@ -41,7 +41,7 @@ class App extends Component {
             flagEdit:false,
             titleCategory:[],
             categoryInput:[],
-            selectCategory:[],
+            selectCategory:"",
             tempId:-1,
 
             visibleCategoryPop:false,
@@ -49,6 +49,7 @@ class App extends Component {
 
             EditCatVisible:false,
             EditCatModel:[],
+            changed:false
         };
         this.onWrapperClick = this.onWrapperClick.bind(this);
         this.onToggleMenu = this.onToggleMenu.bind(this);
@@ -56,7 +57,7 @@ class App extends Component {
         this.onMenuItemClick = this.onMenuItemClick.bind(this);
         this.createMenu();
     }
-
+////////////////////samar/////////////
     
     switch=(item)=>{
         let a=this.state.categories.filter(id => id.id == item.categories_id);
@@ -75,8 +76,7 @@ class App extends Component {
     switchPop=()=>{
         this.setState({
             visibleCategoryPop : ! this.state.visibleCategoryPop,
-            selectCategory : " ",
-            InputPop: " "
+            selectCategory : ""
         })
     }
 
@@ -155,6 +155,7 @@ class App extends Component {
 
 
     createCategory= async (e)=>{///////////////must udate the users_id
+        console.log("create",this.state.InputPop,this.state.selectCategory,e)
         try{
             const responseTrans = await fetch(`http://localhost:8000/categories`,
             {method:
@@ -441,12 +442,16 @@ class App extends Component {
     }
 
     onMenuItemClick(event) {
+       
         if(!event.item.items) {
             this.setState({
                 overlayMenuActive: false,
-                mobileMenuActive: false
+                mobileMenuActive: false, 
+                changed:true
             })
         }
+        else
+        this.setState({changed:true})
     }
 
     createMenu() {
@@ -458,14 +463,44 @@ class App extends Component {
         ];
     }
 
-   /*  shouldComponentUpdate(nextProps, nextState){
-        if(this.state.transactions === nextState.transactions && this.state.categories === nextState.categories){
-            return false;
-        }
-        else{
+    shouldComponentUpdate(nextProps, nextState){
+        Object.compare = function (obj1, obj2) {
+            //Loop through properties in object 1
+            for (var p in obj1) {
+                //Check property exists on both objects
+                if (obj1.hasOwnProperty(p) !== obj2.hasOwnProperty(p)) return false;
+         
+                switch (typeof (obj1[p])) {
+                    //Deep compare objects
+                    case 'object':
+                        if (!Object.compare(obj1[p], obj2[p])) return false;
+                        break;
+                    //Compare function code
+                    case 'function':
+                        if (typeof (obj2[p]) == 'undefined' || (p != 'compare' && obj1[p].toString() != obj2[p].toString())) return false;
+                        break;
+                    //Compare values
+                    default:
+                        if (obj1[p] != obj2[p]) return false;
+                }
+            }
+         
+            //Check object 2 for any extra properties
+            for (var p in obj2) {
+                if (typeof (obj1[p]) == 'undefined') return false;
+            }
             return true;
-        }
-    } */
+        };
+        
+       const stateComp= Object.compare(this.state, nextState);
+       const propComp = Object.compare(this.props, nextProps);
+       console.log(stateComp, propComp);
+       if(stateComp ===false ||propComp ===false ||this.state.changed==true)
+       return true;
+       else 
+       return false;
+       
+    }
 
     addClass(element, className) {
         if (element.classList)
@@ -576,7 +611,7 @@ class App extends Component {
                     <AppMenu model={this.menu} onMenuItemClick={this.onMenuItemClick} />
                 </div>
             <div className="layout-main">
-                <Route path="/transaction" component={() => ( <Tranaction 
+                <Route path="/transaction" render={(props) => {/*  this.setState({changed:!this.state.changed}); */ return <Tranaction 
                                                                     transactions={this.state.transactions}
                                                                     editHandler={this.editHandler}
                                                                     isEdit={this.state.isEdit}
@@ -586,15 +621,17 @@ class App extends Component {
                                                                     transTemp={this.state.transTemp}
                                                                     editTransInput={this.editTransInput}
                                                                     editTransDB={this.editTransDB}
-                                                                    /> )} />
+                                                                    {...props}
+                                                                    /> } }/>
                 <Route path="/login" exact component={Login} />
-                <Route path="/" exact component={() => ( < Account 
+                <Route path="/" exact render={(props) => ( < Account 
                                                                     totalExpense={this.state.totalExpense}
                                                                     totalIncome={this.state.totalIncome}
                                                                     date={this.state.date}
+                                                                    {...props}
                                                                     />)} />
                 <Route path="/save" exact  component={Save} />
-                <Route path="/income" exact component={() => ( <Income
+                <Route path="/income" exact render={(props) => ( <Income
                                                                     transactions={this.state.transactions} 
                                                                     categories={this.state.categories}
                                                                     currencies={this.state.currencies}
@@ -624,8 +661,9 @@ class App extends Component {
 
                                                                     totalExpense={this.state.totalExpense}
                                                                     totalIncome={this.state.totalIncome}
+                                                                    {...props}
                                                                     /> )} />
-                <Route path="/expense" exact component={() => ( <Expense 
+                <Route path="/expense" exact render={(props) => ( <Expense 
                                                                     transactions={this.state.transactions}
                                                                     categories={this.state.categories}
                                                                     currencies={this.state.currencies}
@@ -655,6 +693,7 @@ class App extends Component {
 
                                                                     totalExpense={this.state.totalExpense}
                                                                     totalIncome={this.state.totalIncome}
+                                                                    {...props}
                                                                     /> )} />
             </div>
 

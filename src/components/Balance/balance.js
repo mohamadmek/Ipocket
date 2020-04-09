@@ -15,10 +15,13 @@ class balance extends Component {
                   <div className="balance_inner" id={this.props.desc!=="income"?"balance_except":""}>
                     <p className="title-balance">{this.props.desc==="income"?"Income":"Expence"}</p>
                     <div className="p_balance_inner green">
-                      <p>LBP 150</p>
+                      <p>LBP
+                         {/*table user to get the currency*/}
+                         {this.props.desc == "expense" ? this.props.totalExpense : this.props.totalIncome}
+                        </p>
                     </div>
                     <div className="red">
-                      LBP 200
+                      LBP {this.props.desc == "income" ? this.props.totalExpense : this.props.totalIncome}
                     </div>
                   </div>
                 </div>

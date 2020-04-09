@@ -46,10 +46,31 @@ class Income extends Component {
                         cancel={this.props.cancel}
                         editSelectCat={this.props.editSelectCat}
                         selectCategory={this.props.selectCategory}
+
+                        EditCatVisible={this.props.EditCatVisible}
+                        switchEditCatVisible={this.props.switchEditCatVisible}
+                        EditCatModel={this.props.EditCatModel}
+                        ChangeEditCatModel={this.props.ChangeEditCatModel}
+                        ChangeEditCatModelDB={this.props.ChangeEditCatModelDB}
                         />
-                    <CategoryPop handle={this.addCategory} />
+                    <CategoryPop
+                        desc="income"
+                        handle={this.addCategory}
+                        visibleCategoryPop={this.props.visibleCategoryPop}
+                        switchPop={this.props.switchPop}
+                        InputPop={this.props.InputPop}
+                        setInputPop={this.props.setInputPop}
+                        editSelectCat={this.props.editSelectCat}
+                        selectCategory={this.props.selectCategory}
+                        createCategory={this.props.createCategory}
+                        />
                 </div>
-                <Balance desc="income"/>
+                <Balance 
+                desc="income"
+                totalExpense={this.props.totalExpense}
+                totalIncome={this.props.totalIncome}
+                currencies={this.props.currencies}
+                />
             </div>
         );
     }

@@ -32,7 +32,7 @@ class TransComponent extends Component {
                 <div className="tranaction_div1">
                     <h2>{this.props.transaction.title}</h2>
                     <div className="transaction_div1_p">
-                        <div><p>{this.props.transaction.created_at}</p></div>
+                        <div><p>{this.props.transaction.start_date}</p></div>
                     </div>
                 </div>
                 <div className="transaction_div2" >
@@ -65,34 +65,41 @@ class TransComponent extends Component {
                     name="title"
                     autoFocus={this.props.transTemp[4].focus==1 ? true : false}
                     onChange={(e)=>this.props.editTransInput(e.target.value,2)}
+                    onClick={(e)=>this.props.editTransInput("title",4)}
                     />
                 </h2>
                 <div className="transaction_div1_p">
                     <div><p>
                         <input 
                         type="date" 
-                        className="transaction-input" 
+                        className="transaction-inputs" 
                         name="created_at"
+                        onSelect={(e)=>{e.preventDefault()}}
                         value={this.props.transTemp[3].date}
-                       
-                        onChange={(e)=>console.log("e",e.target.name)} /* this.props.editTransInput(e.target.value,3)} */
-
+                        autoFocus={this.props.transTemp[4].focus==2 ? true : false}
+                        onChange={(e)=>this.props.editTransInput(e.target.value,3)}
+                        onClick={(e)=>this.props.editTransInput("date",4)}
                         /></p></div>
-                    <div><p>01:15pm</p></div>
+                    {/* <div><p>01:15pm</p></div> */}
                 </div>
             </div>
             <div className="transaction_div2_edit" >
                 <h2 style={{marginBottom: '10px'}}>
                     <input 
                     type="number"
-                    min="0"
+                    min="1"
                     className="transaction-input" 
                     value={this.props.transTemp[1].amount} 
                     name="amount"
+                    required pattern="[0-9]+"
+                    autoFocus={this.props.transTemp[4].focus==3 ? true : false}
+                    onClick={(e)=>this.props.editTransInput("amount",4)}
+                    onChange={(e)=>this.props.editTransInput(e.target.value,1)}
                     />
                 </h2>
                 <div className="transaction_icon">
-                    <button onClick={(e) => this.updateTransaction(e)} type="submit" style={{borderRadius: "5px", }}>Save</button>
+                    <button onClick={(e) => this.props.editTransDB()} type="submit" style={{borderRadius: "5px",marginRight:'5px'}}>Save</button>
+                    <button onClick={(e) => this.props.editHandler("cancel")} style={{borderRadius: "5px"}}>Cancel</button>
                 </div>
             </div>
         </div>

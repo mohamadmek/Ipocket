@@ -14,7 +14,10 @@ class AccountBalance extends Component {
         return (
               <div className="accountBalance_div">
                 <div id="accuntBalance_circle">
-                  <p className="accountBalance_p_amount">600 LBP</p>
+                  <p className="accountBalance_p_amount">
+                    {this.props.totalIncome - this.props.totalExpense } LBP
+                    {/*user table to take the chosen currency */}
+                   </p>
                   <div class="accountBalance_income">
                     <button className="accountBalance_button" onClick={()=>window.location = '#/income'}>
                       <i class="fa fa-angle-double-left" aria-hidden="true" id="accountBalance_income_i"></i>

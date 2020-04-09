@@ -38,7 +38,7 @@ class Save extends Component {
 
     regex=(e)=>{
       const re = /^[0-9]+$/;
-      if (e.target.value === '' || re.test(e.target.value)) {
+      if (e.target.value.length===0 || re.test(e.target.value)) {
          this.setState({value: e.target.value});
       }
     }

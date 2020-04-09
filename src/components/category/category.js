@@ -136,6 +136,12 @@ class category extends React.Component {
         return <option value={item.label} > {item.value} Icon</option>
     }
 
+    selectCurrency=(item)=>{ 
+         if(item.id== this.props.EditCatModel.currencies_id){
+            return <option value={item.id} selected> {item.symbol}{" "}{item.country} </option>  
+        }
+        return <option value={item.id} > {item.symbol}{" "}{item.country}</option>
+    }
 
 	render() {
         const footer = (
@@ -143,13 +149,13 @@ class category extends React.Component {
 				<Button
 					label='Create'
 					icon='pi pi-check'
-                    /* onClick={e=>this.create(e)} */
+                    onClick={e=> this.props.ChangeEditCatModelDB()}
                     style={{backgroundColor:'#16a085',color:'white'}}
 				/>
 				<Button
 					label='cancel'
 					icon='fa fa-trash'
-					onClick={e => this.setState({ visible: false })}
+					onClick={e => this.props.switchEditCatVisible(1)}
                     className='p-button-secondary'
                     style={{color:'rgb(95,113,132)'}}
 				/>
@@ -186,7 +192,7 @@ class category extends React.Component {
                 <div className="category_div_inner1">
                     <div>
                     <button className="category_div_button">
-                        <i class={this.titleHandler(item)} aria-hidden="true" id="category_div_i" /* onClick={e=>this.setState({visible:true,index:i,temp:item}) } */></i>
+                        <i class={this.titleHandler(item)} aria-hidden="true" id="category_div_i" onClick={e=>this.props.switchEditCatVisible(item) }></i>
                     </button>
                     </div>
                     <div className="category_div_inner2_22">
@@ -215,7 +221,6 @@ class category extends React.Component {
                     style={{width:'25%'}}
                     modal={true}
                     closable={true}
-                    /* onHide={e =>this.props.switchCategoryFlag()}> */
                     onHide={e=>this.props.cancel()}>
                 <div className="category_popup_div2">
                   <div>    
@@ -242,6 +247,84 @@ class category extends React.Component {
                     </div>
                 </div>
                 </Dialog>
+
+                 <Dialog
+                    header={this.props.EditCatModel.title + " " + this.props.desc}
+                    footer={footer} 
+                    visible={this.props.EditCatVisible}
+                    style={{width:'25%'}}
+                    modal={true}
+                    onHide={e => this.props.switchEditCatVisible(1)}>
+                <div className="category_popup_div2">
+                    <div>
+{/*                     <Dropdown 
+                        value={this.state.curTemp}
+                        options={this.state.currency} 
+                        onChange={e => this.onChange(e)}
+                        itemTemplate={this.carTemplate}  
+                        style={{width: '70%',margin:'10px 0px 0px 0px'}}
+                        placeholder="currency"
+                        showClear={true}/> */}
+                        
+                        <select style={{width: '70%',margin:'10px 0px 0px 0px'}} onChange={(e) => this.props.ChangeEditCatModel(e.target.value,"currencies")} className="category_select">
+                            {this.props.currencies.map((item)=>
+                                this.selectCurrency(item)
+                             )}
+                        </select>
+
+                    <input
+                        type="number"
+                        placeholder="Amount"
+                        id="category_popup_div2_inputs"
+                        min="0"
+                        value={this.props.EditCatModel.amount}
+                        onChange={(e) => this.props.ChangeEditCatModel(e.target.value,"amount")}
+                        />
+                        
+                    <div className="category_popup_div2_drop" >
+                        <div className="category_popup_div2-1">
+                            <input
+                                className="category_popup_div2-1_input"
+                                type="radio"
+                                name="radio_name"
+                                value="fixed"
+                                checked={this.props.EditCatModel.flag==2 ? true : false}
+                                onChange={(e) => this.props.ChangeEditCatModel(2,"flag")} 
+                                />
+                            <label  className="category_popup_div2-1_label">Fixed</label>
+                        </div>
+                        <div style={{display:'flex'}}>
+                            <input
+                                type="radio"
+                                name="radio_name"
+                                className="category_popup_div2-1_input"
+                                value="recurring"
+                                checked={this.props.EditCatModel.flag==1 ? true : false}
+                                onChange={(e) => this.props.ChangeEditCatModel(1,"flag")}
+                                />
+                            <label className="category_popup_div2-1_label">Recurring</label>
+                        </div>
+                    </div>
+                  {/*   <Calendar
+                        disabled={this.state.radio=="fixed"?false:true} 
+                        value={this.state.date} 
+                        onChange={(e) => this.setState({date: e.value})} 
+                        placeholder="enter date if fixed"
+                        maxDate={maxdate}
+                        style={{width:'14rem'}}/> */}
+
+                    <input 
+                        type="date"
+                        disabled={this.props.EditCatModel.flag==1 ? true : false}
+                        value={this.props.EditCatModel.end_date}
+                        onChange={(e) => this.props.ChangeEditCatModel(e.target.value,"date")}
+                        autoFocus={true}
+                        />
+                    </div>
+                <div>
+            </div>
+        </div> 
+        </Dialog>
                 
         </div>
     	);
@@ -249,46 +332,7 @@ class category extends React.Component {
 }
 export default category;
 
-               {/* <Dialog
-                    header={this.state.temp.value+" "+ this.props.desc}
-                    footer={footer} 
-                    visible={this.props.flagCategory}
-                    style={{width:'25%'}}
-                    modal={true}
-                    onHide={e => this.setState({ visible: false })}>
-                <div className="category_popup_div2">
-                    <div>
-                    <Dropdown 
-                        value={this.state.curTemp}
-                        options={this.state.currency} 
-                        onChange={e => this.onChange(e)}
-                        itemTemplate={this.carTemplate}  
-                        style={{width: '70%',margin:'10px 0px 0px 0px'}}
-                        placeholder="currency"
-                        showClear={true}/>
-                    <input type="number" placeholder="Amount" id="category_popup_div2_inputs" min="1"></input>
-                    <div className="category_popup_div2_drop" >
-                        <div className="category_popup_div2-1">
-                            <input className="category_popup_div2-1_input" type="radio" name="radio_name" value="fixed" onChange={e=>this.onRadio(e.target.value)}/>
-                            <label  className="category_popup_div2-1_label">Fixed</label>
-                        </div>
-                        <div style={{display:'flex'}}>
-                            <input type="radio" name="radio_name" className="category_popup_div2-1_input" value="recurring" onChange={e=>this.onRadio(e.target.value)}/>
-                            <label className="category_popup_div2-1_label">Recurring</label>
-                        </div>
-                    </div>
-                    <Calendar
-                        disabled={this.state.radio=="fixed"?false:true} 
-                        value={this.state.date} 
-                        onChange={(e) => this.setState({date: e.value})} 
-                        placeholder="enter date if fixed"
-                        maxDate={maxdate}
-                        style={{width:'14rem'}}/>
-                    </div>
-                <div>
-            </div>
-        </div> 
-        </Dialog>*/}
+       
 
               {/*    <Dropdown 
                       className="zeinab"

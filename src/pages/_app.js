@@ -49,13 +49,32 @@ class App extends Component {
 
             EditCatVisible:false,
             EditCatModel:[],
-
         };
         this.onWrapperClick = this.onWrapperClick.bind(this);
         this.onToggleMenu = this.onToggleMenu.bind(this);
         this.onSidebarClick = this.onSidebarClick.bind(this);
         this.onMenuItemClick = this.onMenuItemClick.bind(this);
         this.createMenu();
+    }
+
+    getToken = async () => {
+        try {
+            const response = await fetch(`http://localhost:8000/login`, {
+                method: 'POST',
+                body: 
+                JSON.stringify({
+                    email: 'zeinab@gmail.com',
+                    password: 'zeinab'
+                }),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            });
+            const result = await response.json();
+            localStorage.setItem('token', result.access_token)
+        } catch(err) {
+            console.log(err)
+        }
     }
 
     
@@ -133,7 +152,8 @@ class App extends Component {
                 }),
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
-            }
+            },
+            Authorization: localStorage.getItem('token')
             });
             const result = await responseTrans.json();
             if(result.status) {
@@ -167,11 +187,12 @@ class App extends Component {
                 }),
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
-            }
+            },
+            Authorization: localStorage.getItem('token')
             });
             const result = await responseTrans.json();
             if(result.status) {
-                 try{
+                try{
                     const responseTrans = await fetch(`http://localhost:8000/transaction/`,
                     {method:
                         'POST',
@@ -230,9 +251,11 @@ class App extends Component {
 
     getTransactions = async () => {
         try {
-            const response = await fetch('http://localhost:8000/transaction');
+            const response = await fetch('http://localhost:8000/transaction' , {
+            Authorization: `Bearer localStorage.getItem('token')`,
+            });
             const result = await response.json();
-            
+            console.log("trans",result)
             if(result.status){
                 this.setState({
                     transactions: result.transaction
@@ -308,8 +331,8 @@ class App extends Component {
         this.setState(newState);   
     }
 
-     editTransDB = async ()=>{
-         try{
+    editTransDB = async ()=>{
+        try{
             const responseTrans = await fetch(`http://localhost:8000/transaction/${this.state.transTemp[0].id}`,
             {method:
                 'PUT',
@@ -335,9 +358,9 @@ class App extends Component {
                 newState.isEdit = false;
                 this.setState(newState);
             }
-          }catch(err) {
+        }catch(err) {
         console.log(err);
-          }
+        }
     }
 
     getCategories = async () => {
@@ -372,9 +395,10 @@ class App extends Component {
         };
     
     componentDidMount(){
-        this.getTransactions();
-        this.getCategories();
-        this.getCurrencies();
+        this.getToken();
+        // this.getCategories();
+        // this.getCurrencies();
+            this.getTransactions();
     }
 
     TotalExpenseIncome=()=>{
@@ -382,7 +406,7 @@ class App extends Component {
         let a=new Date().getMonth()+1;
         let b= new Date().getDate() + "/" + a + "/" + new Date().getFullYear();
         this.state.transactions.map((id)=>{
-              id.type == "income"? income += parseFloat(id.amount) : expense += parseFloat(id.amount) })
+            id.type == "income"? income += parseFloat(id.amount) : expense += parseFloat(id.amount) })
             this.setState({ date:b , totalExpense :expense ,totalIncome: income})
     }
 
@@ -486,12 +510,12 @@ class App extends Component {
         return window.innerWidth > 1024;
     }
 
-    componentDidUpdate() {
-        if (this.state.mobileMenuActive)
-            this.addClass(document.body, 'body-overflow-hidden');
-        else
-            this.removeClass(document.body, 'body-overflow-hidden');
-    }
+    // componentDidUpdate() {
+    //     if (this.state.mobileMenuActive)
+    //         this.addClass(document.body, 'body-overflow-hidden');
+    //     else
+    //         this.removeClass(document.body, 'body-overflow-hidden');
+    // }
 
     editCategoryInput=async()=>{
         let tran=this.state.transactions.filter(id => id.id ==this.state.tempId);
@@ -548,8 +572,6 @@ class App extends Component {
 
 
     render() {
-        const logo = this.state.layoutColorMode === 'dark' ? 'assets/layout/images/logo-white.svg': 'assets/layout/images/logo.svg';
-
         const wrapperClass = classNames('layout-wrapper', {
             'layout-overlay': this.state.layoutMode === 'overlay',
             'layout-static': this.state.layoutMode === 'static',
@@ -562,16 +584,14 @@ class App extends Component {
             'layout-sidebar-dark': this.state.layoutColorMode === 'dark',
             'layout-sidebar-light': this.state.layoutColorMode === 'light'
         });
-
         
-
         return (
             
             <div className={wrapperClass} onClick={this.onWrapperClick}>
                 <AppTopbar onToggleMenu={this.onToggleMenu}/>
                 <div ref={(el) => this.sidebar = el} className={sidebarClassName} onClick={this.onSidebarClick}>
-                    <div className="layout-logo">
-                        <img alt="Logo" src={logo} />
+                    <div className="layout-logo" style={{fontWeight: 'bold'}}>
+                        Ipocket
                     </div>
                     <AppProfile />
                     <AppMenu model={this.menu} onMenuItemClick={this.onMenuItemClick} />

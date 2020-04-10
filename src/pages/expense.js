@@ -27,8 +27,15 @@ class Expense extends Component {
     }
 
     componentDidMount = () => {
+            if(!localStorage.getItem('token')){
+                window.location('#/')
+            }
+            
         this.expenseAmount();
     }
+
+
+
  
     render() {
         return (

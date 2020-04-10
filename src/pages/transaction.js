@@ -12,7 +12,9 @@ class Transaction extends Component {
 
 
     componentDidMount() {
-        
+        if(!localStorage.getItem('token')){
+            window.location('#/')
+        }
     }
 
     render() {        

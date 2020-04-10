@@ -3,11 +3,24 @@ import styled from 'styled-components';
 import Carousel from 'react-bootstrap/Carousel';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form } from 'react-bootstrap';
+import { Redirect } from 'react-router-dom';
 class Login extends Component {
   constructor(props){
     super(props);
     this.state = {
       signStatus : true,
+      email: null,
+      password: null,
+      error: '',
+      message: '',
+      registrationInfo: {
+        username: '',
+        email: '',
+        password: '',
+        currency: '',
+        amount: null,
+        image: '',
+      }
     }
   }
    Wrapper = styled.div`
@@ -154,31 +167,161 @@ class Login extends Component {
         signStatus: true,
       })
     }
-    signUpForm = <this.Form>
+
+    handleSignIn = async (e) => {
+      e.preventDefault();
+      try {
+        // const body = new FormData();
+        // body.append('email', this.state.email);
+        // body.append('password', this.state.password);
+        const response = await fetch('http://localhost:8000/login', {
+          method: 'POST',
+          body: JSON.stringify({
+                            email: `${this.state.email}`,
+                            password: `${this.state.password}`
+                        }),
+          headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+          }
+        })
+        const result = await response.json();
+        localStorage.setItem('token', result.access_token)
+        if(result.access_token) {
+          // this.props.history.push('/account');
+          // return <Redirect to="/account" />
+          // this.Wrapper = styled.div`display: none;`
+          this.Wrapper = styled.div`display: none;`
+          console.log('token', localStorage.getItem('token'))
+        window.location = '#/account'
+        this.setState({email: '', password: ''})
+        } else {
+          this.setState({ error: 'Login Failed',email: '', password: '' })
+          this.Wrapper = styled.div`
+          display: flex;
+          z-index: 1000;
+          position: absolute;
+          top: 0;
+          right: 0;
+          left: 0;
+          bottom: 0;
+          flex-wrap: wrap;`
+        }
+  
+      } catch(err) {
+        console.log(err)
+        this.setState({ error: err })
+      }
+    }
+
+    changeHandler = (e) => {
+      e.preventDefault();
+      let registrationInfo = {...this.state.registrationInfo}
+      let name = e.target.name;
+      registrationInfo[name] = e.target.value;
+      this.setState({ registrationInfo })
+      console.log(this.state.registrationInfo)
+    }
+
+    handleSignUp = async (e) => {
+      e.preventDefault();
+      const response = await fetch('http://localhost:8000/register', {
+        method: 'POST',
+        body: JSON.stringify({
+          name: this.state.registrationInfo.username,
+          email: this.state.registrationInfo.email,
+          password: this.state.registrationInfo.password,
+          currencies_id: parseInt(this.state.registrationInfo.currency),
+          amount:  this.state.registrationInfo.amount,
+          image: 'mohamad'
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      }
+      })
+      const result = await response.json()
+      console.log('asd',result)
+      if(result.access_token){
+        this.setState({ 
+          registrationInfo: {
+            username: '',
+            email: '',
+            password: '',
+            currency: '',
+            amount: null,
+            image: '',
+          },
+          message: 'successfully logged in',
+          signStatus: true,
+        })
+        
+      }else{
+        this.setState({
+          message: 'please try again'
+        })
+      }
+    }
+
+    
+
+    signUpForm = () => {
+      return (
+        <this.Form onSubmit={e => this.handleSignUp(e)}>
       <label for="username" style={{display:"block", color: "#fff"}}>USERNAME</label>
-      <this.Input name="username" placeholder="Enter you Username" />
+      <this.Input
+        name="username" 
+        placeholder="Enter you Username"
+        onChange={this.changeHandler}
+        value={this.state.registrationInfo.username}
+        />
       <label for="email" style={{display:"block", color: "#fff"}}>EMAIL</label>
-      <this.Input type="email" name="email" placeholder="Enter you Email" />
+      <this.Input value={this.state.registrationInfo.email} onChange={this.changeHandler}  type="email" name="email" placeholder="Enter you Email" />
       <label for="password" style={{display:"block", color: "#fff"}}>PASSWORD</label>
-      <this.Input type="password" name="password" placeholder="Enter you Password" style={{display:"block"}} />
-      <div style={{color: '#ccc', fontWeight: 'bold', marginTop: "20px"}}><input type="checkbox" style={{cursor:"pointer"}}/> I agree all statements in <span style={{color:'#fff', borderBottom:'2px solid rgb(81, 197, 183)'}}>terms of service</span></div>
-      <select style={{display: 'block', marginTop: '5px'}}>
-        <option value="dollar">$</option>
-        <option value="euro">€</option>
-        <option value="lebanese">LBP</option>
+      <this.Input value={this.state.registrationInfo.password} onChange={this.changeHandler} type="password" name="password" placeholder="Enter you Password" style={{display:"block"}} />
+
+      <label for="amount" style={{display:"block", color: "#fff"}}>AMOUNT</label>
+      <this.Input value={this.state.registrationInfo.amount} onChange={this.changeHandler} type="number" name="amount" placeholder="Enter you Amount" style={{display:"block"}} />
+
+      <select value={this.state.registrationInfo.currency} onChange={this.changeHandler} name="currency" style={{display: 'block', marginTop: '5px'}}>
+        <option value="1">$</option>
+        <option value="2">€</option>
+        <option selected value="3">LBP</option>
       </select>
+      <div style={{color: '#ccc', fontWeight: 'bold', marginTop: "20px"}}><input type="checkbox" style={{cursor:"pointer"}}/> I agree all statements in <span style={{color:'#fff', borderBottom:'2px solid rgb(81, 197, 183)'}}>terms of service</span></div>
       <this.SignUpButton>Sign Up</this.SignUpButton>
       <span style={{marginLeft: '10px', color: '#E1E1E1',borderBottom:'2px solid rgb(81, 197, 183)', cursor:"pointer"}} onClick={this.handleClickSignup}>I'm already a member</span>
-    </this.Form>;
+    </this.Form>
+      )
+    }
+    
+    
 
-    signInForm = <this.Form>
-    <label for="username" style={{display:"block", color: "#fff"}}>USERNAME</label>
-    <this.Input name="username" placeholder="Enter you Username" />
+    signInForm = () => {
+      return (
+        <this.Form onSubmit={e => this.handleSignIn(e)}>
+    <label for="email" style={{display:"block", color: "#fff"}}>Email</label>
+    <this.Input
+    type="email" 
+    name="email" 
+    placeholder="Enter you Email"
+    onChange={e => this.setState({ email: e.target.value })}
+    value={this.state.email}
+     />
     <label for="password" style={{display:"block", color: "#fff"}}>PASSWORD</label>
-    <this.Input type="password" name="password" placeholder="Enter you Password" style={{display:"block"}} />
-    <this.SignUpButton>Sign In</this.SignUpButton>
+    <this.Input 
+      type="password" 
+      name="password" 
+      placeholder="Enter you Password" 
+      style={{display:"block"}}
+      value={this.state.password}
+      onChange={e => this.setState({ password: e.target.value })} />
+    <this.SignUpButton type="submit">Sign In</this.SignUpButton>
     <span style={{marginLeft: '10px', color: '#E1E1E1',borderBottom:'2px solid rgb(81, 197, 183)', cursor:"pointer"}} onClick={this.handleClickLogin}>Sign Up</span>
-  </this.Form>;
+  </this.Form>
+      )
+    }
+    
     
   render() {
     return (
@@ -212,7 +355,7 @@ class Login extends Component {
             <div className="btw">or</div>
             <div className="signUpTitle">Sign Up</div>
           </this.Header>
-          {this.state.signStatus ? this.signInForm : this.signUpForm}
+          {this.state.signStatus ? this.signInForm() : this.signUpForm()}
           
         </this.Login>
       </this.Wrapper>

@@ -86,7 +86,7 @@ class category extends React.Component {
     }
     categories=()=>{
         let i=[];
-        this.props.transactions.map((item)=>{
+            this.props.transactions.map((item)=>{
             this.props.desc=="income"?
                 i.push(this.props.categories.filter(id=>id.id==item.categories_id && item.type=="income")):
                 i.push(this.props.categories.filter(id=>id.id==item.categories_id && item.type=="expense")) 
@@ -181,7 +181,7 @@ class category extends React.Component {
 		return (
         <div className="category_div">
             {this.state.categoriesProps.length === 0 && this.state.transactionsProps.length === 0?"":
-            this.state.transactionsProps.map((item) =>
+            this.state.transactionsProps && this.state.transactionsProps.map((item) =>
                 item.type !== this.props.desc ?"":
                 <div className="category_div_inner">
                  <div>

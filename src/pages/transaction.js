@@ -12,13 +12,15 @@ class Transaction extends Component {
 
 
     componentDidMount() {
-        
+        if(!localStorage.getItem('token')){
+            window.location('#/')
+        }
     }
 
     render() {        
         return (
             <div>
-                <Filter/>
+                <Filter transactions={this.props.transactions} />
                 <br></br>
                 {this.props.transactions.map((transaction) => (
                     <Trans 

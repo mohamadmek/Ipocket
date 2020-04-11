@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import styled from 'styled-components';
 import Weekly from "../components/WeeklyMontly/TodayWeeklyMonthly";
 import Balance from "../components/Balance/balance";
 import CategoryPop from "../components/categoryPopup/categorypopup";
@@ -25,6 +24,11 @@ class Income extends Component {
         this.state.Incomechosen.push(e);
     }
 
+    componentDidMount() {
+        if(!localStorage.getItem('token')){
+            window.location('#/')
+        }
+    }
 
     render() {
         return (

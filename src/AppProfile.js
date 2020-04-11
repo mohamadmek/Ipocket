@@ -16,6 +16,27 @@ export class AppProfile extends Component {
         event.preventDefault();
     }
 
+    handleLogout = async () => {
+        try {
+            const response = await fetch('http://localhost:8000/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+
+            const result = await response.json();
+            console.log("log",result)
+            localStorage.clear();
+            window.location='#/'
+            console.log("removed ",localStorage.getItem('token'))
+        
+        }catch(err) {
+            console.log(err)
+        }
+    }
+
     render() {
         return  (
             <div className="layout-profile">
@@ -29,7 +50,7 @@ export class AppProfile extends Component {
                 <ul className={classNames({'layout-profile-expanded': this.state.expanded})}>
                     <li><button className="p-link"><i className="pi pi-fw pi-user"/><span>Account</span></button></li>
                     <li><button className="p-link"><i className="pi pi-fw pi-inbox"/><span>Notifications</span><span className="menuitem-badge">2</span></button></li>
-                    <li><button className="p-link"><i className="pi pi-fw pi-power-off"/><span>Logout</span></button></li>
+                    <li><button onClick={this.handleLogout} className="p-link"><i className="pi pi-fw pi-power-off"/><span>Logout</span></button></li>
                 </ul>
             </div>
         );

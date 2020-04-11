@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import {AppTopbar} from '../AppTopbar';
 import {AppMenu} from '../AppMenu';
 import {AppProfile} from '../AppProfile';
-import {Route} from 'react-router-dom';
+import {Route, withRouter} from 'react-router-dom';
 import Tranaction from './transaction';
 import Account from "./account/account";
 import Login from './login';
@@ -85,7 +85,7 @@ class App extends Component {
     }
 
     switchEditCatVisible=(e)=>{
-        if(e!=1){console.log(e)
+        if(e!=1){
             this.setState({
                 EditCatVisible: ! this.state.EditCatVisible,
                 EditCatModel:e
@@ -132,7 +132,7 @@ class App extends Component {
                     start_date:this.state.date,
 
                 }),
-                header: {
+                headers: {
                     'Authorization': 'Bearer ' + token,
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
@@ -151,14 +151,13 @@ class App extends Component {
                 newState.EditCatVisible = false;
                 this.setState(newState);
             }
-          }catch(err) {
+        }catch(err) {
         console.log(err);
-          }
+        }
     }
 
 
     createCategory= async (e)=>{///////////////must udate the users_id
-        console.log("create",this.state.InputPop,this.state.selectCategory,e)
         try{
             const token = localStorage.getItem('token')
             const responseTrans = await fetch(`http://localhost:8000/categories`,
@@ -179,8 +178,8 @@ class App extends Component {
             });
             const result = await responseTrans.json();
             if(result.status) {
-                 try{
-                     const token = localStorage.getItem('token');
+                try{
+                    const token = localStorage.getItem('token');
                     const responseTrans = await fetch(`http://localhost:8000/transaction/`,
                     {method:
                         'POST',
@@ -436,11 +435,15 @@ class App extends Component {
             }
         };
     
-    componentDidMount(){
-        this.getToken();
-        this.getTransactions();
-        this.getCategories();
-        this.getCurrencies();
+    componentDidMount (){
+        if(localStorage.getItem('token')){
+            this.getTransactions();
+            this.getCategories();
+            this.getCurrencies();
+        } else {
+            window.location= '#/'
+        } 
+        
     }
 
     TotalExpenseIncome=()=>{
@@ -528,7 +531,7 @@ class App extends Component {
 
     createMenu() {
         this.menu = [
-            {label: 'Dashboard', icon: 'pi pi-fw pi-home', command: () => {window.location = '#/'}},
+            {label: 'Dashboard', icon: 'pi pi-fw pi-home', command: () => {window.location = '#/account'}},
             {label: 'Income', icon: 'fas fa-download', command: () => {window.location = '#/income'}},
             {label: 'Expenses', icon: 'fas fa-upload', command: () => {window.location = '#/expense'}},
             {label: 'Transactions', icon:"fas fa-exchange-alt", command: () => {window.location = '#/transaction'}},
@@ -694,15 +697,15 @@ class App extends Component {
                                                                     editTransDB={this.editTransDB}
                                                                     {...props}
                                                                     /> } }/>
-                <Route path="/login" exact component={Login} />
-                <Route path="/" exact render={(props) => ( < Account 
+                <Route path="/" exact  render={(props) => ( < Login />)} />
+                <Route path="/account"  render={(props) => ( < Account 
                                                                     totalExpense={this.state.totalExpense}
                                                                     totalIncome={this.state.totalIncome}
                                                                     date={this.state.date}
                                                                     {...props}
                                                                     />)} />
-                <Route path="/save" exact  component={Save} />
-                <Route path="/income" exact render={(props) => ( <Income
+                <Route path="/save"   component={Save} />
+                <Route path="/income"  render={(props) => ( <Income
                                                                     transactions={this.state.transactions} 
                                                                     categories={this.state.categories}
                                                                     currencies={this.state.currencies}
@@ -734,7 +737,7 @@ class App extends Component {
                                                                     totalIncome={this.state.totalIncome}
                                                                     {...props}
                                                                     /> )} />
-                <Route path="/expense" exact render={(props) => ( <Expense 
+                <Route path="/expense" render={(props) => ( <Expense 
                                                                     transactions={this.state.transactions}
                                                                     categories={this.state.categories}
                                                                     currencies={this.state.currencies}
@@ -774,6 +777,4 @@ class App extends Component {
     }
 }
 
-export default App;
-
-
+export default withRouter(App);

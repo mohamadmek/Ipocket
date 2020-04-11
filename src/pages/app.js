@@ -57,7 +57,7 @@ class App extends Component {
         this.onMenuItemClick = this.onMenuItemClick.bind(this);
         this.createMenu();
     }
-////////////////////samar/////////////
+
     
     switch=(item)=>{
         let a=this.state.categories.filter(id => id.id == item.categories_id);
@@ -119,6 +119,7 @@ class App extends Component {
 
     ChangeEditCatModelDB=async () =>{
         try{
+            const token = localStorage.getItem('token');
             const responseTrans = await fetch(`http://localhost:8000/transaction/${this.state.EditCatModel.id}`,
             {method:
                 'PUT',
@@ -131,9 +132,11 @@ class App extends Component {
                     start_date:this.state.date,
 
                 }),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            }
+                header: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
             });
             const result = await responseTrans.json();
             if(result.status) {
@@ -157,6 +160,7 @@ class App extends Component {
     createCategory= async (e)=>{///////////////must udate the users_id
         console.log("create",this.state.InputPop,this.state.selectCategory,e)
         try{
+            const token = localStorage.getItem('token')
             const responseTrans = await fetch(`http://localhost:8000/categories`,
             {method:
                 'POST',
@@ -166,12 +170,17 @@ class App extends Component {
                     users_id:1
                 }),
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                
             }
             });
             const result = await responseTrans.json();
             if(result.status) {
                  try{
+                     const token = localStorage.getItem('token');
                     const responseTrans = await fetch(`http://localhost:8000/transaction/`,
                     {method:
                         'POST',
@@ -188,7 +197,11 @@ class App extends Component {
                             currencies_id:1
                         }),
                     headers: {
-                        "Content-type": "application/json; charset=UTF-8"
+                        
+                            'Authorization': 'Bearer ' + token,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        
                     }
                     });
                     const resultT = await responseTrans.json();
@@ -231,15 +244,15 @@ class App extends Component {
             const response = await fetch(`http://localhost:8000/login`, {
                 method: 'POST',
                 body: JSON.stringify({
-                    email: 'zeinab@gmail.com',
-                    password: 'zeinab'
+                    email: 'zisi@hotmail.com',
+                    password: 'zisi'
                 }),
                 headers: {
                     "Content-type": "application/json; charset=UTF-8"
                 }
-            })
+            });
             const result = await response.json();
-            localStorage.setItem('token', result.access_token)
+            localStorage.setItem('token',result.access_token);
         } catch(err) {
             console.log(err)
         }
@@ -251,14 +264,13 @@ class App extends Component {
             const token = localStorage.getItem('token');
             const response = await fetch('http://localhost:8000/transaction', {
                 method: 'GET',
-                header: {
+                headers: {
                     'Authorization': 'Bearer ' + token,
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 }
             });
             const result = await response.json();
-            console.log("oka", result)
             if(result.status){
                 this.setState({
                     transactions: result.transaction
@@ -272,8 +284,15 @@ class App extends Component {
     
     deleteTransaction = async (id) => {
         try{
+            const token = localStorage.getItem('token');
             const response = await fetch(`http://localhost:8000/transaction/${id}`,
-            {method: "DELETE"});
+            {method: "DELETE",
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            });
             const result = await response.json();
             if(result.status) {
                 const transactions = this.state.transactions.filter(transaction => transaction.id != id)
@@ -336,9 +355,15 @@ class App extends Component {
 
     editTransDB = async ()=>{
         try{
+            const token = localStorage.getItem('token');
             const responseTrans = await fetch(`http://localhost:8000/transaction/${this.state.transTemp[0].id}`,
             {method:
                 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
             body:
                 JSON.stringify({
                     title:this.state.transTemp[2].title,
@@ -369,7 +394,14 @@ class App extends Component {
     getCategories = async () => {
         if(!this.state.flagCategory){
             try {
-                const response = await fetch('http://localhost:8000/categories');
+                const token = localStorage.getItem('token');
+                const response = await fetch('http://localhost:8000/categories', {
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                });
                 const result = await response.json();  
                 if(result.status){
                     this.setState({
@@ -385,7 +417,14 @@ class App extends Component {
 
     getCurrencies = async () => {
             try {
-                const response = await fetch('http://localhost:8000/currencies');
+                const token = localStorage.getItem('token');
+                const response = await fetch('http://localhost:8000/currencies', {
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                });
                 const result = await response.json();  
                 if(result.status){
                     this.setState({
@@ -400,8 +439,8 @@ class App extends Component {
     componentDidMount(){
         this.getToken();
         this.getTransactions();
-        // this.getCategories();
-        // this.getCurrencies();
+        this.getCategories();
+        this.getCurrencies();
     }
 
     TotalExpenseIncome=()=>{
@@ -409,7 +448,7 @@ class App extends Component {
         let a=new Date().getMonth()+1;
         let b= new Date().getDate() + "/" + a + "/" + new Date().getFullYear();
         this.state.transactions.map((id)=>{
-              id.type == "income"? income += parseFloat(id.amount) : expense += parseFloat(id.amount) })
+            id.type == "income"? income += parseFloat(id.amount) : expense += parseFloat(id.amount) })
             this.setState({ date:b , totalExpense :expense ,totalIncome: income})
     }
 
@@ -417,8 +456,14 @@ class App extends Component {
         let cat=this.state.categories.filter(cat_id => cat_id.id == id.categories_id);
         this.deleteTransaction(id.id);
         try{
+            const token = localStorage.getItem('token');
             const response = await fetch(`http://localhost:8000/categories/${cat[0].id}`,
-            {method: "DELETE"});
+            {method: "DELETE",
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }});
             const result = await response.json();
             if(result.status) {
                 const categories = this.state.categories.filter(category => category.id != cat[0].id)
@@ -521,7 +566,6 @@ class App extends Component {
         
        const stateComp= Object.compare(this.state, nextState);
        const propComp = Object.compare(this.props, nextProps);
-       console.log(stateComp, propComp);
        if(stateComp ===false ||propComp ===false ||this.state.changed==true)
        return true;
        else 
@@ -731,3 +775,5 @@ class App extends Component {
 }
 
 export default App;
+
+

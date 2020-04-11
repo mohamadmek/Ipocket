@@ -22,7 +22,7 @@ class Filter extends Component {
         return (
        
         <div className="Filter">
-            <div>
+            <div>{console.log("date",this.state.dateto)}
                 <p className="Filter_div1">Transactions</p>
             </div>
             <div className="Filter_div2">
@@ -34,6 +34,7 @@ class Filter extends Component {
                         placeholder="Calendar From"
                         viewDate={this.state.viewDate}
                         className="transaction-calendar"
+                        value={this.state.datefrom}
                     />
                 </div>
                 <div style={{marginLeft: "1rem"}} >
@@ -43,6 +44,7 @@ class Filter extends Component {
                         value={this.state.dateto}
                         onChange={(e) => this.setState({dateto: e.value})}
                         className="transaction-calendar"
+                        value={this.state.dateto}
                     />
                 
                 

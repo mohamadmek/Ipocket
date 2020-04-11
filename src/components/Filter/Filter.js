@@ -1,47 +1,62 @@
 import React, { Component } from 'react';
-import {Button} from 'primereact/button';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import "./Filter.css";
-import { Calendar } from "primereact/calendar";
 
 class Filter extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-            datefrom:[],
-            dateto:[]
-
-            
+            filterDate: {
+                dateFrom: '',
+                dateTo: '',
+            },
+            transactions: [],
+        
         };
     }
 
-    componentDidMount() { 
+    handleFrom = e => {
+        e.preventDefault();
+        let filterDate = {...this.state.filterDate};
+        const name = e.target.name;
+        filterDate[name] = e.target.value;
+        this.setState({ filterDate })
+        let transactions = [...this.props.transactions];
+        const filteredTransactions = transactions.filter(transaction =>
+            parseInt(transaction.created_at) > 1)
+            console.log(filteredTransactions[0].created_at)
     }
-   
+
+    componentDidMount() {
+
+        this.setState({ transactions: this.props.transactions })
+    }
+
     render() {        
         return (
-       
         <div className="Filter">
             <div>
                 <p className="Filter_div1">Transactions</p>
             </div>
             <div className="Filter_div2">
                 <div>
-                    <Calendar
-                        value={this.state.date}
-                        onChange={e => this.setState({ datefrom: e.value })}
-                        dateFormat='dd/mm/yy'
+                    <input
+                        type="date"
+                        value={this.state.filterDate.datefrom}
+                        onChange={this.handleFrom}
+                        // dateFormat='dd/mm/yy'
                         placeholder="Calendar From"
-                        viewDate={this.state.viewDate}
                         className="transaction-calendar"
+                        name="dateFrom"
                     />
                 </div>
                 <div style={{marginLeft: "1rem"}} >
-                    <Calendar 
-                        placeholder="Calendar To"
-                        viewDate={this.state.viewDate} 
-                        value={this.state.dateto}
-                        onChange={(e) => this.setState({dateto: e.value})}
+                    <input 
+                        type="date"
+                        name="dateTo"
+                        placeholder="Calendar To" 
+                        value={this.state.filterDate.dateto}
+                        onChange={this.handleFrom}
                         className="transaction-calendar"
                     />
                 

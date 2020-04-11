@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Carousel from 'react-bootstrap/Carousel';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Form } from 'react-bootstrap';
-import { Redirect } from 'react-router-dom';
 class Login extends Component {
   constructor(props){
     super(props);
@@ -17,7 +15,7 @@ class Login extends Component {
         username: '',
         email: '',
         password: '',
-        currency: '',
+        currency: '3',
         amount: null,
         image: '',
       }
@@ -160,11 +158,13 @@ class Login extends Component {
     handleClickLogin = () => {
       this.setState({
         signStatus: false,
+        message: ''
       })
     }
     handleClickSignup = () => {
       this.setState({
         signStatus: true,
+        message: '',
       })
     }
 
@@ -196,7 +196,7 @@ class Login extends Component {
         window.location = '#/account'
         this.setState({email: '', password: ''})
         } else {
-          this.setState({ error: 'Login Failed',email: '', password: '' })
+          this.setState({ error: 'Login Failed',email: '', password: '', message: 'Password or email Wrong' })
           this.Wrapper = styled.div`
           display: flex;
           z-index: 1000;
@@ -220,8 +220,9 @@ class Login extends Component {
       let name = e.target.name;
       registrationInfo[name] = e.target.value;
       this.setState({ registrationInfo })
-      console.log(this.state.registrationInfo)
     }
+
+    
 
     handleSignUp = async (e) => {
       e.preventDefault();
@@ -241,7 +242,6 @@ class Login extends Component {
       }
       })
       const result = await response.json()
-      console.log('asd',result)
       if(result.access_token){
         this.setState({ 
           registrationInfo: {
@@ -249,16 +249,15 @@ class Login extends Component {
             email: '',
             password: '',
             currency: '',
-            amount: null,
+            amount: '',
             image: '',
           },
-          message: 'successfully logged in',
-          signStatus: true,
+          message: 'Successfully Signed up',
         })
         
       }else{
         this.setState({
-          message: 'please try again'
+          message: 'Sign up Failed'
         })
       }
     }
@@ -286,9 +285,10 @@ class Login extends Component {
       <select value={this.state.registrationInfo.currency} onChange={this.changeHandler} name="currency" style={{display: 'block', marginTop: '5px'}}>
         <option value="1">$</option>
         <option value="2">€</option>
-        <option selected value="3">LBP</option>
+        <option value="3">LBP</option>
       </select>
       <div style={{color: '#ccc', fontWeight: 'bold', marginTop: "20px"}}><input type="checkbox" style={{cursor:"pointer"}}/> I agree all statements in <span style={{color:'#fff', borderBottom:'2px solid rgb(81, 197, 183)'}}>terms of service</span></div>
+      <div style={{color: '#ccc', fontWeight:'bold', fontSize:'18px'}}>{ this.state.message }</div>
       <this.SignUpButton>Sign Up</this.SignUpButton>
       <span style={{marginLeft: '10px', color: '#E1E1E1',borderBottom:'2px solid rgb(81, 197, 183)', cursor:"pointer"}} onClick={this.handleClickSignup}>I'm already a member</span>
     </this.Form>
@@ -307,7 +307,7 @@ class Login extends Component {
     placeholder="Enter you Email"
     onChange={e => this.setState({ email: e.target.value })}
     value={this.state.email}
-     />
+    />
     <label for="password" style={{display:"block", color: "#fff"}}>PASSWORD</label>
     <this.Input 
       type="password" 
@@ -316,6 +316,7 @@ class Login extends Component {
       style={{display:"block"}}
       value={this.state.password}
       onChange={e => this.setState({ password: e.target.value })} />
+      <div style={{color:'#ccc', fontWeight: 'bold', fontSize: '20px'}}>{this.state.message}</div>
     <this.SignUpButton type="submit">Sign In</this.SignUpButton>
     <span style={{marginLeft: '10px', color: '#E1E1E1',borderBottom:'2px solid rgb(81, 197, 183)', cursor:"pointer"}} onClick={this.handleClickLogin}>Sign Up</span>
   </this.Form>

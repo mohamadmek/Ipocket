@@ -151,9 +151,9 @@ class App extends Component {
                 newState.EditCatVisible = false;
                 this.setState(newState);
             }
-          }catch(err) {
+        }catch(err) {
         console.log(err);
-          }
+        }
     }
 
 
@@ -178,8 +178,8 @@ class App extends Component {
             });
             const result = await responseTrans.json();
             if(result.status) {
-                 try{
-                     const token = localStorage.getItem('token');
+                try{
+                    const token = localStorage.getItem('token');
                     const responseTrans = await fetch(`http://localhost:8000/transaction/`,
                     {method:
                         'POST',
@@ -237,25 +237,6 @@ class App extends Component {
           }
 
     }
-
-    // getToken = async () => {
-    //     try {
-    //         const response = await fetch(`http://localhost:8000/login`, {
-    //             method: 'POST',
-    //             body: JSON.stringify({
-    //                 email: 'zeinab@gmail.com',
-    //                 password: 'zeinab'
-    //             }),
-    //             headers: {
-    //                 "Content-type": "application/json; charset=UTF-8"
-    //             }
-    //         })
-    //         const result = await response.json();
-    //         localStorage.setItem('token', result.access_token)
-    //     } catch(err) {
-    //         console.log(err)
-    //     }
-    // }
     
 
     getTransactions = async () => {
@@ -436,7 +417,6 @@ class App extends Component {
         };
     
     componentDidMount (){
-        // this.getToken();
         if(localStorage.getItem('token')){
             this.getTransactions();
             this.getCategories();

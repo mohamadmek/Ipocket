@@ -192,7 +192,6 @@ class Login extends Component {
           // return <Redirect to="/account" />
           // this.Wrapper = styled.div`display: none;`
           this.Wrapper = styled.div`display: none;`
-          console.log('token', localStorage.getItem('token'))
         window.location = '#/account'
         this.setState({email: '', password: ''})
         } else {

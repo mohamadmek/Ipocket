@@ -117,20 +117,18 @@ class App extends Component {
         this.setState(newState);
     }
 
-    ChangeEditCatModelDB=async () =>{
-        try{
+    ChangeEditCatModelDB=async (item) =>{//////done
+         try{
             const token = localStorage.getItem('token');
-            const responseTrans = await fetch(`http://localhost:8000/transaction/${this.state.EditCatModel.id}`,
+            const responseTrans = await fetch(`http://localhost:8000/transaction/${item.id}`,
             {method:
                 'PUT',
             body:
                 JSON.stringify({
-                    amount:this.state.EditCatModel.amount,
-                    end_date:this.state.EditCatModel.end_date,
-                    flag:this.state.EditCatModel.flag,
-                    currencies_id:this.state.EditCatModel.currencies_id,
-                    start_date:this.state.date,
-
+                    amount:item.amount,
+                    start_date:item.start_date,
+                    flag:item.flag,
+                    currencies_id:item.currencies_id,
                 }),
                 headers: {
                     'Authorization': 'Bearer ' + token,
@@ -143,29 +141,29 @@ class App extends Component {
 
                 let tranIndex=-1;
                 let newState = Object.assign({}, this.state);
-                this.state.transactions.map((id,index)=>id.id==this.state.EditCatModel.id ? tranIndex=index:"");
-                newState.transactions[tranIndex].amount=this.state.EditCatModel.amount;
-                newState.transactions[tranIndex].end_date=this.state.EditCatModel.end_date;
-                newState.transactions[tranIndex].flag=this.state.EditCatModel.flag;
-                newState.transactions[tranIndex].currencies_id=this.state.EditCatModel.currencies_id
-                newState.EditCatVisible = false;
+                this.state.transactions.map((id,index)=>id.id==item.id ? tranIndex=index:"");
+                newState.transactions[tranIndex].amount=item.amount;
+                newState.transactions[tranIndex].start_date=item.start_date;
+                newState.transactions[tranIndex].flag=item.flag;
+                newState.transactions[tranIndex].currencies_id=item.currencies_id
                 this.setState(newState);
             }
         }catch(err) {
         console.log(err);
-        }
+        } 
     }
 
 
-    createCategory= async (e)=>{///////////////must udate the users_id
-        try{
+    createCategory= async (e,trans,cat)=>{///////////////must update the users_id and the currencies_id///done
+        console.log(e,trans,cat)
+         try{
             const token = localStorage.getItem('token')
             const responseTrans = await fetch(`http://localhost:8000/categories`,
             {method:
                 'POST',
             body:
                 JSON.stringify({
-                    name:this.state.selectCategory,
+                    name:cat,
                     users_id:1
                 }),
             headers: {
@@ -185,10 +183,10 @@ class App extends Component {
                         'POST',
                     body:
                         JSON.stringify({
-                            title:this.state.InputPop,
+                            title:trans,
                             flag:2,
                             amount:0,
-                            start_date:this.state.date,
+                            start_date:new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate(),
                             interval:2,
                             type:e,
                             categories_id:result.category.id,
@@ -207,26 +205,29 @@ class App extends Component {
                     if(resultT.status) {
                         let newCat={
                             id:result.category.id,
-                            name:this.state.selectCategory,
+                            name:cat,
                             users_id:1
                         };
                         
                             let newTran={
                                 id:resultT.transaction.id,
-                                title:this.state.InputPop,
+                                title:trans,
                                 flag:2,
                                 amount:0,
-                                start_date:1/1/20,
+                                start_date:new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate(),
                                 interval:2,
                                 type:e,
                                 categories_id:result.category.id,
                                 users_id:1,
                                 currencies_id:1
                         }
-                        
-                        this.state.categories.push(newCat);
-                        this.state.transactions.push(newTran);
-                        this.switchPop();
+                        //this.switchPop();
+
+                        this.setState(
+                            { transactions: [...this.state.transactions, newTran],
+                              categories:   [...this.state.categories , newCat]
+                            }
+                          )
                     }
                   }catch(err) {
                 console.log(err);
@@ -234,7 +235,7 @@ class App extends Component {
             }
           }catch(err) {
         console.log(err);
-          }
+          } 
 
     }
 
@@ -281,7 +282,7 @@ class App extends Component {
         }
         };
     
-    deleteTransaction = async (id) => {
+    deleteTransaction = async (id) => {////////done
         try{
             const token = localStorage.getItem('token');
             const response = await fetch(`http://localhost:8000/transaction/${id}`,
@@ -449,14 +450,14 @@ class App extends Component {
     TotalExpenseIncome=()=>{
         let income=0 ,expense=0;
         let a=new Date().getMonth()+1;
-        let b= new Date().getDate() + "/" + a + "/" + new Date().getFullYear();
+        let b= new Date().getDate() + "-" + a + "-" + new Date().getFullYear();
         this.state.transactions.map((id)=>{
             id.type == "income"? income += parseFloat(id.amount) : expense += parseFloat(id.amount) })
             this.setState({ date:b , totalExpense :expense ,totalIncome: income})
     }
 
-    deleteCategories = async (id) => {
-        let cat=this.state.categories.filter(cat_id => cat_id.id == id.categories_id);
+    deleteCategories = async (id) => {//////////done
+         let cat=this.state.categories.filter(cat_id => cat_id.id == id.categories_id);
         this.deleteTransaction(id.id);
         try{
             const token = localStorage.getItem('token');
@@ -601,43 +602,45 @@ class App extends Component {
             this.removeClass(document.body, 'body-overflow-hidden');
     }
 
-    editCategoryInput=async()=>{
-        let tran=this.state.transactions.filter(id => id.id ==this.state.tempId);
-        let cat=this.state.categories.filter(id => id.id == tran[0].categories_id)
+    editCategoryInput=async(trans,cat)=>{///////////////////done
+    const token = localStorage.getItem('token');
 
         try{
-            const responseTrans = await fetch(`http://localhost:8000/transaction/${this.state.tempId}`,
+            const responseTrans = await fetch(`http://localhost:8000/transaction/${trans.id}`,
             {method:
                 'PUT',
             body:
-                JSON.stringify({title:this.state.categoryInput}),
+                JSON.stringify({title:trans.title}),
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             }
             });
             const result = await responseTrans.json();
             if(result.status) {
                 try{
-                    const response = await fetch(`http://localhost:8000/categories/${cat[0].id}`,
+                    const response = await fetch(`http://localhost:8000/categories/${trans.categories_id}`,
                     {method:
                         'PUT',
                     body:
-                        JSON.stringify({name:this.state.selectCategory}),
+                        JSON.stringify({name:cat}),
                     headers: {
-                        "Content-type": "application/json; charset=UTF-8"
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
                     }
                     });
                     const resultTrans = await response.json();
                     if(resultTrans.status) {
 
                         let catIndex=-1,tranIndex=-1;
-                        this.state.categories.map((id,index)=>id.id==cat[0].id?catIndex=index:"");
+                        this.state.categories.map((id,index)=>id.id == trans.categories_id ? catIndex=index:"");
                         let newState = Object.assign({}, this.state);
-                        this.state.transactions.map((id,index)=>id.id==this.state.tempId?tranIndex=index:"");
+                        this.state.transactions.map((id,index)=>id.id == trans.id ? tranIndex=index:"");
                         
-                        newState.transactions[tranIndex].title=this.state.categoryInput;
-                        newState.categories[catIndex].name=this.state.selectCategory;
-                        newState.flagEdit=false;
+                        newState.transactions[tranIndex].title= trans.title;
+                        newState.categories[catIndex].name= cat;
 
                         this.setState(newState); 
 
@@ -648,7 +651,7 @@ class App extends Component {
         }
     }}catch(err) {
         console.log(err);
-    }  
+    } 
 
 
     }
@@ -706,12 +709,12 @@ class App extends Component {
                                                                     />)} />
                 <Route path="/save"   component={Save} />
                 <Route path="/income"  render={(props) => ( <Income
-                                                                    transactions={this.state.transactions} 
-                                                                    categories={this.state.categories}
-                                                                    currencies={this.state.currencies}
+                                                                    transactions={this.state.transactions} //
+                                                                    categories={this.state.categories}//
+                                                                    currencies={this.state.currencies}//
                                                                     
-                                                                    deleteCategories={this.deleteCategories}
-                                                                    editCategoryInput={this.editCategoryInput}
+                                                                    deleteCategories={this.deleteCategories}//
+                                                                    editCategoryInput={this.editCategoryInput}//
                                                                     flagEdit={this.state.flagEdit}
                                                                     switch={this.switch}
                                                                     titleCategory={this.state.titleCategory}
@@ -725,49 +728,49 @@ class App extends Component {
                                                                     switchPop={this.switchPop}
                                                                     InputPop={this.state.InputPop}
                                                                     setInputPop={this.setInputPop}
-                                                                    createCategory={this.createCategory}
+                                                                    createCategory={this.createCategory}//
 
                                                                     EditCatVisible={this.state.EditCatVisible}
                                                                     switchEditCatVisible={this.switchEditCatVisible}
                                                                     EditCatModel={this.state.EditCatModel}
                                                                     ChangeEditCatModel={this.ChangeEditCatModel}
-                                                                    ChangeEditCatModelDB={this.ChangeEditCatModelDB}
+                                                                    ChangeEditCatModelDB={this.ChangeEditCatModelDB}//
 
                                                                     totalExpense={this.state.totalExpense}
                                                                     totalIncome={this.state.totalIncome}
                                                                     {...props}
                                                                     /> )} />
                 <Route path="/expense" render={(props) => ( <Expense 
-                                                                    transactions={this.state.transactions}
-                                                                    categories={this.state.categories}
-                                                                    currencies={this.state.currencies}
-                                                                    
-                                                                    deleteCategories={this.deleteCategories}
-                                                                    editCategoryInput={this.editCategoryInput}
-                                                                    flagEdit={this.state.flagEdit}
-                                                                    switch={this.switch}
-                                                                    titleCategory={this.state.titleCategory}
-                                                                    editCategory={this.editCategory}
-                                                                    categoryInput={this.state.categoryInput}
-                                                                    cancel={this.cancel}
-                                                                    editSelectCat={this.editSelectCat}
-                                                                    selectCategory={this.state.selectCategory}
-
-                                                                    visibleCategoryPop={this.state.visibleCategoryPop}
-                                                                    switchPop={this.switchPop}
-                                                                    InputPop={this.state.InputPop}
-                                                                    setInputPop={this.setInputPop}
-                                                                    createCategory={this.createCategory}
-
-                                                                    EditCatVisible={this.state.EditCatVisible}
-                                                                    switchEditCatVisible={this.switchEditCatVisible}
-                                                                    EditCatModel={this.state.EditCatModel}
-                                                                    ChangeEditCatModel={this.ChangeEditCatModel}
-                                                                    ChangeEditCatModelDB={this.ChangeEditCatModelDB}
-
-                                                                    totalExpense={this.state.totalExpense}
-                                                                    totalIncome={this.state.totalIncome}
-                                                                    {...props}
+                                                                     transactions={this.state.transactions} //
+                                                                     categories={this.state.categories}//
+                                                                     currencies={this.state.currencies}//
+                                                                     
+                                                                     deleteCategories={this.deleteCategories}//
+                                                                     editCategoryInput={this.editCategoryInput}//
+                                                                     flagEdit={this.state.flagEdit}
+                                                                     switch={this.switch}
+                                                                     titleCategory={this.state.titleCategory}
+                                                                     editCategory={this.editCategory}
+                                                                     categoryInput={this.state.categoryInput}
+                                                                     cancel={this.cancel}
+                                                                     editSelectCat={this.editSelectCat}
+                                                                     selectCategory={this.state.selectCategory}
+                                                                     
+                                                                     visibleCategoryPop={this.state.visibleCategoryPop}
+                                                                     switchPop={this.switchPop}
+                                                                     InputPop={this.state.InputPop}
+                                                                     setInputPop={this.setInputPop}
+                                                                     createCategory={this.createCategory}//
+ 
+                                                                     EditCatVisible={this.state.EditCatVisible}
+                                                                     switchEditCatVisible={this.switchEditCatVisible}
+                                                                     EditCatModel={this.state.EditCatModel}
+                                                                     ChangeEditCatModel={this.ChangeEditCatModel}
+                                                                     ChangeEditCatModelDB={this.ChangeEditCatModelDB}//
+ 
+                                                                     totalExpense={this.state.totalExpense}
+                                                                     totalIncome={this.state.totalIncome}
+                                                                     {...props}
                                                                     /> )} />
             </div>
 

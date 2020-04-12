@@ -13,63 +13,41 @@ class categorypopup extends React.Component {
             carLabel:null,
            
             icon: [
-                {label: 'fa fa-hospital', value: 'Hospital'},
-                {label: 'fa fa-user-graduate', value: 'School'},
-                {label: 'fa fa-running', value: 'Sports'},
-                {label: 'fa fa-car-side', value: 'Car'},
-                {label: 'fa fa-mobile-alt', value: 'Phone'},
-                {label: 'fa fa-home', value: 'Home'},
-                {label: 'fa fa-shopping-cart', value: 'Shopping'},
-                {label: 'fa fa-tree', value: 'Nature'},
-                {label: 'fa fa-utensils', value: 'Food'},
-                {label:'fa fa-donate', value:"Bank"},
-                {label:'fa fa-gifts', value:"Gift"},
-                {label:'fa fa-coffee', value:"Outside"},
-                {label:'fa fa-paw', value:"Animals"},
-                {label:'fa fa-plane', value:"Traveling"},
-                {label:'fa fa-asterisk', value:"Other"}
+                {value: 'fa fa-hospital', label: 'Hospital'},
+                {value: 'fa fa-user-graduate', label: 'School'},
+                {value: 'fa fa-running', label: 'Sports'},
+                {value: 'fa fa-car-side', label: 'Car'},
+                {value: 'fa fa-mobile-alt', label: 'Phone'},
+                {value: 'fa fa-home', label: 'Home'},
+                {value: 'fa fa-shopping-cart', label: 'Shopping'},
+                {value: 'fa fa-tree', label: 'Nature'},
+                {value: 'fa fa-utensils', label: 'Food'},
+                {value:'fa fa-donate', label:"Bank"},
+                {value:'fa fa-gifts', label:"Gift"},
+                {value:'fa fa-coffee', label:"Outside"},
+                {value:'fa fa-paw', label:"Animals"},
+                {value:'fa fa-plane', label:"Traveling"},
+                {value:'fa fa-asterisk', label:"Other"}
             ],
+            visible:false,
+            EditInput:"",
+            CategoryChosen:"",
             
         };
-        this.onCarChange2 = this.onCarChange2.bind(this);
     }
 
-     onCarChange2=(e)=> {
-       this.setState({car2:e.value});
-    }
-
-    carTemplate(option) {
+    IconTemplate(option) {
         if(!option.value) {
             return option.label;
         }
         else {
             return (
                 <div className="p-clearfix">
-                    <i class={option.label} aria-hidden="true"  id="clearfix_i" />
-                    <span style={{float:'right',margin:'.5em .25em 0 0'}}>{option.value}</span>
+                    <i class={option.value} aria-hidden="true"  style={{display:'inline-block',fontSize:'24px'}}/>
+                    <span style={{float:'right',margin:'.5em .25em 0 0'}}>{option.label}</span>
                 </div>
             );
         }
-    }
-    handleform(e){
-        let c="";
-        this.state.cars.map((item,i)=>
-            item.value==this.state.car2?c=item.label:""
-                );
-        let newCategory=  {label:c, value:document.getElementsByClassName("category_popup_div2_input_name")['category_popup_div2_input'].value};
-        this.setState({ visible: false });
-         this.props.handle(newCategory);
-    }
-
-    componentDidMount=()=>{
-        this.popInput.focus();
-    }
-
-     selectOption=(item)=>{     
-        if(item.label== this.props.selectCategory){
-            return <option value={item.label} selected> {item.value} Icon</option>  
-        }
-        return <option value={item.label} > {item.value} Icon</option>
     }
 
 	render() {
@@ -78,13 +56,13 @@ class categorypopup extends React.Component {
 				<Button
 					label='Create'
 					icon='pi pi-check'
-                    onClick={e => this.props.createCategory(this.props.desc)}
+                    onClick={e =>{this.setState({visible:false, EditInput:"", CategoryChosen:""}) ;this.props.createCategory(this.props.desc,this.state.EditInput,this.state.CategoryChosen)}}
                     style={{backgroundColor:'#16a085',color:'white'}}
 				/>
 				<Button
 					label='cancel'
 					icon='fa fa-trash'
-					onClick={e => this.props.switchPop()}
+					onClick={e => this.setState({visible:false})}
                     className='p-button-secondary'
                     style={{color:'rgb(95,113,132)'}}
 				/>
@@ -96,10 +74,10 @@ class categorypopup extends React.Component {
 				<Dialog
 					header='Create New Category'
 					footer={footer}
-                    visible={this.props.visibleCategoryPop}
+                    visible={this.state.visible}
                     style={{width:'25%'}}
 					modal={true}
-					onHide={e => this.props.switchPop()}>
+					onHide={e => this.setState({visible:false})}>
                 <div className="category_popup_div2">
                     <div>
                        
@@ -109,26 +87,23 @@ class categorypopup extends React.Component {
                         id="category_popup_div2_input"
                         className="category_popup_div2_input_name"
                         name="popInput"
-                        ref={(input) => this.popInput = input }
-                        value={this.props.InputPop}
-                        onChange={(e) => this.props.setInputPop(e.target.value)}
+                        value={this.state.EditInput}
+                        onChange={(e) => this.setState({EditInput:e.target.value})}
                         ></input>
                     </div>
                     <div>
-                   {/*  <Dropdown 
-                        value={this.state.car2}
-                        options={this.state.cars} 
-                        onChange={e => this.onCarChange2(e)} 
-                        itemTemplate={this.carTemplate}  
+                   
+                    <Dropdown 
+                        className="zeinab"
+                        value={this.state.CategoryChosen}
+                        onChange={e => this.setState({CategoryChosen:e.target.value}) }
+                        options={this.state.icon}
                         style={{width: '70%',margin:'10px 0px 0px 0px'}}
                         placeholder="choose icon"
-                        showClear={true}/> */}
-
-                    <select  onChange={(e)=>this.props.editSelectCat(e.target.value)} className="category_select">
-                        {this.state.icon.map((item)=>
-                            this.selectOption(item)
-                        )}
-                    </select>
+                        showClear={true}
+                        placeholder="choose category"
+                        itemTemplate={this.IconTemplate}
+                    /> 
                     </div>
                 </div>
                 </Dialog>
@@ -136,11 +111,11 @@ class categorypopup extends React.Component {
 
             <div>
                 <button className="category_popup_button">
-                <i class="fa fa-plus-circle" aria-hidden="true" id="category_popup_i" onClick={e => this.props.switchPop()}></i>
+                <i class="fa fa-plus-circle" aria-hidden="true" id="category_popup_i" onClick={e => this.setState({visible:true})}></i>
                 </button>
             </div>
            <div>
-                <div className="category_popup_p" onClick={e => this.props.switchPop()}>create category</div>
+                <div className="category_popup_p" onClick={e => this.setState({visible:true})}>create category</div>
             </div> 
 		</div>
 		);

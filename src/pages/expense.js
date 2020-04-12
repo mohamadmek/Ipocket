@@ -40,23 +40,16 @@ class Expense extends Component {
     render() {
         return (
             <div style={{overflowX:'hidden'}}>
-            <Weekly desc="expense"/>
+            <Weekly desc="expense"
+                        transactions={this.props.transactions}
+                        />
             <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
             <Category desc="expense"
-                 transactions={this.props.transactions}
-                 categories={this.props.categories}
-                 currencies={this.props.currencies}
-                 
+                 transactions={this.props.transactions}//
+                 categories={this.props.categories}//
+                 currencies={this.props.currencies}//
                  deleteCategories={this.props.deleteCategories}
                  editCategoryInput={this.props.editCategoryInput}
-                 flagEdit={this.props.flagEdit}
-                 switch={this.props.switch}
-                 titleCategory={this.props.titleCategory}
-                 editCategory={this.props.editCategory}
-                 categoryInput={this.props.categoryInput}
-                 cancel={this.props.cancel}
-                 editSelectCat={this.props.editSelectCat}
-                 selectCategory={this.props.selectCategory}
 
                  EditCatVisible={this.props.EditCatVisible}
                  switchEditCatVisible={this.props.switchEditCatVisible}
@@ -74,7 +67,7 @@ class Expense extends Component {
                 setInputPop={this.props.setInputPop}
                 editSelectCat={this.props.editSelectCat}
                 selectCategory={this.props.selectCategory}
-                createCategory={this.props.createCategory}
+                createCategory={this.props.createCategory}//
                 />
             </div>
             <Balance

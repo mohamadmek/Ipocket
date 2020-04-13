@@ -26,7 +26,8 @@ class Account extends Component {
                 totalExpense={this.props.totalExpense}
                 totalIncome={this.props.totalIncome}
                 />
-              <BarChart/>
+              <BarChart
+                 transactions={this.props.transactions} />
             </div>
             
             <Save/>

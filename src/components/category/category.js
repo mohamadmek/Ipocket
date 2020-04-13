@@ -46,6 +46,7 @@ class category extends React.Component {
             year:"",
             month:"",
             day:"",
+            title:""
         };
         
     }
@@ -172,7 +173,7 @@ class category extends React.Component {
                 <div className="category_div_inner1">
                     <div>
                     <button className="category_div_button">
-                        <i class={this.titleHandler(item)} aria-hidden="true" id="category_div_i" onClick={e=> this.setState({DialogEdit: true ,  DialogInput:item}) }></i>
+                        <i class={this.titleHandler(item)} aria-hidden="true" id="category_div_i" onClick={e=> this.setState({DialogEdit: true ,  DialogInput:item , title: item.title}) }></i>
                     </button>
                     </div>
                     <div className="category_div_inner2_22">
@@ -232,7 +233,7 @@ class category extends React.Component {
                 </Dialog>
 
                  <Dialog
-                    header={this.state.DialogInput.title + " " + this.props.desc}
+                    header={this.state.title + " " + this.props.desc}
                     footer={footer} 
                     visible={this.state.DialogEdit}
                     style={{width:'25%'}}

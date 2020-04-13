@@ -69,8 +69,17 @@
 .barchart_div3{
   margin-left: 50px;
   margin-top: 33px;
-  
 }
+
+.barchart_div4{
+    margin-left: 50px;
+    margin-top: 33px;
+}
+#barchart_div3_id{
+    display: none;
+}
+  
+
 
 
 

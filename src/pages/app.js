@@ -705,6 +705,7 @@ class App extends Component {
                                                                     totalExpense={this.state.totalExpense}
                                                                     totalIncome={this.state.totalIncome}
                                                                     date={this.state.date}
+                                                                    transactions={this.state.transactions} 
                                                                     {...props}
                                                                     />)} />
                 <Route path="/save"   component={Save} />

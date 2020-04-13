@@ -8,7 +8,7 @@ class Filter extends Component {
         this.state = {
             filterDate: {
                 dateFrom: '',
-                dateTo: '',
+                dateTo: (new Date().getFullYear()+ '-' + (new Date().getMonth()+1) + '-' + (new Date().getDate()))
             },
             transactions: [],
         
@@ -20,11 +20,14 @@ class Filter extends Component {
         let filterDate = {...this.state.filterDate};
         const name = e.target.name;
         filterDate[name] = e.target.value;
-        this.setState({ filterDate })
-        let transactions = [...this.props.transactions];
-        const filteredTransactions = transactions.filter(transaction =>
-            parseInt(transaction.created_at) > 1)
-            console.log(filteredTransactions[0].created_at)
+        this.setState({ filterDate }, () => {
+            let transactions = [...this.props.transactions];
+        const filteredTransactions = transactions.filter((transaction) =>
+            (new Date(transaction.start_date).getTime() >= new Date(this.state.filterDate.dateFrom).getTime()) 
+            && (new Date(transaction.start_date).getTime() <= new Date(this.state.filterDate.dateTo).getTime()) )
+            console.log("f",filteredTransactions)
+        })
+        
     }
 
     componentDidMount() {
@@ -44,10 +47,9 @@ class Filter extends Component {
                         type="date"
                         value={this.state.filterDate.datefrom}
                         onChange={this.handleFrom}
-                        // dateFormat='dd/mm/yy'
+                        dateFormat='yy/mm/dd'
                         placeholder="Calendar From"
                         className="transaction-calendar"
-                        value={this.state.datefrom}
                         name="dateFrom"
                     />
                 </div>
@@ -59,7 +61,7 @@ class Filter extends Component {
                         value={this.state.filterDate.dateto}
                         onChange={this.handleFrom}
                         className="transaction-calendar"
-                        value={this.state.dateto}
+                        dateFormat='yy/mm/dd'
                     />
                 
                 

@@ -75,6 +75,8 @@ class Expense extends Component {
                 totalExpense={this.props.totalExpense}
                 totalIncome={this.props.totalIncome}
                 currencies={this.props.currencies}
+                wholeIncome={this.props.wholeIncome}
+                wholeExpense={this.props.wholeExpense}
                 />
             </div>
         );

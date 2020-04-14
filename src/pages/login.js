@@ -202,6 +202,8 @@ class Login extends Component {
         window.location = '#/account'
         this.setState({email: '', password: ''})
         } else {
+          window.localStorage.removeItem("token");
+          localStorage.clear();
           this.setState({ error: 'Login Failed',email: '', password: '', message: 'Password or email Wrong' })
           this.Wrapper = styled.div`
           display: flex;
@@ -217,6 +219,8 @@ class Login extends Component {
       } catch(err) {
         console.log(err)
         this.setState({ error: err })
+        window.localStorage.removeItem("token");
+        localStorage.clear();
       }
     }
 

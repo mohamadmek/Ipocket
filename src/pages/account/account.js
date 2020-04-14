@@ -25,12 +25,20 @@ class Account extends Component {
               <Balance 
                 totalExpense={this.props.totalExpense}
                 totalIncome={this.props.totalIncome}
+
+                wholeExpense={this.props.wholeExpense}//
+                wholeIncome={this.props.wholeIncome}//
                 />
               <BarChart
                  transactions={this.props.transactions} />
             </div>
             
-            <Save/>
+            <Save 
+                wholeExpense={this.props.wholeExpense}//
+                wholeIncome={this.props.wholeIncome}//
+                SavingInsert={this.props.SavingInsert}//
+                transactions={this.props.transactions} //
+                />
 
             </>
         );

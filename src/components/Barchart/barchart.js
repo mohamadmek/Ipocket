@@ -82,7 +82,7 @@ class Barchart extends Component {
           }
         }
 
-        calculateBar=(from,to)=>{console.log("from ",from,to)
+        calculateBar=(from,to)=>{
           const monthNames = [
             "January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"
@@ -116,7 +116,7 @@ class Barchart extends Component {
               })
               totalIncome.push(income);
               totalExpense.push(expense);
-              months.push(monthNames[new Date(toTemp).getMonth()])
+              months.push(monthNames[new Date(fromTemp).getMonth()])
 
               fromTemp=new Date(fromTemp);
               fromTemp.setMonth(fromTemp.getMonth()+1);
@@ -128,7 +128,6 @@ class Barchart extends Component {
             }
              
             }
-            console.log("result",totalIncome,totalExpense,months)
             this.setState({month:months, income:totalIncome, expense:totalExpense})
           }
           

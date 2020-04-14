@@ -269,24 +269,24 @@ class App extends Component {
     });
   };
 
-  getToken = async () => {
-    try {
-      const response = await fetch(`http://localhost:8000/login`, {
-        method: 'POST',
-        body: JSON.stringify({
-          email: 'zisi@hotmail.com',
-          password: 'zisi',
-        }),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        },
-      });
-      const result = await response.json();
-      localStorage.setItem('token', result.access_token);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // getToken = async () => {
+  //   try {
+  //     const response = await fetch(`http://localhost:8000/login`, {
+  //       method: 'POST',
+  //       body: JSON.stringify({
+  //         email: 'zisi@hotmail.com',
+  //         password: 'zisi',
+  //       }),
+  //       headers: {
+  //         'Content-type': 'application/json; charset=UTF-8',
+  //       },
+  //     });
+  //     const result = await response.json();
+  //     localStorage.setItem('token', result.access_token);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   getTransactions = async () => {
     try {

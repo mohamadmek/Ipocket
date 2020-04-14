@@ -30,7 +30,7 @@ class category extends React.Component {
                 {value: 'fa fa-shopping-cart', label: 'Shopping'},
                 {value: 'fa fa-tree', label: 'Nature'},
                 {value: 'fa fa-utensils', label: 'Food'},
-                {value:'fa fa-donate', label:"Bank"},
+               /*  {value:'fa fa-donate', label:"Bank"}, */
                 {value:'fa fa-gifts', label:"Gift"},
                 {value:'fa fa-coffee', label:"Outside"},
                 {value:'fa fa-paw', label:"Animals"},

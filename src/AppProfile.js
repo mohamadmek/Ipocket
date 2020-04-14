@@ -27,10 +27,8 @@ export class AppProfile extends Component {
             })
 
             const result = await response.json();
-            console.log("log",result)
             localStorage.clear();
-            window.location='#/'
-            console.log("removed ",localStorage.getItem('token'))
+            window.location='/'
         
         }catch(err) {
             console.log(err)

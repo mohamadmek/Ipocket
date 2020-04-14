@@ -6,33 +6,16 @@ class Filter extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            filterDate: {
-                dateFrom: '',
-                dateTo: (new Date().getFullYear()+ '-' + (new Date().getMonth()+1) + '-' + (new Date().getDate()))
-            },
-            transactions: [],
+            
         
         };
     }
 
-    handleFrom = e => {
-        e.preventDefault();
-        let filterDate = {...this.state.filterDate};
-        const name = e.target.name;
-        filterDate[name] = e.target.value;
-        this.setState({ filterDate }, () => {
-            let transactions = [...this.props.transactions];
-        const filteredTransactions = transactions.filter((transaction) =>
-            (new Date(transaction.start_date).getTime() >= new Date(this.state.filterDate.dateFrom).getTime()) 
-            && (new Date(transaction.start_date).getTime() <= new Date(this.state.filterDate.dateTo).getTime()) )
-            console.log("f",filteredTransactions)
-        })
-        
-    }
+    
 
     componentDidMount() {
-
         this.setState({ transactions: this.props.transactions })
+
     }
 
     render() {        
@@ -45,8 +28,8 @@ class Filter extends Component {
                 <div>
                     <input
                         type="date"
-                        value={this.state.filterDate.datefrom}
-                        onChange={this.handleFrom}
+                        value={this.props.datefrom}
+                        onChange={this.props.handleFrom}
                         dateFormat='yy/mm/dd'
                         placeholder="Calendar From"
                         className="transaction-calendar"
@@ -58,8 +41,8 @@ class Filter extends Component {
                         type="date"
                         name="dateTo"
                         placeholder="Calendar To" 
-                        value={this.state.filterDate.dateto}
-                        onChange={this.handleFrom}
+                        value={this.props.dateto}
+                        onChange={this.props.handleFrom}
                         className="transaction-calendar"
                         dateFormat='yy/mm/dd'
                     />
@@ -68,7 +51,6 @@ class Filter extends Component {
                 </div>
             </div>
         </div>
-      
                 
         );
     }

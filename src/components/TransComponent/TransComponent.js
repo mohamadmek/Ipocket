@@ -14,8 +14,6 @@ class TransComponent extends Component {
 
     handleChange = (e) => {
         let inputName = e.target.name
-        // let newState = Object.assign({}, this.state);
-        // console.log(newState)
         this.setState({ inputName : e.target.value })
     }
 

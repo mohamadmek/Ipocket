@@ -171,9 +171,6 @@ class Login extends Component {
     handleSignIn = async (e) => {
       e.preventDefault();
       try {
-        // const body = new FormData();
-        // body.append('email', this.state.email);
-        // body.append('password', this.state.password);
         const response = await fetch('http://localhost:8000/login', {
           method: 'POST',
           body: JSON.stringify({
@@ -185,12 +182,22 @@ class Login extends Component {
               'Accept': 'application/json'
           }
         })
+       
         const result = await response.json();
         localStorage.setItem('token', result.access_token)
+        const token = localStorage.getItem('token');
+        const response2 = await fetch(`http://localhost:8000/user/${this.state.email}`, {
+          method: 'GET',
+           headers: {
+             Authorization: 'Bearer ' + token,
+             'Content-Type': 'application/json',
+             Accept: 'application/json',
+           },
+          
+        });
+        const users = await response2.json();
         if(result.access_token) {
-          // this.props.history.push('/account');
-          // return <Redirect to="/account" />
-          // this.Wrapper = styled.div`display: none;`
+          localStorage.setItem('userID', users.user.id)
           this.Wrapper = styled.div`display: none;`
         window.location = '#/account'
         this.setState({email: '', password: ''})

@@ -571,8 +571,9 @@ class App extends Component {
     }
 
     WholeTotalExpense=()=>{/////////
+       
         if(this.state.transactions.length !=0){
-           let expense=0;
+           let expense=0;let month=-1;
            this.state.transactions.map((item)=>{
                let tempfrom=item.start_date;;
                if(item.flag == 2 && item.type== "expense"){
@@ -592,21 +593,8 @@ class App extends Component {
                        tempfrom.setMonth(tempfrom.getMonth()+1);
                    }
                }
-               else if(item.flag == 1 && item.type == "expense" && item.end_date != null && item.interval !== null){
-                   if(item.interval == 30){
-                    while(new Date(tempfrom).getTime() >= new Date(item.start_date).getTime() && new Date(tempfrom).getTime() <= new Date(item.end_date).getTime()){
-                        expense += parseFloat (item.amount);
-                        tempfrom=new Date(tempfrom);
-                        tempfrom.setMonth(tempfrom.getMonth()+1);
-                    }
-                }
-                    else if(item.interval ==7){
-                        while(new Date(tempfrom).getTime() >= new Date(item.start_date).getTime() && new Date(tempfrom).getTime() <= new Date(item.end_date).getTime()){
-                            expense += parseFloat (item.amount);
-                            tempfrom=new Date(tempfrom);
-                            tempfrom.setDate(tempfrom.getDate() + 7);
-                        }
-                   }
+               else if(item.flag == 1 && item.type == "expense" && item.end_date != null && item.interval !== null && new Date(item.end_date).getTime() >= new Date().getTime()){
+                    expense += parseFloat (item.amount);
                }
            })
            this.setState({wholeExpense : expense})

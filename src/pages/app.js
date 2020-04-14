@@ -49,7 +49,10 @@ class App extends Component {
 
             EditCatVisible:false,
             EditCatModel:[],
-            changed:false
+            changed:false,
+
+            wholeIncome:0,
+            wholeExpense:0,
         };
         this.onWrapperClick = this.onWrapperClick.bind(this);
         this.onToggleMenu = this.onToggleMenu.bind(this);
@@ -155,7 +158,6 @@ class App extends Component {
 
 
     createCategory= async (e,trans,cat)=>{///////////////must update the users_id and the currencies_id///done
-        console.log(e,trans,cat)
          try{
             const token = localStorage.getItem('token')
             const responseTrans = await fetch(`http://localhost:8000/categories`,
@@ -187,7 +189,6 @@ class App extends Component {
                             flag:2,
                             amount:0,
                             start_date:new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate(),
-                            interval:2,
                             type:e,
                             categories_id:result.category.id,
                             users_id:1,
@@ -215,7 +216,6 @@ class App extends Component {
                                 flag:2,
                                 amount:0,
                                 start_date:new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate(),
-                                interval:2,
                                 type:e,
                                 categories_id:result.category.id,
                                 users_id:1,
@@ -236,6 +236,95 @@ class App extends Component {
           }catch(err) {
         console.log(err);
           } 
+
+    }
+
+    SavingInsert=async(amount,end_date,interval)=>{
+   console.log("SAVING",localStorage.getItem('token'))
+        
+         try{console.log("try",amount,end_date,interval)
+            const token = localStorage.getItem('token')
+            const responseTrans = await fetch(`http://localhost:8000/categories`,
+            {method:
+                'POST',
+            body:
+                JSON.stringify({
+                    name:'fa fa-donate',
+                    users_id:1
+                }),
+            headers: {
+                
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                
+            }
+            });
+            const result = await responseTrans.json();
+            if(result.status) {
+                try{console.log("yesSASAS")
+                    const token = localStorage.getItem('token');
+                    const responseTrans = await fetch(`http://localhost:8000/transaction/`,
+                    {method:
+                        'POST',
+                    body:
+                        JSON.stringify({
+                            title:'Saving',
+                            flag:1,
+                            amount:parseFloat(amount),
+                            start_date:new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate(),
+                            interval:parseInt(interval),
+                            type:'expense',
+                            categories_id:result.category.id,
+                            users_id:1,
+                            currencies_id:1,
+                            end_date:end_date
+                        }),
+                    headers: {
+                        
+                            'Authorization': 'Bearer ' + token,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        
+                    }
+                    });
+                    const resultT = await responseTrans.json();
+                    if(resultT.status) {console.log("yes")
+                        let newCat={
+                            id:result.category.id,
+                            name:'fa fa-donate',
+                            users_id:1
+                        };
+                        
+                            let newTran={
+                                id:resultT.transaction.id,
+                                title:'Saving',
+                                flag:1,
+                                amount:amount,
+                                start_date:new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate(),
+                                interval:interval,
+                                type:'expense',
+                                categories_id:result.category.id,
+                                users_id:1,
+                                currencies_id:1,
+                                end_date:end_date
+                        }
+
+                        this.setState(
+                            { transactions: [...this.state.transactions, newTran],
+                              categories:   [...this.state.categories , newCat]
+                            }
+                          )
+                          //alert("Saving planiing is successfully entered ")
+                    }
+                  }catch(err) {
+                console.log(err);
+                  }
+            }
+          }catch(err) {
+        console.log(err);
+          } 
+
 
     }
 
@@ -274,8 +363,8 @@ class App extends Component {
             if(result.status){
                 this.setState({
                     transactions: result.transaction
-                })
-                this.TotalExpenseIncome();
+                },()=>this.WholeTotalIncome())
+                
             }
         } catch (err) {
             console.log(err);
@@ -441,11 +530,88 @@ class App extends Component {
             this.getTransactions();
             this.getCategories();
             this.getCurrencies();
+         
+            
         } else {
             window.location= '#/'
         } 
         
     }
+    WholeTotalIncome=()=>{/////////
+        if(localStorage.getItem('token')){
+              if(this.state.transactions.length !=0){
+                let income=0;
+                this.state.transactions.map((item)=>{
+                    let tempfrom=item.start_date;;
+                    if(item.flag == 2 && item.type== "income"){
+                        income += parseFloat(item.amount)
+                    } 
+                    else if(item.flag ==1 && item.type == "income" && item.end_date == null){
+                        while(new Date(tempfrom).getTime() >= new Date(item.start_date).getTime() && new Date(tempfrom).getTime() <= new Date().getTime()){
+                            income += parseFloat (item.amount);
+                            tempfrom=new Date(tempfrom);
+                            tempfrom.setMonth(tempfrom.getMonth()+1);
+                        }
+                    } 
+                    else if(item.flag == 1 && item.type == "income" && item.end_date != null){
+                        while(new Date(tempfrom).getTime() >= new Date(item.start_date).getTime() && new Date(tempfrom).getTime() <= new Date(item.end_date).getTime()){
+                            income += parseFloat (item.amount);
+                            tempfrom=new Date(tempfrom);
+                            tempfrom.setMonth(tempfrom.getMonth()+1);
+                        }
+                    } 
+
+                })
+                ////////////////adding the user's amount
+                income += 20;
+                this.setState({wholeIncome : income})
+                this.WholeTotalExpense();
+            }   
+    }
+    }
+
+    WholeTotalExpense=()=>{/////////
+        if(this.state.transactions.length !=0){
+           let expense=0;
+           this.state.transactions.map((item)=>{
+               let tempfrom=item.start_date;;
+               if(item.flag == 2 && item.type== "expense"){
+                   expense += parseFloat(item.amount)
+               } 
+               else if(item.flag ==1 && item.type == "expense" && item.end_date == null){
+                   while(new Date(tempfrom).getTime() >= new Date(item.start_date).getTime() && new Date(tempfrom).getTime() <= new Date().getTime()){
+                       expense += parseFloat (item.amount);
+                       tempfrom=new Date(tempfrom);
+                       tempfrom.setMonth(tempfrom.getMonth()+1);
+                   }
+               } 
+               else if(item.flag == 1 && item.type == "expense" && item.end_date != null && item.interval == null){
+                   while(new Date(tempfrom).getTime() >= new Date(item.start_date).getTime() && new Date(tempfrom).getTime() <= new Date(item.end_date).getTime()){
+                       expense += parseFloat (item.amount);
+                       tempfrom=new Date(tempfrom);
+                       tempfrom.setMonth(tempfrom.getMonth()+1);
+                   }
+               }
+               else if(item.flag == 1 && item.type == "expense" && item.end_date != null && item.interval !== null){
+                   if(item.interval == 30){
+                    while(new Date(tempfrom).getTime() >= new Date(item.start_date).getTime() && new Date(tempfrom).getTime() <= new Date(item.end_date).getTime()){
+                        expense += parseFloat (item.amount);
+                        tempfrom=new Date(tempfrom);
+                        tempfrom.setMonth(tempfrom.getMonth()+1);
+                    }
+                }
+                    else if(item.interval ==7){
+                        while(new Date(tempfrom).getTime() >= new Date(item.start_date).getTime() && new Date(tempfrom).getTime() <= new Date(item.end_date).getTime()){
+                            expense += parseFloat (item.amount);
+                            tempfrom=new Date(tempfrom);
+                            tempfrom.setDate(tempfrom.getDate() + 7);
+                        }
+                   }
+               }
+           })
+           this.setState({wholeExpense : expense})
+       } 
+   }
 
     TotalExpenseIncome=()=>{
         let income=0 ,expense=0;
@@ -706,6 +872,11 @@ class App extends Component {
                                                                     totalIncome={this.state.totalIncome}
                                                                     date={this.state.date}
                                                                     transactions={this.state.transactions} 
+
+                                                                    wholeExpense={this.state.wholeExpense}//
+                                                                    wholeIncome={this.state.wholeIncome}//
+                                                                    SavingInsert={this.SavingInsert}//
+                                                                    transactions={this.state.transactions} //
                                                                     {...props}
                                                                     />)} />
                 <Route path="/save"   component={Save} />
@@ -739,6 +910,9 @@ class App extends Component {
 
                                                                     totalExpense={this.state.totalExpense}
                                                                     totalIncome={this.state.totalIncome}
+
+                                                                    wholeExpense={this.state.wholeExpense}//
+                                                                    wholeIncome={this.state.wholeIncome}//
                                                                     {...props}
                                                                     /> )} />
                 <Route path="/expense" render={(props) => ( <Expense 
@@ -771,6 +945,9 @@ class App extends Component {
  
                                                                      totalExpense={this.state.totalExpense}
                                                                      totalIncome={this.state.totalIncome}
+
+                                                                     wholeExpense={this.state.wholeExpense}//
+                                                                    wholeIncome={this.state.wholeIncome}//
                                                                      {...props}
                                                                     /> )} />
             </div>

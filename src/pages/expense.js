@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import ReactDOM from "react-dom";
 import Weekly from "../components/WeeklyMontly/TodayWeeklyMonthly";
 import Balance from "../components/Balance/balance";
 import CategoryPop from "../components/categoryPopup/categorypopup";
@@ -27,9 +28,11 @@ class Expense extends Component {
     }
 
     componentDidMount = () => {
-            if(!localStorage.getItem('token')){
-                window.location('#/')
-            }
+        if(localStorage.getItem('token')==null)
+        {
+            window.location='#/';
+            console.log("heyyy")
+        }
             
         this.expenseAmount();
     }
@@ -40,6 +43,8 @@ class Expense extends Component {
     render() {
         return (
             <div style={{overflowX:'hidden'}}>
+                {localStorage.getItem('token')==null?window.location='#/':
+                <>
             <Weekly desc="expense"
                         transactions={this.props.transactions}
                         />
@@ -78,7 +83,10 @@ class Expense extends Component {
                 wholeIncome={this.props.wholeIncome}
                 wholeExpense={this.props.wholeExpense}
                 />
+                </>
+    }
             </div>
+       
         );
     }
 }

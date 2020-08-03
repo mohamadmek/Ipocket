@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Route, withRouter } from 'react-router-dom';
 import Weekly from "../components/WeeklyMontly/TodayWeeklyMonthly";
 import Balance from "../components/Balance/balance";
 import CategoryPop from "../components/categoryPopup/categorypopup";
@@ -13,15 +14,7 @@ class Income extends Component {
         }
     }
 
-    addCategory=(e)=>{
-        this.state.Incomechosen.push(e);
-    }
-
-    componentDidMount() {
-        if(!localStorage.getItem('token')){
-            window.location('#/')
-        }
-    }
+   
 
     render() {
         return (
@@ -32,27 +25,15 @@ class Income extends Component {
                 <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
                     <Category 
                         desc="income" 
-                        transactions={this.props.transactions}//
-                        categories={this.props.categories}//
-                        currencies={this.props.currencies}//
+                        transactions={this.props.transactions}
+                        categories={this.props.categories}
+                        currencies={this.props.currencies}
                         deleteCategories={this.props.deleteCategories}
                         editCategoryInput={this.props.editCategoryInput}
-    
-                        EditCatVisible={this.props.EditCatVisible}
-                        switchEditCatVisible={this.props.switchEditCatVisible}
-                        EditCatModel={this.props.EditCatModel}
-                        ChangeEditCatModel={this.props.ChangeEditCatModel}
                         ChangeEditCatModelDB={this.props.ChangeEditCatModelDB}
                         />
                     <CategoryPop
                         desc="income"
-                        handle={this.addCategory}
-                        visibleCategoryPop={this.props.visibleCategoryPop}
-                        switchPop={this.props.switchPop}
-                        InputPop={this.props.InputPop}
-                        setInputPop={this.props.setInputPop}
-                        editSelectCat={this.props.editSelectCat}
-                        selectCategory={this.props.selectCategory}
                         createCategory={this.props.createCategory}//
                         />
                 </div>
@@ -61,9 +42,6 @@ class Income extends Component {
                 totalExpense={this.props.totalExpense}
                 totalIncome={this.props.totalIncome}
                 currencies={this.props.currencies}
-
-                wholeIncome={this.props.wholeIncome}
-                wholeExpense={this.props.wholeExpense}
                 />
             </div>
         );

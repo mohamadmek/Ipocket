@@ -171,7 +171,7 @@ class Login extends Component {
     handleSignIn = async (e) => {
       e.preventDefault();
       try {
-        const response = await fetch('http://localhost:8000/login', {
+        const response = await fetch('http://localhost:8000/api/login', {
           method: 'POST',
           body: JSON.stringify({
                             email: `${this.state.email}`,
@@ -185,8 +185,9 @@ class Login extends Component {
        
         const result = await response.json();
         localStorage.setItem('token', result.access_token)
+        localStorage.setItem('name',result.name)
         const token = localStorage.getItem('token');
-        const response2 = await fetch(`http://localhost:8000/user/${this.state.email}`, {
+        const response2 = await fetch(`http://localhost:8000/api/user/${this.state.email}`, {
           method: 'GET',
            headers: {
              Authorization: 'Bearer ' + token,
@@ -236,13 +237,14 @@ class Login extends Component {
 
     handleSignUp = async (e) => {
       e.preventDefault();
-      const response = await fetch('http://localhost:8000/register', {
+      const response = await fetch('http://localhost:8000/api/register', {
         method: 'POST',
         body: JSON.stringify({
           name: this.state.registrationInfo.username,
           email: this.state.registrationInfo.email,
           password: this.state.registrationInfo.password,
-          currencies_id: parseInt(this.state.registrationInfo.currency),
+         // currencies_id: parseInt(this.state.registrationInfo.currency),
+         currencies_id:1,
           amount:  this.state.registrationInfo.amount,
           image: 'mohamad'
         }),
@@ -251,8 +253,32 @@ class Login extends Component {
           'Accept': 'application/json'
       }
       })
-      const result = await response.json()
+      const result = await response.json();
+      let a = new Date().getMonth() + 1;
+      let b = new Date().getDate() + '-' + a + '-' + new Date().getFullYear();
       if(result.access_token){
+        const response2= await fetch('http://localhost:8000/api/transaction', {
+          method: 'POST',
+          body: JSON.stringify({
+            title: 'initial',
+            flag: 2,
+            amount: this.state.registrationInfo.amount,
+            start_date:b,
+            end_date:'NULL',
+            interval:2,
+            type:'income',
+            categories_id:18,
+            users_id:result.id,
+            currencies_id:1,
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            "Authorization":`Bearer ${result.access_token}`,
+        }
+        })
+        const result2 = await response2.json();
+        if(result2.status=='success'){
         this.setState({ 
           registrationInfo: {
             username: '',
@@ -264,7 +290,7 @@ class Login extends Component {
           },
           message: 'Successfully Signed up',
         })
-        
+      }
       }else{
         this.setState({
           message: 'Sign up Failed'
@@ -292,11 +318,11 @@ class Login extends Component {
       <label for="amount" style={{display:"block", color: "#fff"}}>AMOUNT</label>
       <this.Input value={this.state.registrationInfo.amount} onChange={this.changeHandler} type="number" name="amount" placeholder="Enter you Amount" style={{display:"block"}} />
 
-      <select value={this.state.registrationInfo.currency} onChange={this.changeHandler} name="currency" style={{display: 'block', marginTop: '5px'}}>
+     {/*  <select value={this.state.registrationInfo.currency} onChange={this.changeHandler} name="currency" style={{display: 'block', marginTop: '5px'}}>
         <option value="1">$</option>
         <option value="2">€</option>
         <option value="3">LBP</option>
-      </select>
+      </select> */}
       <div style={{color: '#ccc', fontWeight: 'bold', marginTop: "20px"}}><input type="checkbox" style={{cursor:"pointer"}}/> I agree all statements in <span style={{color:'#fff', borderBottom:'2px solid rgb(81, 197, 183)'}}>terms of service</span></div>
       <div style={{color: '#ccc', fontWeight:'bold', fontSize:'18px'}}>{ this.state.message }</div>
       <this.SignUpButton>Sign Up</this.SignUpButton>

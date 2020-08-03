@@ -59,7 +59,7 @@ class CircleP extends Component {
   }
   componentWillReceiveProps=()=>{
     if(this.props){
-      this.calculate();
+     // this.calculate();
     }
   }
 
@@ -72,7 +72,6 @@ render(){const percentage = 100-parseFloat(this.state.saving) * 100/parseInt(thi
         value={percentage}
       /*  text={`${percentage} LBP`} */
         styles={{
-          // Customize the root svg element
         root: {},
         path: {
         stroke: `#16a085`,

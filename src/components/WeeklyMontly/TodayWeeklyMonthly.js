@@ -5,15 +5,25 @@ class TodayWeeklyMonthly extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            today:0,
+            today:null,
             weekly:0,
             monthly:0, 
             date:"" 
         };
     }
  
-     componentWillReceiveProps=()=>{
-        let currentDay = new Date().getDate();
+
+        componentDidMount=()=>{
+            this.calculateBalance();
+        } 
+     
+        componentWillUpdate=()=>{
+           if(this.state.today===null){
+               this.calculateBalance()
+           }
+        }
+        calculateBalance=()=>{
+            let currentDay = new Date().getDate();
         let currentMonth = new Date().getMonth()+1;
         let currentYear = new Date().getFullYear();
         let currentWeek = new Date().getDay();
@@ -23,38 +33,50 @@ class TodayWeeklyMonthly extends Component {
             let  daily=0;
              this.props.transactions.map((item) =>{ 
                 let month = new Date(item.start_date).getMonth()+1;
-                 if(this.props.desc == item.type  &&  currentYear == new Date(item.start_date).getFullYear() && currentMonth == month){
+                 if(this.props.desc == item.type  &&  currentYear == new Date(item.start_date).getFullYear()){
                     let today = new Date(item.start_date).getDate();
-                     let week = new Date(item.start_date).getDay();
-                     monthly += parseFloat(item.amount);
+                      //weekly = new Date(item.start_date).getDay();
+                      if(currentMonth==month){
+                        monthly += parseFloat(item.amount);
+                      }
                      if(today == currentDay){
                          daily += parseFloat(item.amount);
                      }
                      if(this.weeklyNumber(item) != undefined)
-                        currentWeek += parseFloat(this.weeklyNumber(item));
+                        weekly += parseFloat(this.weeklyNumber(item));
                  }
             })
-            this.setState({today: daily , monthly:monthly, weekly:currentWeek})
+            this.setState({today: daily , monthly:monthly, weekly:weekly})
          }
-        } 
+        }
         weeklyNumber=(item)=>{
             if(item != undefined){
                 let itemDate=new Date(item.start_date).getDate();
                 let curr = new Date().getDay();
                 let i=curr;
-                if(i==0){
-                    for(i=7 ; i>0 ; i--){
-                        let first =new Date().getDate() - i+1;
-                        
-                        if(itemDate == first){
+               
+                if(i==0){ 
+                    for(let c=1 ; c<8 ; c++){
+                        var date = new Date();
+                        var last = new Date(date.getTime() - (c * 24 * 60 * 60 * 1000));
+                        var day =last.getDate();
+                        var month=last.getMonth()+1;
+                        var year=last.getFullYear(); 
+                        var calDate=year + '-' + month + '-' + day;
+                        if(Date.parse(calDate) == Date.parse(item.start_date)){
                             return item.amount
-                        }
+                        } 
                     }
                 }
                 else{
-                    for (i=curr ; i>0 ; i--) {
-                        let first = new Date().getDate() - i+1;
-                        if(itemDate == first){
+                    for (i=0 ; i<curr ; i++) {
+                        var date = new Date();
+                        var last = new Date(date.getTime() - (i * 24 * 60 * 60 * 1000));
+                        var day =last.getDate();
+                        var month=last.getMonth()+1;
+                        var year=last.getFullYear(); 
+                        var calDate=year + '-' + month + '-' + day;
+                        if(Date.parse(calDate) == Date.parse(item.start_date)){
                             return item.amount
                         }
                     } 

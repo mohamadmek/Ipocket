@@ -15,7 +15,7 @@ class AccountBalance extends Component {
               <div className="accountBalance_div">
                 <div id="accuntBalance_circle">
                   <p className="accountBalance_p_amount">
-                    {this.props.wholeIncome - this.props.wholeExpense } LBP
+                    {this.props.totalIncome - this.props.totalExpense } LBP
                     {/*user table to take the chosen currency */}
                    </p>
                   <div class="accountBalance_income">

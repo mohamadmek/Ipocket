@@ -21,7 +21,7 @@ class Filter extends Component {
     render() {        
         return (
         <div className="Filter">
-            <div>{console.log("date",this.state.dateto)}
+            <div>
                 <p className="Filter_div1">Transactions</p>
             </div>
             <div className="Filter_div2">

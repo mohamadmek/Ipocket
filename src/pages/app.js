@@ -42,22 +42,7 @@ class App extends Component {
       totalIncome: 0,
       totalExpense: 0,
 
-      isEdit: false,
-      transTemp: [],
-
       title: '',
-      flagEdit: false,
-      titleCategory: [],
-      categoryInput: [],
-      selectCategory: '',
-      tempId: -1,
-
-      visibleCategoryPop: false,
-      InputPop: [],
-
-      EditCatVisible: false,
-      EditCatModel: [],
-      changed: false,
     };
     this.onWrapperClick = this.onWrapperClick.bind(this);
     this.onToggleMenu = this.onToggleMenu.bind(this);
@@ -65,65 +50,12 @@ class App extends Component {
     this.onMenuItemClick = this.onMenuItemClick.bind(this);
     this.createMenu();
   }
-
-  switch = (item) => {
-    let a = this.state.categories.filter((id) => id.id == item.categories_id);
-    this.setState({
-      flagEdit: !this.state.flagEdit,
-      titleCategory: item.title,
-      categoryInput: item.title,
-      tempId: item.id,
-      selectCategory: a[0].name,
-    });
-  };
-  cancel = () => {
-    this.setState({ flagEdit: false });
-  };
-
-  switchPop = () => {
-    this.setState({
-      visibleCategoryPop: !this.state.visibleCategoryPop,
-      selectCategory: '',
-    });
-  };
-
-  setInputPop = (e) => {
-    this.setState({ InputPop: e });
-  };
-
-  switchEditCatVisible = (e) => {
-    if (e != 1) {
-      this.setState({
-        EditCatVisible: !this.state.EditCatVisible,
-        EditCatModel: e,
-      });
-    } else this.setState({ EditCatVisible: !this.state.EditCatVisible });
-  };
-
-  ChangeEditCatModel = (value, index) => {
-    let newState = Object.assign({}, this.state);
-    if (index == 'amount') {
-      newState.EditCatModel.amount = value;
-    } else if (index == 'flag') {
-      if (value == 1) {
-        newState.EditCatModel.end_date = '';
-      }
-      newState.EditCatModel.flag = value;
-    } else if (index == 'date') {
-      newState.EditCatModel.end_date = value;
-    } else if (index == 'currencies') {
-      newState.EditCatModel.currencies_id = value;
-    }
-
-    this.setState(newState);
-  };
-
   ChangeEditCatModelDB = async (item) => {
-    //////done
+    /////////////*****************////////// */
     try {
       const token = localStorage.getItem('token');
       const responseTrans = await fetch(
-        `http://localhost:8000/transaction/${item.id}`,
+        `http://localhost:8000/api/transaction/${item.id}`,
         {
           method: 'PUT',
           body: JSON.stringify({
@@ -131,6 +63,7 @@ class App extends Component {
             start_date: item.start_date,
             flag: item.flag,
             currencies_id: item.currencies_id,
+            title : item.title
           }),
           headers: {
             Authorization: 'Bearer ' + token,
@@ -138,7 +71,7 @@ class App extends Component {
             Accept: 'application/json',
           },
         }
-      );
+      );console.log(item)
       const result = await responseTrans.json();
       if (result.status) {
         let tranIndex = -1;
@@ -151,6 +84,8 @@ class App extends Component {
         newState.transactions[tranIndex].flag = item.flag;
         newState.transactions[tranIndex].currencies_id = item.currencies_id;
         this.setState(newState);
+        this.TotalExpenseIncome();
+        this.forceUpdate();
       }
     } catch (err) {
       console.log(err);
@@ -158,10 +93,10 @@ class App extends Component {
   };
 
   createCategory = async (e, trans, cat) => {
-    ///////////////must update the users_id and the currencies_id///done
+    ///////////***************//////////// */
     try {
       const token = localStorage.getItem('token');
-      const responseTrans = await fetch(`http://localhost:8000/categories`, {
+      const responseTrans = await fetch(`http://localhost:8000/api/categories`, {
         method: 'POST',
         body: JSON.stringify({
           name: cat,
@@ -178,7 +113,7 @@ class App extends Component {
         try {
           const token = localStorage.getItem('token');
           const responseTrans = await fetch(
-            `http://localhost:8000/transaction/`,
+            `http://localhost:8000/api/transaction/`,
             {
               method: 'POST',
               body: JSON.stringify({
@@ -229,7 +164,7 @@ class App extends Component {
               users_id: localStorage.getItem('userID'),
               currencies_id: 1,
             };
-            //this.switchPop();
+           
 
             this.setState({
               transactions: [...this.state.transactions, newTran],
@@ -246,6 +181,7 @@ class App extends Component {
   };
 
   handleFrom = (e) => {
+    /////////*************/////////////// */
     e.preventDefault();
     let filterDate = { ...this.state.filterDate };
     const name = e.target.name;
@@ -269,29 +205,11 @@ class App extends Component {
     });
   };
 
-  // getToken = async () => {
-  //   try {
-  //     const response = await fetch(`http://localhost:8000/login`, {
-  //       method: 'POST',
-  //       body: JSON.stringify({
-  //         email: 'zisi@hotmail.com',
-  //         password: 'zisi',
-  //       }),
-  //       headers: {
-  //         'Content-type': 'application/json; charset=UTF-8',
-  //       },
-  //     });
-  //     const result = await response.json();
-  //     localStorage.setItem('token', result.access_token);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-
   getTransactions = async () => {
+    /////////***********////////// */
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:8000/transaction/${localStorage.getItem('userID')}`, {
+      const response = await fetch(`http://localhost:8000/api/transaction/${localStorage.getItem('userID')}`, {
         method: 'GET',
         headers: {
           Authorization: 'Bearer ' + token,
@@ -300,12 +218,11 @@ class App extends Component {
         },
       });
       const result = await response.json();
-      const final = result.transaction.filter(final => final.start_date != final.end_date)
-      if (result.status) {
+      //const final = result.transaction.filter(final => final.start_date != final.end_date)
+      if (result.status == 'success') {
         this.setState({
-          transactions: final,
-        });
-        this.TotalExpenseIncome();
+          transactions: result.transaction,
+        },()=>this.TotalExpenseIncome());
       }
     } catch (err) {
       console.log(err);
@@ -313,10 +230,10 @@ class App extends Component {
   };
 
   deleteTransaction = async (id) => {
-    ////////done
+    /////////************//////// */
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:8000/transaction2/${id}`, {
+      const response = await fetch(`http://localhost:8000/api/transaction2/${id}`, {
         method: 'get',
         headers: {
           Authorization: 'Bearer ' + token,
@@ -325,12 +242,11 @@ class App extends Component {
         },
       });
       const result = await response.json();
-    //   if (result.status) {
         const transactions = this.state.transactions.filter(
           (transaction) => transaction.id != id
         );
         this.setState({ transactions }, async () => {
-            const trans = await fetch(`http://localhost:8000/transaction/${id}`, {
+            const trans = await fetch(`http://localhost:8000/api/transaction/${id}`, {
                 method: 'PUT',
                 body: JSON.stringify({
                     end_date : result.transaction.start_date
@@ -348,97 +264,13 @@ class App extends Component {
     }
   };
 
-  editCategory = (item) => {
-    this.setState({ categoryInput: item });
-  };
-  editSelectCat = (item) => {
-    this.setState({ selectCategory: item });
-  };
-
-  editHandler = (item) => {
-    if (item == 'cancel') {
-      this.setState({ isEdit: !this.state.isEdit });
-    } else {
-      let a = [
-        { id: item.id },
-        { amount: item.amount },
-        { title: item.title },
-        { date: item.start_date },
-        { focus: 1 },
-      ];
-      this.setState({
-        isEdit: !this.state.isEdit,
-        transTemp: a,
-      });
-    }
-  };
-
-  editTransInput = (value, index) => {
-    let newState = Object.assign({}, this.state);
-    let key = newState.transTemp;
-    const re = /^[0-9]+$/;
-
-    if (index == 4) {
-      if (value == 'title') key[4].focus = 1;
-      else if (value == 'date') key[4].focus = 2;
-      else if (value == 'amount') key[4].focus = 3;
-    } else {
-      if (index == 2) key[index].title = value;
-      else if (index == 3) key[index].date = value;
-      else if (index == 1) key[index].amount = value;
-    }
-    this.setState(newState);
-  };
-
-  editTransDB = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const responseTrans = await fetch(
-        `http://localhost:8000/transaction/${this.state.transTemp[0].id}`,
-        {
-          method: 'PUT',
-          headers: {
-            Authorization: 'Bearer ' + token,
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-          body: JSON.stringify({
-            title: this.state.transTemp[2].title,
-            amount: this.state.transTemp[1].amount,
-            start_date: this.state.transTemp[3].date,
-          }),
-          headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-          },
-        }
-      );
-      const result = await responseTrans.json();
-      if (result.status) {
-        let tranIndex = -1;
-        let newState = Object.assign({}, this.state);
-        this.state.transactions.map((id, index) =>
-          id.id == this.state.transTemp[0].id ? (tranIndex = index) : ''
-        );
-        newState.transactions[tranIndex].title = this.state.transTemp[2].title;
-        newState.transactions[
-          tranIndex
-        ].amount = this.state.transTemp[1].amount;
-        newState.transactions[
-          tranIndex
-        ].start_date = this.state.transTemp[3].date;
-        newState.isEdit = false;
-        this.setState(newState);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   getCategories = async () => {
+    ////////////*************///////// */
     if (!this.state.flagCategory) {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:8000/categories', {
+        const response = await fetch('http://localhost:8000/api/categories', {
           headers: {
             Authorization: 'Bearer ' + token,
             'Content-Type': 'application/json',
@@ -459,9 +291,10 @@ class App extends Component {
   };
 
   getCurrencies = async () => {
+    ///////////***********////////// */
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:8000/currencies', {
+      const response = await fetch('http://localhost:8000/api/currencies', {
         headers: {
           Authorization: 'Bearer ' + token,
           'Content-Type': 'application/json',
@@ -490,6 +323,7 @@ class App extends Component {
   }
 
   TotalExpenseIncome = () => {
+    ///////////****************//// */
     let income = 0,
       expense = 0;
     let a = new Date().getMonth() + 1;
@@ -500,10 +334,11 @@ class App extends Component {
         : (expense += parseFloat(id.amount));
     });
     this.setState({ date: b, totalExpense: expense, totalIncome: income });
+    this.forceUpdate();
   };
 
   deleteCategories = async (id) => {
-    //////////done
+    ////////////************/////////// */
     let cat = this.state.categories.filter(
       (cat_id) => cat_id.id == id.categories_id
     );
@@ -511,7 +346,7 @@ class App extends Component {
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(
-        `http://localhost:8000/categories/${cat[0].id}`,
+        `http://localhost:8000/api/categories/${cat[0].id}`,
         {
           method: 'DELETE',
           headers: {
@@ -610,6 +445,14 @@ class App extends Component {
           window.location = '#/transaction';
         },
       },
+      {
+        label: 'Log Out',
+        icon: 'fas fa-power-off',
+        command: () => {
+          localStorage.clear();
+          window.location = '#/';
+        },
+      },
     ];
   }
 
@@ -653,7 +496,7 @@ class App extends Component {
     else return false;
   }
 
-  addClass(element, className) {
+/*   addClass(element, className) {
     if (element.classList) element.classList.add(className);
     else element.className += ' ' + className;
   }
@@ -668,25 +511,25 @@ class App extends Component {
         ),
         ' '
       );
-  }
+  } */
 
   isDesktop() {
     return window.innerWidth > 1024;
   }
 
   componentDidUpdate() {
-    if (this.state.mobileMenuActive)
+    /* if (this.state.mobileMenuActive)
       this.addClass(document.body, 'body-overflow-hidden');
-    else this.removeClass(document.body, 'body-overflow-hidden');
+    else this.removeClass(document.body, 'body-overflow-hidden'); */
   }
 
   editCategoryInput = async (trans, cat) => {
-    ///////////////////done
+    //////////***************////////// */
     const token = localStorage.getItem('token');
 
     try {
       const responseTrans = await fetch(
-        `http://localhost:8000/transaction/${trans.id}`,
+        `http://localhost:8000/api/transaction/${trans.id}`,
         {
           method: 'PUT',
           body: JSON.stringify({ title: trans.title }),
@@ -701,7 +544,7 @@ class App extends Component {
       if (result.status) {
         try {
           const response = await fetch(
-            `http://localhost:8000/categories/${trans.categories_id}`,
+            `http://localhost:8000/api/categories/${trans.categories_id}`,
             {
               method: 'PUT',
               body: JSON.stringify({ name: cat }),
@@ -728,6 +571,7 @@ class App extends Component {
             newState.categories[catIndex].name = cat;
 
             this.setState(newState);
+            this.forceUpdate();
           }
         } catch (err) {
           console.log(err);
@@ -737,6 +581,71 @@ class App extends Component {
       console.log(err);
     }
   };
+
+  SavingInsert=async(value,start,interval)=>{
+    //////////////*******************////////// */
+    try {
+      const token = localStorage.getItem('token');
+      const responseTrans = await fetch(
+        `http://localhost:8000/api/transaction/`,
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            title: 'saving',
+            flag: 1,
+            amount: parseFloat(value),
+            start_date:
+              new Date().getFullYear() +
+              '-' +
+              (new Date().getMonth() + 1) +
+              '-' +
+              new Date().getDate(),
+            end_date:start,
+            interval:parseInt(interval),
+            type: 'expense',
+            categories_id: 18,
+            users_id: localStorage.getItem('userID'),
+            currencies_id: 1,
+          }),
+          headers: {
+            Authorization: 'Bearer ' + token,
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+        }
+      );
+      const resultT = await responseTrans.json();
+      if (resultT.status) {
+      
+
+        let newTran = {
+          id: resultT.transaction.id,
+          title: 'saving',
+          flag: 2,
+          amount: 0,
+          start_date:
+            new Date().getFullYear() +
+            '-' +
+            (new Date().getMonth() + 1) +
+            '-' +
+            new Date().getDate(),
+          end_date:start,
+          interval: 2,
+          type: 'expense',
+          categories_id:18,
+          users_id: localStorage.getItem('userID'),
+          currencies_id: 1,
+        };
+       
+
+        this.setState({
+          transactions: [...this.state.transactions, newTran]
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   render() {
     const logo =
@@ -767,9 +676,9 @@ class App extends Component {
           className={sidebarClassName}
           onClick={this.onSidebarClick}
         >
-          <div className="layout-logo">
+         {/*  <div className="layout-logo">
             <img alt="Logo" src={logo} />
-          </div>
+          </div> */}
           <AppProfile />
           <AppMenu model={this.menu} onMenuItemClick={this.onMenuItemClick} />
         </div>
@@ -777,20 +686,14 @@ class App extends Component {
           <Route
             path="/transaction"
             render={(props) => {
-              /*  this.setState({changed:!this.state.changed}); */ return (
+               return (
                 <Tranaction
                   transactions={this.state.transactions}
                   dateFrom={this.state.filterDate.dateFrom}
                   dateTo={this.state.filterDate.dateTo}
                   handleFrom={this.handleFrom}
-                  editHandler={this.editHandler}
-                  isEdit={this.state.isEdit}
-                  updateTransaction={this.updateTransaction}
-                  title={this.state.title}
                   deleteCategories={this.deleteCategories}
-                  transTemp={this.state.transTemp}
-                  editTransInput={this.editTransInput}
-                  editTransDB={this.editTransDB}
+                  ChangeEditCatModelDB={this.ChangeEditCatModelDB}
                   {...props}
                 />
               );
@@ -805,6 +708,7 @@ class App extends Component {
                 totalIncome={this.state.totalIncome}
                 date={this.state.date}
                 transactions={this.state.transactions}
+                SavingInsert={this.SavingInsert}
                 {...props}
               />
             )}
@@ -814,29 +718,13 @@ class App extends Component {
             path="/income"
             render={(props) => (
               <Income
-                transactions={this.state.transactions} //
-                categories={this.state.categories} //
-                currencies={this.state.currencies} //
-                deleteCategories={this.deleteCategories} //
-                editCategoryInput={this.editCategoryInput} //
-                flagEdit={this.state.flagEdit}
-                switch={this.switch}
-                titleCategory={this.state.titleCategory}
-                editCategory={this.editCategory}
-                categoryInput={this.state.categoryInput}
-                cancel={this.cancel}
-                editSelectCat={this.editSelectCat}
-                selectCategory={this.state.selectCategory}
-                visibleCategoryPop={this.state.visibleCategoryPop}
-                switchPop={this.switchPop}
-                InputPop={this.state.InputPop}
-                setInputPop={this.setInputPop}
-                createCategory={this.createCategory} //
-                EditCatVisible={this.state.EditCatVisible}
-                switchEditCatVisible={this.switchEditCatVisible}
-                EditCatModel={this.state.EditCatModel}
-                ChangeEditCatModel={this.ChangeEditCatModel}
-                ChangeEditCatModelDB={this.ChangeEditCatModelDB} //
+                transactions={this.state.transactions} 
+                categories={this.state.categories} 
+                currencies={this.state.currencies} 
+                deleteCategories={this.deleteCategories} 
+                editCategoryInput={this.editCategoryInput} 
+                createCategory={this.createCategory} 
+                ChangeEditCatModelDB={this.ChangeEditCatModelDB}
                 totalExpense={this.state.totalExpense}
                 totalIncome={this.state.totalIncome}
                 {...props}
@@ -847,29 +735,13 @@ class App extends Component {
             path="/expense"
             render={(props) => (
               <Expense
-                transactions={this.state.transactions} //
-                categories={this.state.categories} //
-                currencies={this.state.currencies} //
-                deleteCategories={this.deleteCategories} //
-                editCategoryInput={this.editCategoryInput} //
-                flagEdit={this.state.flagEdit}
-                switch={this.switch}
-                titleCategory={this.state.titleCategory}
-                editCategory={this.editCategory}
-                categoryInput={this.state.categoryInput}
-                cancel={this.cancel}
-                editSelectCat={this.editSelectCat}
-                selectCategory={this.state.selectCategory}
-                visibleCategoryPop={this.state.visibleCategoryPop}
-                switchPop={this.switchPop}
-                InputPop={this.state.InputPop}
-                setInputPop={this.setInputPop}
-                createCategory={this.createCategory} //
-                EditCatVisible={this.state.EditCatVisible}
-                switchEditCatVisible={this.switchEditCatVisible}
-                EditCatModel={this.state.EditCatModel}
-                ChangeEditCatModel={this.ChangeEditCatModel}
-                ChangeEditCatModelDB={this.ChangeEditCatModelDB} //
+                transactions={this.state.transactions} 
+                categories={this.state.categories}
+                currencies={this.state.currencies} 
+                deleteCategories={this.deleteCategories} 
+                editCategoryInput={this.editCategoryInput} 
+                createCategory={this.createCategory} 
+                ChangeEditCatModelDB={this.ChangeEditCatModelDB} 
                 totalExpense={this.state.totalExpense}
                 totalIncome={this.state.totalIncome}
                 {...props}

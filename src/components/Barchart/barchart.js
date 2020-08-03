@@ -38,7 +38,7 @@ class Barchart extends Component {
       calculatePie=(from,to)=>{
         if(this.props.transactions.length !== 0){
           let fixed=this.props.transactions.filter(id =>
-            id.flag ==2 && new Date(id.start_date) >= new Date(from).getTime() && new Date(id.start_date).getTime()<=new Date(to).getTime())
+            id.flag ==2 && new Date(id.start_date).getTime() >= new Date(from).getTime() && new Date(id.start_date).getTime()<=new Date(to).getTime())
           let recurring = this.props.transactions.filter(id=>
             id.flag==1 && new Date(id.start_date).getTime() <= new Date(to).getTime())
               let income=0, expense=0;
@@ -46,12 +46,12 @@ class Barchart extends Component {
                 if(item.type == "income"){ income += parseFloat(item.amount)}
                 else if(item.type == "expense"){ expense += parseFloat(item.amount)}
               })
-               recurring.map((item)=>{
+                recurring.map((item)=>{
                  if(item.type == "income"){ income += this.calculateAmount(item,"pie")}
                  else if( item.type == "expense"){ expense += this.calculateAmount(item, "pie")}
               })
               let amount=[income,expense];
-              this.setState({ pieAmount : amount}) 
+              this.setState({ pieAmount : amount})
         }
       }
 
@@ -144,7 +144,7 @@ class Barchart extends Component {
                   barDateTo : year + '-' + (new Date().getMonth()+1) + "-" + new Date().getDate(),
                   flagPie:false,
                   flagBar:false,
-                })
+                },()=>this.calculateBar(this.state.barDateFrom,this.state.barDateTo))
       }
       componentWillReceiveProps=()=>{
         if(this.props.transactions.length !== 0){
@@ -153,6 +153,13 @@ class Barchart extends Component {
 
         }
       }
+      componentWillUpdate=()=>{
+        if(this.state.pieAmount.length==0){
+          this.calculatePie(this.state.PieDateFrom,this.state.PieDateTo);
+          this.calculateBar(this.state.barDateFrom,this.state.barDateTo)
+        }
+      }
+     
 
     render() {
         const data = {
@@ -246,7 +253,7 @@ class Barchart extends Component {
                       //viewDate={this.state.datefrom}
                       style={{marginRight:'5px'}}
                       value={!this.state.flagPie ? null :this.state.PieDateFrom}
-                      maxDate={new Date()}
+                     // maxDate={new Date()}
 			              /> 
                    <Calendar value={this.state.date}
                       onChange={e => this.setState
@@ -261,7 +268,7 @@ class Barchart extends Component {
                       //viewDate={this.state.dateto}
                       className="chart-calendar-to"
                       value={!this.state.flagPie ? null :this.state.PieDateTo}
-                      maxDate={new Date()}
+                      //maxDate={new Date()}
                     />
                 </div>
               </div>

@@ -15,6 +15,7 @@ class Account extends Component {
  
     render() {
         return (
+          localStorage.getItem('token')==null?window.location='#/':
             <>
             <div className="account_div">
             <p className="account_div_p">Account</p>
@@ -25,19 +26,17 @@ class Account extends Component {
               <Balance 
                 totalExpense={this.props.totalExpense}
                 totalIncome={this.props.totalIncome}
-
-                wholeExpense={this.props.wholeExpense}//
-                wholeIncome={this.props.wholeIncome}//
                 />
               <BarChart
-                 transactions={this.props.transactions} />
+                 transactions={this.props.transactions} 
+                 />
             </div>
             
             <Save 
-                wholeExpense={this.props.wholeExpense}//
-                wholeIncome={this.props.wholeIncome}//
-                SavingInsert={this.props.SavingInsert}//
-                transactions={this.props.transactions} //
+                 totalExpense={this.props.totalExpense}
+                 totalIncome={this.props.totalIncome}
+                SavingInsert={this.props.SavingInsert}
+                transactions={this.props.transactions} 
                 />
 
             </>

@@ -8,31 +8,24 @@ class Transaction extends Component {
     this.state = {};
   }
 
-  componentDidMount() {
-    if (!localStorage.getItem('token')) {
-      window.location('#/');
-    }
-  }
+ 
 
   render() {
     return (
       <div>
+        {localStorage.getItem('token')==null?window.location='#/':
+                <>
         <Filter dateFrom={this.props.dateFrom} dateTo={this.props.dateTo} handleFrom={this.props.handleFrom} transactions={this.props.transactions} />
         <br></br>
         {this.props.transactions.map((transaction) => (
           <Trans
-            key={transaction.id}
             transaction={transaction}
-            editHandler={this.props.editHandler}
-            isEdit={this.props.isEdit}
-            updateTransaction={this.props.updateTransaction}
-            title={this.props.title}
-            deleteCategories={this.props.deleteCategories}
-            transTemp={this.props.transTemp}
-            editTransInput={this.props.editTransInput}
-            editTransDB={this.props.editTransDB}
+            deleteCategories={this.props.deleteCategories}//yes
+            ChangeEditCatModelDB={this.props.ChangeEditCatModelDB}
           />
         ))}
+        </>
+  }
       </div>
     );
   }

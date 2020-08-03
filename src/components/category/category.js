@@ -46,7 +46,9 @@ class category extends React.Component {
             year:"",
             month:"",
             day:"",
-            title:""
+            title:"",
+
+            propsTra:[],
         };
         
     }
@@ -64,7 +66,7 @@ class category extends React.Component {
     }
    
 
-    editCategoryInput=(e)=>{
+    editCategoryInputs=(e)=>{
         let transEdit = {...this.state.transEdit}
         transEdit.title = e;
         this.setState({ transEdit })
@@ -160,8 +162,8 @@ class category extends React.Component {
 			</div>
 		);
 		return (
-        <div className="category_div">
-            {this.props.transactions.length ===0 && this.props.categories.length ===0 ? " ":
+         <div className="category_div">
+             {this.props.transactions.length ===0 && this.props.categories.length ===0 ? " ":
             this.props.transactions.map((item)=> item.type != this.props.desc ? " ":
             new Date(item.start_date).getFullYear() == this.state.year && new Date(item.start_date).getMonth()+1 == this.state.month && new Date(item.start_date).getDate() == this.state.day?
                 <div className="category_div_inner">
@@ -201,7 +203,7 @@ class category extends React.Component {
                     visible={this.state.visibleEdit}
                     style={{width:'25%'}}
                     modal={true}
-                    closable={true}
+                    //closable={transEdittrue}
                     onHide={()=>this.setState({ visibleEdit: false})}>
                 <div className="category_popup_div2">
                   <div>    
@@ -212,7 +214,7 @@ class category extends React.Component {
                         id="category_popup_div2_inputs" 
                         name="categoryInput" 
                         value={this.state.transEdit.title}
-                        onChange={e=>this.editCategoryInput(e.target.value)}>
+                        onChange={e=>this.editCategoryInputs(e.target.value)}>
                     </input>
                     </div>
                     <div>
@@ -241,20 +243,14 @@ class category extends React.Component {
                     onHide={e => this.setState({DialogEdit :false})}>
                 <div className="category_popup_div2">
                     <div>
-{/*                     <Dropdown 
+                  {/*   <Dropdown 
                         value={this.state.curTemp}
                         options={this.state.currency} 
                         onChange={e => this.onChange(e)}
                         itemTemplate={this.carTemplate}  
                         style={{width: '70%',margin:'10px 0px 0px 0px'}}
                         placeholder="currency"
-                        showClear={true}/> */}
-                        
-                        <select style={{width: '70%',margin:'10px 0px 0px 0px'}} onChange={(e) => this.EditCurrency(e.target.value)} className="category_select">
-                            {this.props.currencies.map((item)=>
-                                <option value={item.id}>{item.symbol}</option>
-                             )}
-                        </select>
+                        showClear={true}/>  */}
 
                     <input
                         type="number"
@@ -302,7 +298,7 @@ class category extends React.Component {
         </div> 
         </Dialog>
                 
-        </div>
+                            </div> 
     	);
     }
 }

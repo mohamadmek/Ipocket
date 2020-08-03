@@ -17,10 +17,7 @@ class Save extends Component {
         }
       }
 
-/*     handle=(e)=>{
-      e.preventDefault();
-      this.setState({date:true});
-    } */
+
     submit = (e) => {
       e.preventDefault();
       confirmAlert({
@@ -46,8 +43,8 @@ class Save extends Component {
     }
 
     calculate=()=>{
-      if(this.props.wholeExpense != undefined && this.props.wholeIncome != undefined){
-        let total=parseFloat(this.props.wholeIncome) - parseFloat(this.props.wholeExpense);
+      if(this.props.totalExpense != undefined && this.props.totalIncome != undefined){
+        let total=parseFloat(this.props.totalIncome) - parseFloat(this.props.totalExpense);
         let monthnumber=-1;
         let date= this.state.currentDate;
         if (this.state.interval == 30){
@@ -65,6 +62,7 @@ class Save extends Component {
           }
         }
         let saving= this.state.value / monthnumber;
+        console.log(saving,total)
         if(total<=0 || total<saving){
           alert("sorry you don't have enough money ")
           this.setState({interval:"", end_date:"", value:[]})
